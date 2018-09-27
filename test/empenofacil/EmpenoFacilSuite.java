@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2018 Carlos
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,16 +16,13 @@
  */
 package empenofacil;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class EmpenoFacil extends Application {
-    @Override
-    public void start(Stage stage) throws Exception {
-        Util.login(stage);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+@RunWith(value = Suite.class)
+@Suite.SuiteClasses({
+  EmpleadoTest.class
+})
+public class EmpenoFacilSuite {
+    // TODO
 }

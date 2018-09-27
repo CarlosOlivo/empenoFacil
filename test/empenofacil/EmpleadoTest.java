@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2018 Carlos
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,16 +16,39 @@
  */
 package empenofacil;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
-public class EmpenoFacil extends Application {
-    @Override
-    public void start(Stage stage) throws Exception {
-        Util.login(stage);
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class EmpleadoTest {
+    
+    @BeforeClass
+    public static void preparar() {
+        // TODO
     }
-
-    public static void main(String[] args) {
-        launch(args);
+    
+    @Before
+    public void antes() {
+        // TODO
+    }
+    
+    @Test
+    public void test() {
+        // TODO
+    }
+    
+    @After
+    public void despues() {
+        // TODO
+    }
+    
+    @AfterClass
+    public static void restablecer() {
+        // TODO
     }
 }

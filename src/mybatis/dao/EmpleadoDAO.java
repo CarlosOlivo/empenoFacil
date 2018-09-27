@@ -14,18 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package empenofacil;
+package mybatis.dao;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import empenofacil.model.Empleado;
+import org.apache.ibatis.annotations.Param;
 
-public class EmpenoFacil extends Application {
-    @Override
-    public void start(Stage stage) throws Exception {
-        Util.login(stage);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+public interface EmpleadoDAO {
+    public Empleado obtenerEmpleado(@Param("usuario") String usuario, @Param("contrasenia") String contrasenia);
 }
