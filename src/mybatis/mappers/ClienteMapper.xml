@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Cliente">
+    <select id="getAllClientes" resultType="empenofacil.model.Cliente">
+        SELECT
+        cliente.idCliente,
+        cliente.idDomicilio,
+        cliente.nombre,
+        cliente.apellidoPaterno,
+        cliente.apellidoMaterno
+        cliente.telefono,
+        cliente.celular,
+        cliente.curp,
+        cliente.rfc,
+        cliente.listanegra
+        cliente.fecha_de_nacimiento
+        cliente.idocupacion
+        cliente.huella_cliente
+        FROM cliente
+    </select>
+    
+    <select id="getClienteById" resultType="empenofacil.model.Cliente" parameterType="int">
+        SELECT 
+        cliente.idCliente,
+        cliente.idDomicilio,
+        cliente.nombre,
+        cliente.apellidoPaterno,
+        cliente.apellidoMaterno
+        cliente.telefono,
+        cliente.celular,
+        cliente.curp,
+        cliente.rfc,
+        cliente.listanegra
+        cliente.fecha_de_nacimiento
+        cliente.idocupacion
+        cliente.huella_cliente
+        WHERE cliente.idcliente = #{id}
+    </select>
+    
+    <insert id="registrarCliente" parameterType="empenofacil.model.Cliente">
+        INSERT INTO cliente(idDomicilio, nombre, apellidoPaterno, apellellidoMaterno, telefono, celular, curp, 
+        rfc, listanegra, fecha_de_nacimiento, idocupacion, huella_cliente)
+        VALUES(#{nombre},#{apellidoPaterno}, #{apellidoMaterno}, #{telefono},
+        #{celular}, #{listanegra},#{fecha_de_nacimiento}, #{idocupacion}, #{huella_cliente})
+    </insert>    
+    
+    <update id="actualizarCliente" parameterType="empenofacil.model.Cliente">
+        UPDATE cliente SET idDomicilio = #{idDomicilio}, nombre=#{nombre}, apellidoPaterno=#{apellidoPaterno},
+        apellidoMaterno = #{apellidoMaterno}, telefono = #{telefono}, celular = #{celular},
+        curp = #{curp}, rfc = #{rfc}, listanegra = #{listanegra}, 
+        fecha_de_nacimiento=#{fecha_de_nacimiento}, idocupacion = #{idocupacion}, 
+        huella_cliente = #{huella_cliente}
+        WHERE idcliente = ${idcliente}
+    </update> 
+    
+    <delete id="eliminarCliente" parameterType="int">
+        DELETE FROM cliente WHERE idcliente= #{id}
+    </delete> 
+</mapper>
