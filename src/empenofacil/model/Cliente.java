@@ -26,9 +26,9 @@ import java.util.Date;
  * @since 2018-09-29
  */
 public class Cliente {
-    private Integer idCliente;
-    private Integer idDomicilio;
-    private Integer idOcupacion;
+    private Integer idcliente;
+    private Integer id_domicilio;
+    private Integer idocupacion;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
@@ -43,10 +43,10 @@ public class Cliente {
     public Cliente() {       
     }
 
-    public Cliente(Integer idCliente, Integer idDomicilio, Integer idOcupacion, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String celular, String curp, String rfc, boolean listaNegra, Date fechaNacimiento, File huellaCliete) {
-        this.idCliente = idCliente;
-        this.idDomicilio = idDomicilio;
-        this.idOcupacion = idOcupacion;
+    public Cliente(Integer idcliente, Integer id_domicilio, Integer idocupacion, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String celular, String curp, String rfc, boolean listaNegra, Date fechaNacimiento, File huellaCliete) {
+        this.idcliente = idcliente;
+        this.id_domicilio = id_domicilio;
+        this.idocupacion = idocupacion;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -59,28 +59,28 @@ public class Cliente {
         this.huellaCliete = huellaCliete;
     }
 
-    public Integer getIdCliente() {
-        return idCliente;
+    public Integer getIdcliente() {
+        return idcliente;
     }
 
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
+    public void setIdcliente(Integer idcliente) {
+        this.idcliente = idcliente;
     }
 
-    public Integer getIdDomicilio() {
-        return idDomicilio;
+    public Integer getId_domicilio() {
+        return id_domicilio;
     }
 
-    public void setIdDomicilio(Integer idDomicilio) {
-        this.idDomicilio = idDomicilio;
+    public void setId_domicilio(Integer id_domicilio) {
+        this.id_domicilio = id_domicilio;
     }
 
-    public Integer getIdOcupacion() {
-        return idOcupacion;
+    public Integer getIdocupacion() {
+        return idocupacion;
     }
 
-    public void setIdOcupacion(Integer idOcupacion) {
-        this.idOcupacion = idOcupacion;
+    public void setIdocupacion(Integer idocupacion) {
+        this.idocupacion = idocupacion;
     }
 
     public String getNombre() {
@@ -161,5 +161,9 @@ public class Cliente {
 
     public void setHuellaCliete(File huellaCliete) {
         this.huellaCliete = huellaCliete;
-    }    
+    }
+
+    
+
+   
 }
