@@ -24,6 +24,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mybatis.MyBatisUtil;
@@ -35,7 +36,7 @@ public class LoginController implements Initializable {
     @FXML
     private TextField user;
     @FXML
-    private TextField pass;
+    private PasswordField pass;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -56,6 +57,7 @@ public class LoginController implements Initializable {
         try {
             EmpleadoDAO empleadoDAO = conn.getMapper(EmpleadoDAO.class);
             Empleado empleado = empleadoDAO.obtenerEmpleado(user.getText(), pass.getText());
+            System.out.println(empleadoDAO.obtenerEmpleados());
             if(empleado != null) {
                 Util.menu(getStage(), empleado);
             } else {

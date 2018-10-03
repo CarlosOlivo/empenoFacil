@@ -17,8 +17,6 @@
 package empenofacil.model;
 
 import java.util.Date;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 public class Empleado {
     private Integer id_empleado;
@@ -26,54 +24,35 @@ public class Empleado {
     private Integer id_domicilio;
     private String usuario;
     private String contrasenia;
-    private final StringProperty nombre;
-    private final StringProperty apellidoMaterno;
-    private final StringProperty apellidoPaterno;
-    private final StringProperty telefono;
-    private final StringProperty celular;
-    private final StringProperty rfc;
-    private final StringProperty curp;
-    private Date fecha_nacimiento;
+    private String nombre;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
+    private String telefono;
+    private String celular;
+    private String rfc;
+    private String curp;
+    private Date fecha_de_nacimiento;
     private Object huella_empleado;
 
-    public Empleado() {
-        this.id_empleado = null;
-        this.id_rol = null;
-        this.id_domicilio = null;
-        this.usuario = null;
-        this.contrasenia = null;
-        this.nombre = new SimpleStringProperty();
-        this.apellidoMaterno = new SimpleStringProperty();
-        this.apellidoPaterno = new SimpleStringProperty();
-        this.telefono = new SimpleStringProperty();
-        this.celular = new SimpleStringProperty();
-        this.rfc = new SimpleStringProperty();
-        this.curp = new SimpleStringProperty();
-        this.fecha_nacimiento = new Date();
-        this.huella_empleado = null;
-    }
-    
-    public Empleado(Integer id_empleado, Integer id_rol, Integer id_domicilio, String usuario, String contrasenia, String nombre, String apellidoMaterno, String apellidoPaterno, String telefono, String celular, String rfc, String curp, Date fecha_nacimiento, Object huella_empleado) {
+    public Empleado() {}
+
+    public Empleado(Integer id_empleado, Integer id_rol, Integer id_domicilio, String usuario, String contrasenia, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String celular, String rfc, String curp, Date fecha_de_nacimiento, Object huella_empleado) {
         this.id_empleado = id_empleado;
         this.id_rol = id_rol;
         this.id_domicilio = id_domicilio;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
-        this.nombre = new SimpleStringProperty(nombre);
-        this.apellidoMaterno = new SimpleStringProperty(apellidoMaterno);
-        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
-        this.telefono = new SimpleStringProperty(telefono);
-        this.celular = new SimpleStringProperty(celular);
-        this.rfc = new SimpleStringProperty(rfc);
-        this.curp = new SimpleStringProperty(curp);
-        if(fecha_nacimiento != null) {
-            this.fecha_nacimiento = new Date(fecha_nacimiento.getTime());
-        } else {
-            this.fecha_nacimiento = new Date();
-        }
+        this.nombre = nombre;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.telefono = telefono;
+        this.celular = celular;
+        this.rfc = rfc;
+        this.curp = curp;
+        this.fecha_de_nacimiento = fecha_de_nacimiento;
         this.huella_empleado = huella_empleado;
     }
-    
+
     public Integer getId_empleado() {
         return id_empleado;
     }
@@ -105,112 +84,86 @@ public class Empleado {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-    
+
     public String getContrasenia() {
         return contrasenia;
     }
 
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
-    } 
-    
-    public StringProperty getNombreProperty() {
-        return nombre;
     }
-    
+
     public String getNombre() {
-        return nombre.getValue();
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre.setValue(nombre);
-    }
-    
-    public StringProperty getApellidoPaternoProperty() {
-        return apellidoPaterno;
+        this.nombre = nombre;
     }
 
     public String getApellidoPaterno() {
-        return apellidoPaterno.getValue();
+        return apellidoPaterno;
     }
 
     public void setApellidoPaterno(String apellidoPaterno) {
-        this.apellidoPaterno.setValue(apellidoPaterno);
-    }
-    
-    public StringProperty getApellidoMaternoProperty() {
-        return apellidoMaterno;
+        this.apellidoPaterno = apellidoPaterno;
     }
 
     public String getApellidoMaterno() {
-        return apellidoMaterno.getValue();
+        return apellidoMaterno;
     }
 
     public void setApellidoMaterno(String apellidoMaterno) {
-        this.apellidoMaterno.setValue(apellidoMaterno);
-    }
-    
-    public StringProperty getTelefonoProperty() {
-        return telefono;
+        this.apellidoMaterno = apellidoMaterno;
     }
 
     public String getTelefono() {
-        return telefono.getValue();
+        return telefono;
     }
 
     public void setTelefono(String telefono) {
-        this.telefono.setValue(telefono);
-    }
-    
-    public StringProperty getCelularProperty() {
-        return celular;
+        this.telefono = telefono;
     }
 
     public String getCelular() {
-        return celular.getValue();
+        return celular;
     }
 
     public void setCelular(String celular) {
-        this.celular.setValue(celular);
+        this.celular = celular;
     }
-    
-    public StringProperty getRFCProperty() {
+
+    public String getRfc() {
         return rfc;
     }
 
-    public String getRFC() {
-        return rfc.getValue();
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
     }
 
-    public void setRFC(String rfc) {
-        this.rfc.setValue(rfc);
-    }
-    
-    public StringProperty getCURPProperty() {
+    public String getCurp() {
         return curp;
     }
 
-    public String getCURP() {
-        return curp.getValue();
+    public void setCurp(String curp) {
+        this.curp = curp;
     }
 
-    public void setCURP(String curp) {
-        this.curp.setValue(curp);
-    }
-    
-    public Date getFechaNacimiento() {
-        return new Date(fecha_nacimiento.getTime());
+    public Date getFecha_de_nacimiento() {
+        return fecha_de_nacimiento;
     }
 
-    public void setFechaNacimiento(Date fecha_nacimiento) {
-        this.fecha_nacimiento = new Date(fecha_nacimiento.getTime());
+    public void setFecha_de_nacimiento(Date fecha_de_nacimiento) {
+        this.fecha_de_nacimiento = fecha_de_nacimiento;
     }
 
-    public Object getHuellaEmpleado() {
+    public Object getHuella_empleado() {
         return huella_empleado;
     }
 
-    public void setHuellaEmpleado(Object huella_empleado) {
+    public void setHuella_empleado(Object huella_empleado) {
         this.huella_empleado = huella_empleado;
     }
+    
+    
 }

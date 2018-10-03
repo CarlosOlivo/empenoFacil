@@ -17,8 +17,10 @@
 package mybatis.dao;
 
 import empenofacil.model.Empleado;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface EmpleadoDAO {
+    public List<Empleado> obtenerEmpleados();
     public Empleado obtenerEmpleado(@Param("usuario") String usuario, @Param("contrasenia") String contrasenia);
 }
