@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 lunix
+ * Copyright (C) 2018 Carlos
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,18 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mybatis.dao;
+package empenofacil.controller;
 
-import empenofacil.model.Cliente;
-import java.util.List;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
 /**
+ * FXML Controller class
  *
- * @author lunix
+ * @author Carlos
  */
-public interface ClienteDAO {
-    public List<Cliente> obtenerClientes();
-    public Cliente obtenerClientes(Integer idcliente);
-    public int registarCliente(Cliente cliente);
-    public void editarCliente(Cliente cliente);
+public class ClientesController implements Initializable {
+
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
+    
 }

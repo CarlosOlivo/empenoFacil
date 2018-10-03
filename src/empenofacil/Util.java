@@ -17,6 +17,9 @@
 package empenofacil;
 
 import empenofacil.controller.LoginController;
+import empenofacil.controller.MenuController;
+import empenofacil.controller.RegistroController;
+import empenofacil.model.Empleado;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -29,13 +32,28 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
+/**
+ * Clase utilitaria
+ * @author Carlos
+ */
 public class Util {
+
+    /**
+     * Despliega un un dialogo FX
+     * @param tipo Tipo del dialogo
+     * @param mensaje Mensaje a desplegar en el dialogo
+     */
     public static void dialogo(Alert.AlertType tipo, String mensaje) {
         Alert alert = new Alert(tipo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.show();
     }
+
+    /**
+     * Despliiega el stack trace de una excepción en dialogo FX
+     * @param exception Excepción a desplegar
+     */
     public static void excepcion(Exception exception) {
         if(exception.getMessage().contains("Communications link failure")) {
             Util.dialogo(Alert.AlertType.ERROR, "No se puede establecer una conexión con la base de datos, intente más tarde");
@@ -59,6 +77,11 @@ public class Util {
         alert.getDialogPane().setExpandableContent(textArea);
         alert.showAndWait();
     }
+
+    /**
+     * Muestra la ventana de inicio de sesión
+     * @param stage Stage principal
+     */
     public static void login(Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Login.fxml"));
@@ -69,6 +92,54 @@ public class Util {
             stage.hide();
             stage.setScene(scene);
             stage.setTitle("Empeño fácil - Inicio de sesión");
+            stage.setResizable(false);
+            stage.setMaximized(false);
+            stage.sizeToScene();
+            stage.show();
+        } catch (IOException ioEx) {
+            Util.excepcion(ioEx);
+        }
+    }
+    
+    /**
+     * Muestra la ventana de registro
+     * @param stage Stage principal
+     */
+    public static void registro(Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Registro.fxml"));
+            Parent root = (Parent) loader.load();
+            RegistroController controller = (RegistroController) loader.getController();
+            controller.setStage(stage);
+            Scene scene = new Scene(root);
+            stage.hide();
+            stage.setScene(scene);
+            stage.setTitle("Empeño fácil - Registo de usuario");
+            stage.setResizable(false);
+            stage.setMaximized(false);
+            stage.sizeToScene();
+            stage.show();
+        } catch (IOException ioEx) {
+            Util.excepcion(ioEx);
+        }
+    }
+
+    /**
+     * Muestra el menú principal
+     * @param stage Stage principal
+     * @param empleado Empleado del sistema
+     */
+    public static void menu(Stage stage, Empleado empleado) {
+        try {
+            FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Menu.fxml"));
+            Parent root = (Parent) loader.load();
+            MenuController controller = (MenuController) loader.getController();
+            controller.setStage(stage);
+            controller.setEmpleado(empleado);
+            Scene scene = new Scene(root);
+            stage.hide();
+            stage.setScene(scene);
+            stage.setTitle("Empeño fácil - Menu principal");
             stage.setResizable(false);
             stage.setMaximized(false);
             stage.sizeToScene();

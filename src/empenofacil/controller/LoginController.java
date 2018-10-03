@@ -57,7 +57,7 @@ public class LoginController implements Initializable {
             EmpleadoDAO empleadoDAO = conn.getMapper(EmpleadoDAO.class);
             Empleado empleado = empleadoDAO.obtenerEmpleado(user.getText(), pass.getText());
             if(empleado != null) {
-                cargarMenu(empleado);
+                Util.menu(getStage(), empleado);
             } else {
                 Util.dialogo(Alert.AlertType.ERROR, "Usuario y/o contraseña invalidos");
             }
@@ -66,10 +66,11 @@ public class LoginController implements Initializable {
         }
     }
     
-    private void cargarMenu(Empleado empleado) throws Exception {
-        Util.dialogo(Alert.AlertType.INFORMATION, "Bienvenido " + empleado.getNombre());
+    @FXML
+    private void registro() {
+        Util.registro(getStage());
     }
-    
+        
     @FXML
     private void salir() {
         Platform.exit();

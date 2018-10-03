@@ -12,9 +12,14 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="empenofacil.controller.LoginController">
+<VBox alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="empenofacil.controller.LoginController">
    <children>
-      <GridPane hgap="5.0">
+      <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" scaleX="1.5" scaleY="1.5" scaleZ="1.5">
+         <image>
+            <Image url="@../img/login.png" />
+         </image>
+      </ImageView>
+      <GridPane alignment="CENTER" hgap="5.0">
         <columnConstraints>
           <ColumnConstraints halignment="RIGHT" prefWidth="70.0" />
           <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="-Infinity" minWidth="10.0" prefWidth="160.0" />
@@ -33,9 +38,10 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </GridPane>
-      <HBox alignment="TOP_CENTER" spacing="5.0">
+      <HBox alignment="CENTER" spacing="5.0">
          <children>
             <Button defaultButton="true" mnemonicParsing="false" onAction="#login" text="Iniciar sesión" />
+            <Button mnemonicParsing="false" onAction="#registro" text="Registro" />
             <Button cancelButton="true" mnemonicParsing="false" onAction="#salir" text="Salir" />
          </children>
          <VBox.margin>

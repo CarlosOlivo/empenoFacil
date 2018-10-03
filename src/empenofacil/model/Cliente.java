@@ -36,14 +36,13 @@ public class Cliente {
     private String celular;
     private String curp;
     private String rfc;
-    private boolean listaNegra;
+    private Boolean listaNegra;
     private Date fechaNacimiento;
     private File huellaCliete;
     
-    public Cliente() {       
-    }
+    public Cliente() {}
 
-    public Cliente(Integer idcliente, Integer id_domicilio, Integer idocupacion, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String celular, String curp, String rfc, boolean listaNegra, Date fechaNacimiento, File huellaCliete) {
+    public Cliente(Integer idcliente, Integer id_domicilio, Integer idocupacion, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String celular, String curp, String rfc, Boolean listaNegra, Date fechaNacimiento, File huellaCliete) {
         this.idcliente = idcliente;
         this.id_domicilio = id_domicilio;
         this.idocupacion = idocupacion;
@@ -55,7 +54,11 @@ public class Cliente {
         this.curp = curp;
         this.rfc = rfc;
         this.listaNegra = listaNegra;
-        this.fechaNacimiento = fechaNacimiento;
+        if(fechaNacimiento != null) {
+            this.fechaNacimiento = new Date(fechaNacimiento.getTime());
+        } else {
+            this.fechaNacimiento = new Date();
+        }
         this.huellaCliete = huellaCliete;
     }
 
@@ -143,16 +146,16 @@ public class Cliente {
         return listaNegra;
     }
 
-    public void setListaNegra(boolean listaNegra) {
+    public void setListaNegra(Boolean listaNegra) {
         this.listaNegra = listaNegra;
     }
 
     public Date getFechaNacimiento() {
-        return fechaNacimiento;
+        return new Date(fechaNacimiento.getTime());
     }
 
     public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+        this.fechaNacimiento = new Date(fechaNacimiento.getTime());
     }
 
     public File getHuellaCliete() {

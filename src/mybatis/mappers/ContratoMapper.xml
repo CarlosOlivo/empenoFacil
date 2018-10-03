@@ -15,12 +15,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-
-<!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace = "Contrato">
-    <select id="getAllContratos" resultType="empenofacil.model.Contrato">
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace = "mybatis.dao.ContratoDAO">
+    <select id="obtenerContratos" resultType="empenofacil.model.Contrato">
         SELECT 
         contrato.folio,
         contrato.id_estado,
@@ -35,8 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         contrato.cotitular
         FROM cotrato
     </select>
-    
-    <select id="getClientebyFolio" resultType="empeno.facil.Contrato" parameterType="int">
+    <select id="obtenerContrato" resultType="empeno.facil.Contrato" parameterType="int">
         SELECT 
         contrato.folio,
         contrato.id_estado,
@@ -49,14 +45,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         contrato.subtotal,
         contrato.total,
         contrato.cotitular
-        WHERE cliente.folio = #{folio}
+        WHERE contrato.folio = #{folio}
     </select>
-    
-    <insert id="generarContrato" parameterType="empenofacil.model.Contrato">
+    <insert id="crearContrato" parameterType="empenofacil.model.Contrato">
         INSERT INTO contrato(folio, id_estado, rfc_empresa, id_cliente, num_bolsa, 
         fecha_inicio_contrato, fecha_fin_contrato, iva, subtotal, total, coatitular)
         VALUES(#{folio}, #{id_estado}, #{rfc_empresa}, #{id_cliente}, #{num_bolsa}, #{fecha_inicio_contrato},        
         #{fecha_fin_ontrato, #{iva}, #{subtotal}, #{cotitular})
     </insert>
-        
 </mapper>

@@ -16,16 +16,15 @@
  */
 package mybatis.dao;
 
-import empenofacil.model.Cliente;
+import empenofacil.model.Contrato;
 import java.util.List;
 
 /**
  *
  * @author lunix
  */
-public interface ClienteDAO {
-    public List<Cliente> obtenerClientes();
-    public Cliente obtenerClientes(Integer idcliente);
-    public int registarCliente(Cliente cliente);
-    public void editarCliente(Cliente cliente);
+public interface ContratoDAO {
+    public List<Contrato> obtenerContratos();
+    public Contrato obtenerContrato(Integer folio);
+    public int crearContrato(Contrato contrato);
 }

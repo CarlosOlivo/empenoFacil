@@ -35,8 +35,7 @@ public class Contrato {
     private double total;
     private String cotitular;
 
-    public Contrato() {
-    }
+    public Contrato() {}
 
     public Contrato(Integer folio, Integer id_estado, String rfc_empresa, Integer id_cliente, Integer num_bolsa, Date fecha_inicio_contrato, Date fecha_fin_contrato, double iva, double subtotal, double total, String cotitular) {
         this.folio = folio;

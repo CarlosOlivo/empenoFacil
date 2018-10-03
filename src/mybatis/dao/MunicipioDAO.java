@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 lunix
+ * Copyright (C) 2018 Carlos
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,16 +16,13 @@
  */
 package mybatis.dao;
 
-import empenofacil.model.Cliente;
+import empenofacil.model.Municipio;
 import java.util.List;
 
 /**
  *
- * @author lunix
+ * @author Carlos
  */
-public interface ClienteDAO {
-    public List<Cliente> obtenerClientes();
-    public Cliente obtenerClientes(Integer idcliente);
-    public int registarCliente(Cliente cliente);
-    public void editarCliente(Cliente cliente);
+public interface MunicipioDAO {
+    public List<Municipio> obtenerMunicipiosPorEstado(Integer id_estado);
 }
