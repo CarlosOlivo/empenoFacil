@@ -18,31 +18,35 @@ package empenofacil.model;
 
 import java.io.File;
 import java.util.Date;
+import javafx.beans.property.StringProperty;
 
 /**
- *Clase de la creacion de un objeo de tipo de Cliente.
+ * Clase de la creacion de un objeo de tipo de Cliente.
+ *
  * @version 1.0
  * @author lunix
  * @since 2018-09-29
  */
 public class Cliente {
+
     private Integer idcliente;
     private Integer id_domicilio;
     private Integer idocupacion;
-    private String nombre;
-    private String apellidoPaterno;
-    private String apellidoMaterno;
-    private String telefono;
-    private String celular;
-    private String curp;
-    private String rfc;
+    private StringProperty nombre;
+    private StringProperty apellidoPaterno;
+    private StringProperty apellidoMaterno;
+    private StringProperty telefono;
+    private StringProperty celular;
+    private StringProperty curp;
+    private StringProperty rfc;
     private Boolean listaNegra;
     private Date fechaNacimiento;
     private File huellaCliete;
-    
-    public Cliente() {}
 
-    public Cliente(Integer idcliente, Integer id_domicilio, Integer idocupacion, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String celular, String curp, String rfc, Boolean listaNegra, Date fechaNacimiento, File huellaCliete) {
+    public Cliente() {
+    }
+
+    public Cliente(Integer idcliente, Integer id_domicilio, Integer idocupacion, StringProperty nombre, StringProperty apellidoPaterno, StringProperty apellidoMaterno, StringProperty telefono, StringProperty celular, StringProperty curp, StringProperty rfc, Boolean listaNegra, Date fechaNacimiento, File huellaCliete) {
         this.idcliente = idcliente;
         this.id_domicilio = id_domicilio;
         this.idocupacion = idocupacion;
@@ -54,11 +58,7 @@ public class Cliente {
         this.curp = curp;
         this.rfc = rfc;
         this.listaNegra = listaNegra;
-        if(fechaNacimiento != null) {
-            this.fechaNacimiento = new Date(fechaNacimiento.getTime());
-        } else {
-            this.fechaNacimiento = new Date();
-        }
+        this.fechaNacimiento = fechaNacimiento;
         this.huellaCliete = huellaCliete;
     }
 
@@ -86,63 +86,63 @@ public class Cliente {
         this.idocupacion = idocupacion;
     }
 
-    public String getNombre() {
+    public StringProperty getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(StringProperty nombre) {
         this.nombre = nombre;
     }
 
-    public String getApellidoPaterno() {
+    public StringProperty getApellidoPaterno() {
         return apellidoPaterno;
     }
 
-    public void setApellidoPaterno(String apellidoPaterno) {
+    public void setApellidoPaterno(StringProperty apellidoPaterno) {
         this.apellidoPaterno = apellidoPaterno;
     }
 
-    public String getApellidoMaterno() {
+    public StringProperty getApellidoMaterno() {
         return apellidoMaterno;
     }
 
-    public void setApellidoMaterno(String apellidoMaterno) {
+    public void setApellidoMaterno(StringProperty apellidoMaterno) {
         this.apellidoMaterno = apellidoMaterno;
     }
 
-    public String getTelefono() {
+    public StringProperty getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(StringProperty telefono) {
         this.telefono = telefono;
     }
 
-    public String getCelular() {
+    public StringProperty getCelular() {
         return celular;
     }
 
-    public void setCelular(String celular) {
+    public void setCelular(StringProperty celular) {
         this.celular = celular;
     }
 
-    public String getCurp() {
+    public StringProperty getCurp() {
         return curp;
     }
 
-    public void setCurp(String curp) {
+    public void setCurp(StringProperty curp) {
         this.curp = curp;
     }
 
-    public String getRfc() {
+    public StringProperty getRfc() {
         return rfc;
     }
 
-    public void setRfc(String rfc) {
+    public void setRfc(StringProperty rfc) {
         this.rfc = rfc;
     }
 
-    public boolean isListaNegra() {
+    public Boolean getListaNegra() {
         return listaNegra;
     }
 
@@ -151,11 +151,11 @@ public class Cliente {
     }
 
     public Date getFechaNacimiento() {
-        return new Date(fechaNacimiento.getTime());
+        return fechaNacimiento;
     }
 
     public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = new Date(fechaNacimiento.getTime());
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public File getHuellaCliete() {
@@ -165,8 +165,4 @@ public class Cliente {
     public void setHuellaCliete(File huellaCliete) {
         this.huellaCliete = huellaCliete;
     }
-
-    
-
-   
 }
