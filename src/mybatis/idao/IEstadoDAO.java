@@ -14,42 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package empenofacil.model;
+package mybatis.idao;
+
+import empenofacil.model.Estado;
+import java.util.List;
 
 /**
  *
  * @author Carlos
  */
-public class Estado {
-    private Integer idEstado;
-    private String estado;
-
-    public Estado() {
-    }
-
-    public Estado(Integer idEstado, String estado) {
-        this.idEstado = idEstado;
-        this.estado = estado;
-    }
-
-    public Integer getIdEstado() {
-        return idEstado;
-    }
-
-    public void setIdEstado(Integer idEstado) {
-        this.idEstado = idEstado;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    @Override
-    public String toString() {
-        return getEstado();
-    }
+public interface IEstadoDAO {
+    public List<Estado> obtenerEstados();
 }

@@ -16,10 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
-<mapper namespace="mybatis.dao.EmpleadoDAO">
-    <select id="obtenerEmpleados" resultType="empenofacil.model.Empleado">
-        SELECT * FROM empleado
-    </select>
+<mapper namespace="mybatis.idao.IEmpleadoDAO">
     <select id="obtenerEmpleado" parameterType="map" resultType="empenofacil.model.Empleado">
         SELECT * FROM empleado WHERE usuario = #{usuario} AND contrasenia = SHA2(#{contrasenia},256)
     </select>

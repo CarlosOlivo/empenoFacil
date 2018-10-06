@@ -16,8 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
-<mapper namespace="mybatis.dao.MunicipioDAO">
+<mapper namespace="mybatis.idao.IMunicipioDAO">
     <select id="obtenerMunicipiosPorEstado" parameterType="int" resultType="empenofacil.model.Municipio">
-        SELECT * FROM municipio WHERE id_estado = #{id_estado} ORDER BY municipio
+        SELECT * FROM municipio WHERE idEstado = #{idEstado} ORDER BY municipio
     </select>
 </mapper>

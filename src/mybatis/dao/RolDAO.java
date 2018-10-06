@@ -17,26 +17,27 @@
 package mybatis.dao;
 
 import empenofacil.Util;
-import empenofacil.model.Empleado;
+import empenofacil.model.Rol;
+import java.util.List;
 import mybatis.MyBatisUtil;
-import mybatis.idao.IEmpleadoDAO;
+import mybatis.idao.IRolDAO;
 import org.apache.ibatis.session.SqlSession;
 
 
-public class EmpleadoDAO implements IEmpleadoDAO {
+public class RolDAO implements IRolDAO {
 
     @Override
-    public Empleado obtenerEmpleado(String usuario, String contrasenia) {
-        Empleado empleado = null;
+    public List<Rol> obtenerRoles() {
+        List<Rol> list = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
-            IEmpleadoDAO empleadoDAO = conn.getMapper(IEmpleadoDAO.class);
-            empleado = empleadoDAO.obtenerEmpleado(usuario, contrasenia);
+            IRolDAO rolDAO = conn.getMapper(IRolDAO.class);
+            list = rolDAO.obtenerRoles();
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {
             conn.close();
         }
-        return empleado;
+        return list;
     }
 }

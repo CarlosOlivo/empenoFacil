@@ -19,9 +19,9 @@ package empenofacil.model;
 import java.util.Date;
 
 public class Empleado {
-    private Integer id_empleado;
-    private Integer id_rol;
-    private Integer id_domicilio;
+    private Integer idEmpleado;
+    private Integer idRol;
+    private Integer idDomicilio;
     private String usuario;
     private String contrasenia;
     private String nombre;
@@ -31,15 +31,15 @@ public class Empleado {
     private String celular;
     private String rfc;
     private String curp;
-    private Date fecha_de_nacimiento;
-    private Object huella_empleado;
+    private Date fechaNacimiento;
+    private Object huellaEmpleado;
 
     public Empleado() {}
 
-    public Empleado(Integer id_empleado, Integer id_rol, Integer id_domicilio, String usuario, String contrasenia, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String celular, String rfc, String curp, Date fecha_de_nacimiento, Object huella_empleado) {
-        this.id_empleado = id_empleado;
-        this.id_rol = id_rol;
-        this.id_domicilio = id_domicilio;
+    public Empleado(Integer idEmpleado, Integer idRol, Integer idDomicilio, String usuario, String contrasenia, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String celular, String rfc, String curp, Date fechaNacimiento, Object huellaEmpleado) {
+        this.idEmpleado = idEmpleado;
+        this.idRol = idRol;
+        this.idDomicilio = idDomicilio;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
         this.nombre = nombre;
@@ -49,32 +49,36 @@ public class Empleado {
         this.celular = celular;
         this.rfc = rfc;
         this.curp = curp;
-        this.fecha_de_nacimiento = fecha_de_nacimiento;
-        this.huella_empleado = huella_empleado;
+        if(fechaNacimiento != null) {
+            this.fechaNacimiento = new Date(fechaNacimiento.getTime());
+        } else {
+            this.fechaNacimiento = new Date();
+        }
+        this.huellaEmpleado = huellaEmpleado;
     }
 
-    public Integer getId_empleado() {
-        return id_empleado;
+    public Integer getIdEmpleado() {
+        return idEmpleado;
     }
 
-    public void setId_empleado(Integer id_empleado) {
-        this.id_empleado = id_empleado;
+    public void setIdEmpleado(Integer idEmpleado) {
+        this.idEmpleado = idEmpleado;
     }
 
-    public Integer getId_rol() {
-        return id_rol;
+    public Integer getIdRol() {
+        return idRol;
     }
 
-    public void setId_rol(Integer id_rol) {
-        this.id_rol = id_rol;
+    public void setIdRol(Integer idRol) {
+        this.idRol = idRol;
     }
 
-    public Integer getId_domicilio() {
-        return id_domicilio;
+    public Integer getIdDomicilio() {
+        return idDomicilio;
     }
 
-    public void setId_domicilio(Integer id_domicilio) {
-        this.id_domicilio = id_domicilio;
+    public void setIdDomicilio(Integer idDomicilio) {
+        this.idDomicilio = idDomicilio;
     }
 
     public String getUsuario() {
@@ -149,21 +153,23 @@ public class Empleado {
         this.curp = curp;
     }
 
-    public Date getFecha_de_nacimiento() {
-        return fecha_de_nacimiento;
+    public Date getFechaNacimiento() {
+        return new Date(fechaNacimiento.getTime());
     }
 
-    public void setFecha_de_nacimiento(Date fecha_de_nacimiento) {
-        this.fecha_de_nacimiento = fecha_de_nacimiento;
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        if(fechaNacimiento != null) {
+            this.fechaNacimiento = new Date(fechaNacimiento.getTime());
+        } else {
+            this.fechaNacimiento = new Date();
+        }
     }
 
-    public Object getHuella_empleado() {
-        return huella_empleado;
+    public Object getHuellaEmpleado() {
+        return huellaEmpleado;
     }
 
-    public void setHuella_empleado(Object huella_empleado) {
-        this.huella_empleado = huella_empleado;
+    public void setHuellaEmpleado(Object huellaEmpleado) {
+        this.huellaEmpleado = huellaEmpleado;
     }
-    
-    
 }

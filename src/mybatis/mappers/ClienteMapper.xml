@@ -16,53 +16,29 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
-<mapper namespace="mybatis.dao.ClienteDAO">
+<mapper namespace="mybatis.idao.IClienteDAO">
+    <select id="buscarClientes" parameterType="string" resultType="empenofacil.model.Cliente">
+        SELECT * FROM cliente WHERE LOWER(nombre) LIKE LOWER(#{busqueda})
+        OR LOWER(apellidoPaterno) LIKE LOWER(#{busqueda})
+        OR LOWER(rfc) LIKE LOWER(#{busqueda})
+        OR LOWER(curp) LIKE LOWER(#{busqueda})
+    </select>
     <select id="obtenerClientes" resultType="empenofacil.model.Cliente">
-        SELECT
-        cliente.idCliente,
-        cliente.idDomicilio,
-        cliente.nombre,
-        cliente.apellidoPaterno,
-        cliente.apellidoMaterno
-        cliente.telefono,
-        cliente.celular,
-        cliente.curp,
-        cliente.rfc,
-        cliente.listanegra
-        cliente.fecha_de_nacimiento
-        cliente.idocupacion
-        cliente.huella_cliente
-        FROM cliente
+        SELECT * FROM cliente
     </select>
     <select id="obtenerCliente" parameterType="int" resultType="empenofacil.model.Cliente">
-        SELECT 
-        cliente.idCliente,
-        cliente.idDomicilio,
-        cliente.nombre,
-        cliente.apellidoPaterno,
-        cliente.apellidoMaterno
-        cliente.telefono,
-        cliente.celular,
-        cliente.curp,
-        cliente.rfc,
-        cliente.listanegra
-        cliente.fecha_de_nacimiento
-        cliente.idocupacion
-        cliente.huella_cliente
-        WHERE cliente.idcliente = #{id}
+        SELECT * FROM cliente WHERE idCliente = #{idCliente}
     </select>
-    <insert id="registrarCliente" parameterType="empenofacil.model.Cliente" useGeneratedKeys="true" keyProperty="idcliente">
-        INSERT INTO cliente(idDomicilio, nombre, apellidoPaterno, apellellidoMaterno, telefono, celular, curp, 
-        rfc, listanegra, fecha_de_nacimiento, idocupacion, huella_cliente)
-        VALUES(#{nombre},#{apellidoPaterno}, #{apellidoMaterno}, #{telefono},
-        #{celular}, #{listanegra},#{fecha_de_nacimiento}, #{idocupacion}, #{huella_cliente})
+    <insert id="crearCliente" parameterType="empenofacil.model.Cliente" useGeneratedKeys="true" keyProperty="idCliente">
+        INSERT INTO cliente(idOcupacion,idDomicilio,nombre,apellidoPaterno,apellidoMaterno,
+        telefono,celular,fechaNacimiento,curp,rfc)
+        VALUES(#{idOcupacion},#{idDomicilio},#{nombre},#{apellidoPaterno},#{apellidoMaterno},
+        #{telefono},#{celular},#{fechaNacimiento},#{curp},#{rfc})
     </insert>
     <update id="editarCliente" parameterType="empenofacil.model.Cliente">
-        UPDATE cliente SET idDomicilio = #{idDomicilio}, nombre=#{nombre}, apellidoPaterno=#{apellidoPaterno},
-        apellidoMaterno = #{apellidoMaterno}, telefono = #{telefono}, celular = #{celular},
-        curp = #{curp}, rfc = #{rfc}, listanegra = #{listanegra}, 
-        fecha_de_nacimiento=#{fecha_de_nacimiento}, idocupacion = #{idocupacion}, 
-        huella_cliente = #{huella_cliente}
-        WHERE idcliente = ${idcliente}
-    </update> 
+        UPDATE cliente SET idOcupacion = #{idOcupacion}, idDomicilio = #{idDomicilio},
+        nombre=#{nombre}, apellidoPaterno=#{apellidoPaterno}, apellidoMaterno = #{apellidoMaterno},
+        telefono = #{telefono}, celular = #{celular}, fechaNacimiento=#{fechaNacimiento},
+        curp = #{curp}, rfc = #{rfc} WHERE idCliente = ${idCliente}
+    </update>
 </mapper>

@@ -16,16 +16,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
-<mapper namespace="mybatis.dao.DomicilioDAO">
+<mapper namespace="mybatis.idao.IDomicilioDAO">
     <select id="obtenerDomicilio" parameterType="int" resultType="empenofacil.model.Domicilio">
-        SELECT * FROM domicilio WHERE id_domicilio = #{id_domicilio}
+        SELECT * FROM domicilio WHERE idDomicilio = #{idDomicilio}
     </select>
-    <insert id="crearDomicilio" parameterType="empenofacil.model.Domicilio" useGeneratedKeys="true" keyProperty="id_domicilio">
-        INSERT INTO domicilio(calle,numero,colonia,codigoPostal,localidad,id_municipio)
-        VALUES(#{calle},#{numero},#{colonia},#{codigoPostal},#{localidad},#{id_municipio})
+    <insert id="crearDomicilio" parameterType="empenofacil.model.Domicilio" useGeneratedKeys="true" keyProperty="idDomicilio">
+        INSERT INTO domicilio(calle,numero,colonia,codigoPostal,localidad,idMunicipio)
+        VALUES(#{calle},#{numero},#{colonia},#{codigoPostal},#{localidad},#{idMunicipio})
     </insert>
     <update id="editarDomicilio" parameterType="empenofacil.model.Domicilio">
         UPDATE domicilio SET calle = #{calle}, numero = #{numero}, colonia = #{colonia}, codigoPostal = #{codigoPostal},
-        localidad = #{localidad}, id_municipio = #{id_municipio} WHERE id_domicilio = #{id_domicilio}
+        localidad = #{localidad}, idMunicipio = #{idMunicipio} WHERE idDomicilio = #{idDomicilio}
     </update>
 </mapper>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Carlos
+ * Copyright (C) 2018 lunix
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,30 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mybatis.dao;
+package mybatis.idao;
 
-import empenofacil.Util;
-import empenofacil.model.Estado;
+import empenofacil.model.Contrato;
 import java.util.List;
-import mybatis.MyBatisUtil;
-import mybatis.idao.IEstadoDAO;
-import org.apache.ibatis.session.SqlSession;
 
-
-public class EstadoDAO implements IEstadoDAO {
-
-    @Override
-    public List<Estado> obtenerEstados() {
-        List<Estado> list = null;
-        SqlSession conn = MyBatisUtil.getSession();
-        try {
-            IEstadoDAO estadoDAO = conn.getMapper(IEstadoDAO.class);
-            list = estadoDAO.obtenerEstados();
-        } catch (Exception e) {
-            Util.excepcion(e);
-        } finally {
-            conn.close();
-        }
-        return list;
-    }
+/**
+ *
+ * @author lunix
+ */
+public interface IContratoDAO {
+    public List<Contrato> obtenerContratos();
+    public Contrato obtenerContrato(Integer folio);
+    public int crearContrato(Contrato contrato);
 }

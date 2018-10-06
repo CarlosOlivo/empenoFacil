@@ -16,9 +16,7 @@
  */
 package empenofacil;
 
-import empenofacil.controller.LoginController;
 import empenofacil.controller.MenuController;
-import empenofacil.controller.RegistroController;
 import empenofacil.model.Empleado;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,10 +25,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
 
 /**
  * Clase utilitaria
@@ -39,7 +40,7 @@ import javafx.stage.Stage;
 public class Util {
 
     /**
-     * Despliega un un dialogo FX
+     * Despliega un un dialogo JavaFX
      * @param tipo Tipo del dialogo
      * @param mensaje Mensaje a desplegar en el dialogo
      */
@@ -51,7 +52,7 @@ public class Util {
     }
 
     /**
-     * Despliiega el stack trace de una excepción en dialogo FX
+     * Despliiega el stack trace de una excepción en dialogo JavaFX
      * @param exception Excepción a desplegar
      */
     public static void excepcion(Exception exception) {
@@ -80,22 +81,19 @@ public class Util {
 
     /**
      * Muestra la ventana de inicio de sesión
-     * @param stage Stage principal
      */
-    public static void login(Stage stage) {
+    public static void login() {
         try {
             FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Login.fxml"));
             Parent root = (Parent) loader.load();
-            LoginController controller = (LoginController) loader.getController();
-            controller.setStage(stage);
             Scene scene = new Scene(root);
-            stage.hide();
-            stage.setScene(scene);
-            stage.setTitle("Empeño fácil - Inicio de sesión");
-            stage.setResizable(false);
-            stage.setMaximized(false);
-            stage.sizeToScene();
-            stage.show();
+            EmpenoFacil.getStage().hide();
+            EmpenoFacil.getStage().setScene(scene);
+            EmpenoFacil.getStage().setTitle("Empeño fácil - Inicio de sesión");
+            EmpenoFacil.getStage().setResizable(false);
+            EmpenoFacil.getStage().setMaximized(false);
+            EmpenoFacil.getStage().sizeToScene();
+            EmpenoFacil.getStage().show();
         } catch (IOException ioEx) {
             Util.excepcion(ioEx);
         }
@@ -103,22 +101,19 @@ public class Util {
     
     /**
      * Muestra la ventana de registro
-     * @param stage Stage principal
      */
-    public static void registro(Stage stage) {
+    public static void registro() {
         try {
             FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Registro.fxml"));
             Parent root = (Parent) loader.load();
-            RegistroController controller = (RegistroController) loader.getController();
-            controller.setStage(stage);
             Scene scene = new Scene(root);
-            stage.hide();
-            stage.setScene(scene);
-            stage.setTitle("Empeño fácil - Registo de usuario");
-            stage.setResizable(false);
-            stage.setMaximized(false);
-            stage.sizeToScene();
-            stage.show();
+            EmpenoFacil.getStage().hide();
+            EmpenoFacil.getStage().setScene(scene);
+            EmpenoFacil.getStage().setTitle("Empeño fácil - Registo de usuario");
+            EmpenoFacil.getStage().setResizable(false);
+            EmpenoFacil.getStage().setMaximized(false);
+            EmpenoFacil.getStage().sizeToScene();
+            EmpenoFacil.getStage().show();
         } catch (IOException ioEx) {
             Util.excepcion(ioEx);
         }
@@ -126,26 +121,45 @@ public class Util {
 
     /**
      * Muestra el menú principal
-     * @param stage Stage principal
      * @param empleado Empleado del sistema
      */
-    public static void menu(Stage stage, Empleado empleado) {
+    public static void menu(Empleado empleado) {
         try {
             FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Menu.fxml"));
             Parent root = (Parent) loader.load();
             MenuController controller = (MenuController) loader.getController();
-            controller.setStage(stage);
             controller.setEmpleado(empleado);
             Scene scene = new Scene(root);
-            stage.hide();
-            stage.setScene(scene);
-            stage.setTitle("Empeño fácil - Menu principal");
-            stage.setResizable(false);
-            stage.setMaximized(false);
-            stage.sizeToScene();
-            stage.show();
+            EmpenoFacil.getStage().hide();
+            EmpenoFacil.getStage().setScene(scene);
+            EmpenoFacil.getStage().setTitle("Empeño fácil - Menu principal");
+            EmpenoFacil.getStage().setResizable(true);
+            EmpenoFacil.getStage().setMaximized(false);
+            EmpenoFacil.getStage().sizeToScene();
+            EmpenoFacil.getStage().show();
         } catch (IOException ioEx) {
             Util.excepcion(ioEx);
         }
+    }
+
+    /**
+     * Crea un campo personalizado para un formulario FormFX
+     * @param label Etiqueta del campo
+     * @param control Control personalizado
+     * @return GridPane con un campo de formulario
+     */
+    public static GridPane contenedor(String label, Control control) {
+        GridPane gridPane = new GridPane();
+        AnchorPane anchorPane = new AnchorPane(control);
+        AnchorPane.setLeftAnchor(control, 0d);
+        AnchorPane.setRightAnchor(control, 0d);
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(33.35);
+        ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPercentWidth(66.65);
+        gridPane.getColumnConstraints().setAll(column1, column2);
+        gridPane.add(new Label(label), 0, 0, 1, 1);
+        gridPane.add(anchorPane, 1, 0, 1, 1);
+        return gridPane;
     }
 }

@@ -26,17 +26,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import mybatis.MyBatisUtil;
 import mybatis.dao.EmpleadoDAO;
-import org.apache.ibatis.session.SqlSession;
 
 public class LoginController implements Initializable {
-    private Stage stage;
+    private final EmpleadoDAO empleadoDAO;
+    
     @FXML
     private TextField user;
     @FXML
     private PasswordField pass;
+
+    public LoginController() {
+        empleadoDAO = new EmpleadoDAO();
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -53,36 +55,21 @@ public class LoginController implements Initializable {
             Util.dialogo(Alert.AlertType.ERROR, "El campo contraseña esta vacio");
             return;
         }
-        SqlSession conn = MyBatisUtil.getSession();
-        try {
-            EmpleadoDAO empleadoDAO = conn.getMapper(EmpleadoDAO.class);
-            Empleado empleado = empleadoDAO.obtenerEmpleado(user.getText(), pass.getText());
-            System.out.println(empleadoDAO.obtenerEmpleados());
-            if(empleado != null) {
-                Util.menu(getStage(), empleado);
-            } else {
-                Util.dialogo(Alert.AlertType.ERROR, "Usuario y/o contraseña invalidos");
-            }
-        } catch(Exception e) {
-            Util.excepcion(e);
+        Empleado empleado = empleadoDAO.obtenerEmpleado(user.getText(), pass.getText());
+        if(empleado != null) {
+            Util.menu(empleado);
+        } else {
+            Util.dialogo(Alert.AlertType.ERROR, "Usuario y/o contraseña invalidos");
         }
     }
     
     @FXML
     private void registro() {
-        Util.registro(getStage());
+        Util.registro();
     }
         
     @FXML
     private void salir() {
         Platform.exit();
-    }
-    
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 }

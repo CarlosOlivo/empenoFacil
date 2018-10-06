@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED" >
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="driver.encoding" value="utf8mb4"/>
                 <property name="url" value="jdbc:mysql://localhost:3306/empenofacil"/>
                 <property name="username" value="admin_ef"/>
                 <property name="password" value="123456"/>
@@ -30,8 +31,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </environment>
     </environments>
     <mappers>
+        <mapper resource="mybatis/mappers/ClienteMapper.xml"/>
+        <mapper resource="mybatis/mappers/DomicilioMapper.xml"/>
         <mapper resource="mybatis/mappers/EmpleadoMapper.xml"/>
         <mapper resource="mybatis/mappers/EstadoMapper.xml"/>
         <mapper resource="mybatis/mappers/MunicipioMapper.xml"/>
+        <mapper resource="mybatis/mappers/OcupacionMapper.xml"/>
+        <mapper resource="mybatis/mappers/RolMapper.xml"/>
     </mappers>
 </configuration>

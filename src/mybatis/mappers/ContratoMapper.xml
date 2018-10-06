@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
-<mapper namespace = "mybatis.dao.ContratoDAO">
+<mapper namespace = "mybatis.idao.IContratoDAO">
     <select id="obtenerContratos" resultType="empenofacil.model.Contrato">
         SELECT 
         contrato.folio,

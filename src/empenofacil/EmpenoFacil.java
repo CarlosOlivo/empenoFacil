@@ -17,6 +17,7 @@
 package empenofacil;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -24,9 +25,12 @@ import javafx.stage.Stage;
  * @author Carlos
  */
 public class EmpenoFacil extends Application {
+    private static Stage stage;
+    
     @Override
     public void start(Stage stage) throws Exception {
-        Util.login(stage);
+        setStage(stage);
+        Util.login();
     }
 
     /**
@@ -35,5 +39,18 @@ public class EmpenoFacil extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    /**
+     * Regresa el Stage principal del programa
+     * @return Stage principal
+     */
+    public static Stage getStage() {
+        return stage;
+    }
+
+    private static void setStage(Stage stage) {
+        stage.getIcons().add(new Image(EmpenoFacil.class.getResourceAsStream("img/icono.png")));
+        EmpenoFacil.stage = stage;
     }
 }

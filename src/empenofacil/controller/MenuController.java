@@ -22,7 +22,6 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -30,7 +29,6 @@ import javafx.stage.Stage;
  * @author Carlos
  */
 public class MenuController implements Initializable {
-    private Stage stage;
     private Empleado empleado;
     
     @FXML
@@ -38,16 +36,8 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        usuario.setText("Bienvenid@ " + getEmpleado().getNombre() + " " + getEmpleado().getApellidoMaterno());
-    }    
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
+        // TODO
+     }
 
     public Empleado getEmpleado() {
         return empleado;
@@ -55,5 +45,6 @@ public class MenuController implements Initializable {
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
+        usuario.setText("Bienvenid@ " + getEmpleado().getNombre() + " " + getEmpleado().getApellidoPaterno());
     }
 }

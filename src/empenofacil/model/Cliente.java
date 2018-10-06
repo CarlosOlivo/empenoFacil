@@ -16,130 +16,187 @@
  */
 package empenofacil.model;
 
-import java.io.File;
 import java.util.Date;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
- * Clase de la creacion de un objeo de tipo de Cliente.
- *
+ * Clase entidad Cliente.
  * @version 1.0
  * @author lunix
  * @since 2018-09-29
  */
 public class Cliente {
-
-    private Integer idcliente;
-    private Integer id_domicilio;
-    private Integer idocupacion;
-    private StringProperty nombre;
-    private StringProperty apellidoPaterno;
-    private StringProperty apellidoMaterno;
-    private StringProperty telefono;
-    private StringProperty celular;
-    private StringProperty curp;
-    private StringProperty rfc;
-    private Boolean listaNegra;
+    private Integer idCliente;
+    private Integer idOcupacion;
+    private Integer idDomicilio;
+    private final SimpleStringProperty nombre;
+    private final SimpleStringProperty apellidoPaterno;
+    private final SimpleStringProperty apellidoMaterno;
+    private final SimpleStringProperty telefono;
+    private final SimpleStringProperty celular;
     private Date fechaNacimiento;
-    private File huellaCliete;
-
+    private final SimpleStringProperty curp;
+    private final SimpleStringProperty rfc;
+    private Object huellaCliete;
+    private Boolean listaNegra;
+    
     public Cliente() {
+        nombre = new SimpleStringProperty();
+        apellidoPaterno = new SimpleStringProperty();
+        apellidoMaterno = new SimpleStringProperty();
+        telefono = new SimpleStringProperty();
+        celular = new SimpleStringProperty();
+        curp = new SimpleStringProperty();
+        rfc = new SimpleStringProperty();
     }
 
-    public Cliente(Integer idcliente, Integer id_domicilio, Integer idocupacion, StringProperty nombre, StringProperty apellidoPaterno, StringProperty apellidoMaterno, StringProperty telefono, StringProperty celular, StringProperty curp, StringProperty rfc, Boolean listaNegra, Date fechaNacimiento, File huellaCliete) {
-        this.idcliente = idcliente;
-        this.id_domicilio = id_domicilio;
-        this.idocupacion = idocupacion;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.telefono = telefono;
-        this.celular = celular;
-        this.curp = curp;
-        this.rfc = rfc;
-        this.listaNegra = listaNegra;
-        this.fechaNacimiento = fechaNacimiento;
+    public Cliente(Integer idCliente, Integer idOcupacion, Integer idDomicilio, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String celular, Date fechaNacimiento, String curp, String rfc, Object huellaCliete, Boolean listaNegra) {
+        this.idCliente = idCliente;
+        this.idOcupacion = idOcupacion;
+        this.idDomicilio = idDomicilio;
+        this.nombre = new SimpleStringProperty(nombre);
+        this.apellidoPaterno = new SimpleStringProperty(apellidoPaterno);
+        this.apellidoMaterno = new SimpleStringProperty(apellidoMaterno);
+        this.telefono = new SimpleStringProperty(telefono);
+        this.celular = new SimpleStringProperty(celular);
+        if(fechaNacimiento != null) {
+            this.fechaNacimiento = new Date(fechaNacimiento.getTime());
+        } else {
+            this.fechaNacimiento = new Date();
+        }
+        this.curp = new SimpleStringProperty(curp);
+        this.rfc = new SimpleStringProperty(rfc);
         this.huellaCliete = huellaCliete;
+        this.listaNegra = listaNegra;
     }
 
-    public Integer getIdcliente() {
-        return idcliente;
+    public Integer getIdCliente() {
+        return idCliente;
     }
 
-    public void setIdcliente(Integer idcliente) {
-        this.idcliente = idcliente;
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public Integer getId_domicilio() {
-        return id_domicilio;
+    public Integer getIdOcupacion() {
+        return idOcupacion;
     }
 
-    public void setId_domicilio(Integer id_domicilio) {
-        this.id_domicilio = id_domicilio;
+    public void setIdOcupacion(Integer idOcupacion) {
+        this.idOcupacion = idOcupacion;
     }
 
-    public Integer getIdocupacion() {
-        return idocupacion;
+    public Integer getIdDomicilio() {
+        return idDomicilio;
     }
 
-    public void setIdocupacion(Integer idocupacion) {
-        this.idocupacion = idocupacion;
+    public void setIdDomicilio(Integer idDomicilio) {
+        this.idDomicilio = idDomicilio;
     }
-
-    public StringProperty getNombre() {
+    
+    public StringProperty getNombreProperty() {
         return nombre;
     }
 
-    public void setNombre(StringProperty nombre) {
-        this.nombre = nombre;
+    public String getNombre() {
+        return nombre.get();
     }
 
-    public StringProperty getApellidoPaterno() {
+    public void setNombre(String nombre) {
+        this.nombre.set(nombre);
+    }
+    
+    public StringProperty getApellidoPaternoProperty() {
         return apellidoPaterno;
     }
 
-    public void setApellidoPaterno(StringProperty apellidoPaterno) {
-        this.apellidoPaterno = apellidoPaterno;
+    public String getApellidoPaterno() {
+        return apellidoPaterno.get();
     }
 
-    public StringProperty getApellidoMaterno() {
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno.set(apellidoPaterno);
+    }
+    
+    public StringProperty getApellidoMaternoProperty() {
         return apellidoMaterno;
     }
 
-    public void setApellidoMaterno(StringProperty apellidoMaterno) {
-        this.apellidoMaterno = apellidoMaterno;
+    public String getApellidoMaterno() {
+        return apellidoMaterno.get();
     }
 
-    public StringProperty getTelefono() {
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno.set(apellidoMaterno);
+    }
+
+    public StringProperty getTelefonoProperty() {
         return telefono;
     }
-
-    public void setTelefono(StringProperty telefono) {
-        this.telefono = telefono;
+    
+    public String getTelefono() {
+        return telefono.get();
     }
 
-    public StringProperty getCelular() {
+    public void setTelefono(String telefono) {
+        this.telefono.set(telefono);
+    }
+    
+    public StringProperty getCelularProperty() {
         return celular;
     }
 
-    public void setCelular(StringProperty celular) {
-        this.celular = celular;
+    public String getCelular() {
+        return celular.get();
     }
 
-    public StringProperty getCurp() {
+    public void setCelular(String celular) {
+        this.celular.set(celular);
+    }
+
+    public Date getFechaNacimiento() {
+        return new Date(fechaNacimiento.getTime());
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        if(fechaNacimiento != null) {
+            this.fechaNacimiento = new Date(fechaNacimiento.getTime());
+        } else {
+            this.fechaNacimiento = new Date();
+        }
+    }
+    
+    public StringProperty getCurpProperty() {
         return curp;
     }
 
-    public void setCurp(StringProperty curp) {
-        this.curp = curp;
+    public String getCurp() {
+        return curp.get();
     }
 
-    public StringProperty getRfc() {
+    public void setCurp(String CURP) {
+        this.curp.set(CURP);
+    }
+    
+    public StringProperty getrfcProperty() {
         return rfc;
     }
 
-    public void setRfc(StringProperty rfc) {
-        this.rfc = rfc;
+    public String getRfc() {
+        return rfc.get();
+    }
+
+    public void setRfc(String RFC) {
+        this.rfc.set(RFC);
+    }
+
+    public Object getHuellaCliete() {
+        return huellaCliete;
+    }
+
+    public void setHuellaCliete(Object huellaCliete) {
+        this.huellaCliete = huellaCliete;
     }
 
     public Boolean getListaNegra() {
@@ -148,21 +205,5 @@ public class Cliente {
 
     public void setListaNegra(Boolean listaNegra) {
         this.listaNegra = listaNegra;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public File getHuellaCliete() {
-        return huellaCliete;
-    }
-
-    public void setHuellaCliete(File huellaCliete) {
-        this.huellaCliete = huellaCliete;
     }
 }

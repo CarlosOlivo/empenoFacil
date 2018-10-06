@@ -16,14 +16,61 @@
  */
 package mybatis.dao;
 
+import empenofacil.Util;
 import empenofacil.model.Domicilio;
+import mybatis.MyBatisUtil;
+import mybatis.idao.IDomicilioDAO;
+import org.apache.ibatis.session.SqlSession;
 
-/**
- *
- * @author Carlos
- */
-public interface DomicilioDAO {
-    public Domicilio obtenerDomicilio(Integer id_domicilio);
-    public int crearDomicilio(Domicilio domicilio);
-    public int editarDomicilio(Domicilio domicilio);
+
+public class DomicilioDAO implements IDomicilioDAO {
+
+    @Override
+    public Domicilio obtenerDomicilio(Integer idDomicilio) {
+        Domicilio domicilio = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IDomicilioDAO domicilioDAO = conn.getMapper(IDomicilioDAO.class);
+            domicilio = domicilioDAO.obtenerDomicilio(idDomicilio);
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return domicilio;
+    }
+
+    @Override
+    public int crearDomicilio(Domicilio domicilio) {
+        int rows = 0;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IDomicilioDAO domicilioDAO = conn.getMapper(IDomicilioDAO.class);
+            rows = domicilioDAO.crearDomicilio(domicilio);
+            conn.commit();
+        } catch (Exception e) {
+            conn.rollback();
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return rows;
+    }
+
+    @Override
+    public int editarDomicilio(Domicilio domicilio) {
+        int rows = 0;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IDomicilioDAO domicilioDAO = conn.getMapper(IDomicilioDAO.class);
+            rows = domicilioDAO.editarDomicilio(domicilio);
+            conn.commit();
+        } catch (Exception e) {
+            conn.rollback();
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return rows;
+    }
 }

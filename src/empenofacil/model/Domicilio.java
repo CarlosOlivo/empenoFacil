@@ -16,84 +16,119 @@
  */
 package empenofacil.model;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  *
  * @author Carlos
  */
 public class Domicilio {
-    private Integer id_domicilio;
-    private String calle;
-    private String numero;
-    private String colonia;
-    private Integer codigoPostal;
-    private String localidad;
-    private Integer id_municipio;
+    private Integer idDomicilio;
+    private final StringProperty calle;
+    private final StringProperty numero;
+    private final StringProperty colonia;
+    private final IntegerProperty codigoPostal;
+    private final StringProperty localidad;
+    private Integer idMunicipio;
 
-    public Domicilio() {}
-
-    public Domicilio(Integer id_domicilio, String calle, String numero, String colonia, Integer codigoPostal, String localidad, Integer id_municipio) {
-        this.id_domicilio = id_domicilio;
-        this.calle = calle;
-        this.numero = numero;
-        this.colonia = colonia;
-        this.codigoPostal = codigoPostal;
-        this.localidad = localidad;
-        this.id_municipio = id_municipio;
+    public Domicilio() {
+        calle = new SimpleStringProperty();
+        numero = new SimpleStringProperty();
+        colonia = new SimpleStringProperty();
+        codigoPostal = new SimpleIntegerProperty();
+        localidad = new SimpleStringProperty();
     }
 
-    public Integer getId_domicilio() {
-        return id_domicilio;
+    public Domicilio(Integer idDomicilio, String calle, String numero, String colonia, Integer codigoPostal, String localidad, Integer idMunicipio) {
+        this.idDomicilio = idDomicilio;
+        this.calle = new SimpleStringProperty(calle);
+        this.numero = new SimpleStringProperty(numero);
+        this.colonia = new SimpleStringProperty(colonia);
+        if(codigoPostal != null) {
+            this.codigoPostal = new SimpleIntegerProperty(codigoPostal);
+        } else {
+            this.codigoPostal = new SimpleIntegerProperty();
+        }
+        this.localidad = new SimpleStringProperty(localidad);
+        this.idMunicipio = idMunicipio;
     }
 
-    public void setId_domicilio(Integer id_domicilio) {
-        this.id_domicilio = id_domicilio;
+    public Integer getIdDomicilio() {
+        return idDomicilio;
     }
 
-    public String getCalle() {
+    public void setIdDomicilio(Integer idDomicilio) {
+        this.idDomicilio = idDomicilio;
+    }
+    
+    public StringProperty getCalleProperty() {
         return calle;
     }
 
-    public void setCalle(String calle) {
-        this.calle = calle;
+    public String getCalle() {
+        return calle.get();
     }
 
-    public String getNumero() {
+    public void setCalle(String calle) {
+        this.calle.set(calle);
+    }
+
+    public StringProperty getNumeroProperty() {
         return numero;
+    }
+    
+    public String getNumero() {
+        return numero.get();
     }
 
     public void setNumero(String numero) {
-        this.numero = numero;
+        this.numero.set(numero);
     }
 
-    public String getColonia() {
+    public StringProperty getColoniaProperty() {
         return colonia;
+    }
+    
+    public String getColonia() {
+        return colonia.get();
     }
 
     public void setColonia(String colonia) {
-        this.colonia = colonia;
+        this.colonia.set(colonia);
     }
 
-    public Integer getCodigoPostal() {
+    public IntegerProperty getCodigoPostalProperty() {
         return codigoPostal;
+    }
+    
+    public Integer getCodigoPostal() {
+        return codigoPostal.get();
     }
 
     public void setCodigoPostal(Integer codigoPostal) {
-        this.codigoPostal = codigoPostal;
+        this.codigoPostal.set(codigoPostal);
     }
 
-    public String getLocalidad() {
+    public StringProperty getLocalidadProperty() {
         return localidad;
+    }
+    
+    public String getLocalidad() {
+        return localidad.get();
     }
 
     public void setLocalidad(String localidad) {
-        this.localidad = localidad;
+        this.localidad.set(localidad);
     }
 
-    public Integer getId_municipio() {
-        return id_municipio;
+    public Integer getIdMunicipio() {
+        return idMunicipio;
     }
 
-    public void setId_municipio(Integer id_municipio) {
-        this.id_municipio = id_municipio;
+    public void setIdMunicipio(Integer idMunicipio) {
+        this.idMunicipio = idMunicipio;
     }
 }

@@ -20,46 +20,36 @@ package empenofacil.model;
  *
  * @author Carlos
  */
-public class Municipio {
-    private Integer idMunicipio;
-    private Integer idEstado;
-    private String municipio;
+public class Ocupacion {
+    private Integer idOcupacion;
+    private String ocupacion;
 
-    public Municipio() {
+    public Ocupacion() {
     }
 
-    public Municipio(Integer idMunicipio, Integer idEstado, String municipio) {
-        this.idMunicipio = idMunicipio;
-        this.idEstado = idEstado;
-        this.municipio = municipio;
+    public Ocupacion(Integer idOcupacion, String ocupacion) {
+        this.idOcupacion = idOcupacion;
+        this.ocupacion = ocupacion;
     }
 
-    public Integer getIdMunicipio() {
-        return idMunicipio;
+    public Integer getIdOcupacion() {
+        return idOcupacion;
     }
 
-    public void setIdMunicipio(Integer idMunicipio) {
-        this.idMunicipio = idMunicipio;
+    public void setIdOcupacion(Integer idOcupacion) {
+        this.idOcupacion = idOcupacion;
     }
 
-    public Integer getIdEstado() {
-        return idEstado;
+    public String getOcupacion() {
+        return ocupacion;
     }
 
-    public void setIdEstado(Integer idEstado) {
-        this.idEstado = idEstado;
-    }
-
-    public String getMunicipio() {
-        return municipio;
-    }
-
-    public void setMunicipio(String municipio) {
-        this.municipio = municipio;
+    public void setOcupacion(String ocupacion) {
+        this.ocupacion = ocupacion;
     }
 
     @Override
     public String toString() {
-        return getMunicipio();
+        return getOcupacion();
     }
 }

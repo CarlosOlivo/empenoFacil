@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2018 lunix
+/* 
+ * Copyright (C) 2018 Carlos
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,17 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mybatis.dao;
+package mybatis.idao;
 
-import empenofacil.model.Contrato;
-import java.util.List;
+import empenofacil.model.Empleado;
+import org.apache.ibatis.annotations.Param;
 
-/**
- *
- * @author lunix
- */
-public interface ContratoDAO {
-    public List<Contrato> obtenerContratos();
-    public Contrato obtenerContrato(Integer folio);
-    public int crearContrato(Contrato contrato);
+public interface IEmpleadoDAO {
+    public Empleado obtenerEmpleado(@Param("usuario") String usuario, @Param("contrasenia") String contrasenia);
 }

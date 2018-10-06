@@ -16,13 +16,28 @@
  */
 package mybatis.dao;
 
+import empenofacil.Util;
 import empenofacil.model.Municipio;
 import java.util.List;
+import mybatis.MyBatisUtil;
+import mybatis.idao.IMunicipioDAO;
+import org.apache.ibatis.session.SqlSession;
 
-/**
- *
- * @author Carlos
- */
-public interface MunicipioDAO {
-    public List<Municipio> obtenerMunicipiosPorEstado(Integer id_estado);
+
+public class MunicipioDAO implements IMunicipioDAO {
+
+    @Override
+    public List<Municipio> obtenerMunicipiosPorEstado(Integer idEstado) {
+        List<Municipio> list = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IMunicipioDAO municipioDAO = conn.getMapper(IMunicipioDAO.class);
+            list = municipioDAO.obtenerMunicipiosPorEstado(idEstado);
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return list;
+    }
 }

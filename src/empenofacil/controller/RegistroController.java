@@ -22,16 +22,12 @@ import empenofacil.model.Municipio;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
-import javafx.stage.Stage;
-import mybatis.MyBatisUtil;
 import mybatis.dao.EstadoDAO;
 import mybatis.dao.MunicipioDAO;
-import org.apache.ibatis.session.SqlSession;
 
 /**
  * FXML Controller class
@@ -39,12 +35,18 @@ import org.apache.ibatis.session.SqlSession;
  * @author Carlos
  */
 public class RegistroController implements Initializable {
-    private Stage stage;
+    private final EstadoDAO estadoDAO;
+    private final MunicipioDAO municipioDAO;
     
     @FXML
     private ChoiceBox<Estado> estadoC;
     @FXML
     private ChoiceBox<Municipio> municipioC;
+
+    public RegistroController() {
+        estadoDAO = new EstadoDAO();
+        municipioDAO = new MunicipioDAO();
+    }
 
     /**
      * Initializes the controller class.
@@ -55,25 +57,25 @@ public class RegistroController implements Initializable {
         estadoC.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null) {
                 municipioC.setDisable(true);
-                cargarMunicipios(newValue.getId_estado());
+                cargarMunicipios(newValue.getIdEstado());
                 municipioC.setDisable(false);
             }
         });
     }
     
     private void cargarEstados() {
-        List<Estado> estados = obtenerEstados();
+        List<Estado> estados = estadoDAO.obtenerEstados();
         if(estados != null && !estados.isEmpty()) {
-            estadoC.setItems(FXCollections.observableArrayList(estados));
+            estadoC.getItems().setAll(estados);
         } else {
             Util.dialogo(Alert.AlertType.ERROR, "No hay estados en el sistema");
         }
     }
     
     private void cargarMunicipios(int estado) {
-        List<Municipio> municipios = obtenerMunicipios(estado);
+        List<Municipio> municipios = municipioDAO.obtenerMunicipiosPorEstado(estado);
         if(municipios != null && !municipios.isEmpty()) {
-            municipioC.setItems(FXCollections.observableArrayList(municipios));
+            municipioC.getItems().setAll(municipios);
         } else {
             Util.dialogo(Alert.AlertType.ERROR, "No hay municipios en el sistema");
         }
@@ -81,47 +83,11 @@ public class RegistroController implements Initializable {
     
     @FXML
     private void login() {
-        Util.login(getStage());
+        Util.login();
     }
     
     @FXML
     private void registro() {
         // TODO
-    }
-    
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-    
-    private List obtenerEstados() {
-        List<Estado> list = null;
-        SqlSession conn = MyBatisUtil.getSession();
-        try {
-            EstadoDAO estadoDAO = conn.getMapper(EstadoDAO.class);
-            list = estadoDAO.obtenerEstados();
-        } catch (Exception e) {
-            Util.excepcion(e);
-        } finally {
-            conn.close();
-        }
-        return list;
-    }
-    
-    private List obtenerMunicipios(int estado) {
-        List<Municipio> list = null;
-        SqlSession conn = MyBatisUtil.getSession();
-        try {
-            MunicipioDAO municipioDAO = conn.getMapper(MunicipioDAO.class);
-            list = municipioDAO.obtenerMunicipiosPorEstado(estado);
-        } catch (Exception e) {
-            Util.excepcion(e);
-        } finally {
-            conn.close();
-        }
-        return list;
     }
 }
