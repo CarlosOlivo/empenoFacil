@@ -16,10 +16,100 @@
  */
 package empenofacil.model;
 
+import javafx.beans.property.SimpleStringProperty;
+
 /**
  *
  * @author lunix
  */
 public class Prenda {
+
+    private Integer idPrenda;
+    private Integer idCategoriaprenda;
+    private Integer idTipoPrenda;
+    private SimpleStringProperty nombre;
+    private double tamanio;
+    private double precio;
+    private double peso;
+    private SimpleStringProperty descripcion;
     
+    public Prenda() {
+        this.nombre = new SimpleStringProperty();
+        this.descripcion = new SimpleStringProperty();
+    }
+    
+    public Prenda(Integer idPrenda, Integer idCategoriaprenda, Integer idTipoPrenda, String nombre, double tamanio, double precio, double peso, String descripcion) {
+        this.idPrenda = idPrenda;
+        this.idCategoriaprenda = idCategoriaprenda;
+        this.idTipoPrenda = idTipoPrenda;
+        this.nombre = new SimpleStringProperty(nombre);
+        this.tamanio = tamanio;
+        this.precio = precio;
+        this.peso = peso;
+        this.descripcion = new SimpleStringProperty(descripcion);
+    }
+    
+    public Integer getIdPrenda() {
+        return idPrenda;
+    }
+    
+    public void setIdPrenda(Integer idPrenda) {
+        this.idPrenda = idPrenda;
+    }
+    
+    public Integer getIdCategoriaprenda() {
+        return idCategoriaprenda;
+    }
+    
+    public void setIdCategoriaprenda(Integer idCategoriaprenda) {
+        this.idCategoriaprenda = idCategoriaprenda;
+    }
+    
+    public Integer getIdTipoPrenda() {
+        return idTipoPrenda;
+    }
+    
+    public void setIdTipoPrenda(Integer idTipoPrenda) {
+        this.idTipoPrenda = idTipoPrenda;
+    }
+    
+    public SimpleStringProperty getNombre() {
+        return nombre;
+    }
+    
+    public void setNombre(SimpleStringProperty nombre) {
+        this.nombre = nombre;
+    }
+    
+    public double getTamanio() {
+        return tamanio;
+    }
+    
+    public void setTamanio(double tamanio) {
+        this.tamanio = tamanio;
+    }
+    
+    public double getPrecio() {
+        return precio;
+    }
+    
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+    
+    public double getPeso() {
+        return peso;
+    }
+    
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+    
+    public SimpleStringProperty getDescripcion() {
+        return descripcion;
+    }
+    
+    public void setDescripcion(SimpleStringProperty descripcion) {
+        this.descripcion = descripcion;
+    }    
 }
