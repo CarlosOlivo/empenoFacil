@@ -30,14 +30,14 @@ public class Cliente {
     private Integer idCliente;
     private Integer idOcupacion;
     private Integer idDomicilio;
-    private final SimpleStringProperty nombre;
-    private final SimpleStringProperty apellidoPaterno;
-    private final SimpleStringProperty apellidoMaterno;
-    private final SimpleStringProperty telefono;
-    private final SimpleStringProperty celular;
+    private final StringProperty nombre;
+    private final StringProperty apellidoPaterno;
+    private final StringProperty apellidoMaterno;
+    private final StringProperty telefono;
+    private final StringProperty celular;
     private Date fechaNacimiento;
-    private final SimpleStringProperty curp;
-    private final SimpleStringProperty rfc;
+    private final StringProperty curp;
+    private final StringProperty rfc;
     private Object huellaCliete;
     private Boolean listaNegra;
     
@@ -124,7 +124,7 @@ public class Cliente {
     }
 
     public String getApellidoMaterno() {
-        return apellidoMaterno.get();
+        return apellidoMaterno.getValueSafe();
     }
 
     public void setApellidoMaterno(String apellidoMaterno) {
@@ -136,7 +136,7 @@ public class Cliente {
     }
     
     public String getTelefono() {
-        return telefono.get();
+        return telefono.getValueSafe();
     }
 
     public void setTelefono(String telefono) {
@@ -148,7 +148,7 @@ public class Cliente {
     }
 
     public String getCelular() {
-        return celular.get();
+        return celular.getValueSafe();
     }
 
     public void setCelular(String celular) {

@@ -40,4 +40,19 @@ public class OcupacionDAO implements IOcupacionDAO {
         }
         return list;
     }
+    
+    @Override
+    public Ocupacion obtenerOcupacion(Integer idOcupacion) {
+        Ocupacion ocupacion = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IOcupacionDAO ocupacionDAO = conn.getMapper(IOcupacionDAO.class);
+            ocupacion = ocupacionDAO.obtenerOcupacion(idOcupacion);
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return ocupacion;
+    }
 }

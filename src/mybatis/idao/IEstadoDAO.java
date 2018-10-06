@@ -25,4 +25,5 @@ import java.util.List;
  */
 public interface IEstadoDAO {
     public List<Estado> obtenerEstados();
+    public Estado obtenerEstado(Integer idEstado);
 }

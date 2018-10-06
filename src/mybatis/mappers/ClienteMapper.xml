@@ -32,13 +32,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <insert id="crearCliente" parameterType="empenofacil.model.Cliente" useGeneratedKeys="true" keyProperty="idCliente">
         INSERT INTO cliente(idOcupacion,idDomicilio,nombre,apellidoPaterno,apellidoMaterno,
         telefono,celular,fechaNacimiento,curp,rfc)
-        VALUES(#{idOcupacion},#{idDomicilio},#{nombre},#{apellidoPaterno},#{apellidoMaterno},
-        #{telefono},#{celular},#{fechaNacimiento},#{curp},#{rfc})
+        VALUES(#{idOcupacion},#{idDomicilio},#{nombre},#{apellidoPaterno},IF(#{apellidoMaterno} = '', NULL, #{apellidoMaterno}),
+        IF(#{telefono} = '', NULL, #{telefono}),IF(#{celular} = '', NULL, #{celular}),#{fechaNacimiento},#{curp},#{rfc})
     </insert>
     <update id="editarCliente" parameterType="empenofacil.model.Cliente">
         UPDATE cliente SET idOcupacion = #{idOcupacion}, idDomicilio = #{idDomicilio},
-        nombre=#{nombre}, apellidoPaterno=#{apellidoPaterno}, apellidoMaterno = #{apellidoMaterno},
-        telefono = #{telefono}, celular = #{celular}, fechaNacimiento=#{fechaNacimiento},
+        nombre=#{nombre}, apellidoPaterno=#{apellidoPaterno}, apellidoMaterno = IF(#{apellidoMaterno} = '', NULL, #{apellidoMaterno}),
+        telefono = IF(#{telefono} = '', NULL, #{telefono}), celular = IF(#{celular} = '', NULL, #{celular}), fechaNacimiento=#{fechaNacimiento},
         curp = #{curp}, rfc = #{rfc} WHERE idCliente = ${idCliente}
     </update>
 </mapper>

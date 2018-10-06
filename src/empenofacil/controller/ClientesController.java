@@ -33,10 +33,13 @@ import empenofacil.model.Estado;
 import empenofacil.model.Municipio;
 import empenofacil.model.Ocupacion;
 import java.net.URL;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -122,7 +125,7 @@ public class ClientesController implements Initializable {
                         Field.ofStringType(cliente.getApellidoMaternoProperty())
                                 .label("Apellido materno")
                                 .span(ColSpan.HALF)
-                                .validate(RegexValidator.forPattern("^\\.{0}$|(?![\\W])^[\\p{L} .'-]{3,}$", "Introduce un apellido paterno valido.")),
+                                .validate(RegexValidator.forPattern("^\\.{0}$|(?![\\W])^[\\p{L} .'-]{3,}$", "Introduce un apellido materno valido.")),
                         Field.ofStringType(cliente.getTelefonoProperty())
                                 .label("Télefono")
                                 .span(ColSpan.HALF)
@@ -192,7 +195,10 @@ public class ClientesController implements Initializable {
         clientes.getItems().setAll(clienteDAO.obtenerClientes());
         clientes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
+                guardar.setText("Actualizar");
                 cargarCliente(newValue);
+                fechaNacimiento.setValue(cliente.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                form.setDisable(false);
             }
         });
         nombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
@@ -218,145 +224,47 @@ public class ClientesController implements Initializable {
             }
         });
     }
-
-    private void cargarEstados() {
-        municipio.setDisable(true);
-        List<Estado> estados = estadoDAO.obtenerEstados();
-        if (estados != null && !estados.isEmpty()) {
-            estado.getItems().setAll(estados);
-            municipio.setDisable(false);
-        } else {
-            Util.dialogo(Alert.AlertType.ERROR, "No hay estados en el sistema");
-        }
-    }
-
-    private void cargarMunicipios(int estado) {
-        List<Municipio> municipios = municipioDAO.obtenerMunicipiosPorEstado(estado);
-        if (municipios != null && !municipios.isEmpty()) {
-            municipio.getItems().setAll(municipios);
-        } else {
-            Util.dialogo(Alert.AlertType.ERROR, "No hay municipios en el sistema");
-        }
-    }
-
-    private void cargarOcupaciones() {
-        List<Ocupacion> ocupaciones = ocupacionDAO.obtenerOcupaciones();
-        if (ocupaciones != null && !ocupaciones.isEmpty()) {
-            ocupacion.getItems().setAll(ocupaciones);
-        } else {
-            Util.dialogo(Alert.AlertType.ERROR, "No hay ocupaciones en el sistema");
-        }
-    }
-
+    
     @FXML
     private void nuevo() {
         limpiarFormulario();
         form.setDisable(false);
     }
-
+    
     @FXML
     private void guardar() {
-        Ocupacion ocupacionTMP = ocupacion.getValue();
-        if (ocupacionTMP == null) {
-            Util.dialogo(Alert.AlertType.ERROR, "Elige una ocupación");
-            return;
-        }
-        LocalDate fechaNacimientoTMP = fechaNacimiento.getValue();
-        if (fechaNacimientoTMP == null) {
-            Util.dialogo(Alert.AlertType.ERROR, "Selecciona una fecha de nacimiento");
-            return;
-        }
-        if (Period.between(fechaNacimientoTMP, LocalDate.now()).getYears() < 18) {
-            Util.dialogo(Alert.AlertType.ERROR, "Cliente es menor de edad");
-            return;
-        }
-        Estado estadoTMP = estado.getValue();
-        if (estadoTMP == null) {
-            Util.dialogo(Alert.AlertType.ERROR, "Elige un estado");
-            return;
-        }
-        Municipio municipioTMP = municipio.getValue();
-        if (municipioTMP == null) {
-            Util.dialogo(Alert.AlertType.ERROR, "Elige un municipio");
-            return;
-        }
-        if (formulario.isValid()) {
-            domicilio.setIdMunicipio(municipioTMP.getIdMunicipio());
-            if (domicilioDAO.crearDomicilio(domicilio) == 0) {
-                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el domicilio del cliente");
-                return;
-            }
-            cliente.setIdOcupacion(ocupacionTMP.getIdOcupacion());
-            cliente.setIdDomicilio(domicilio.getIdDomicilio());
-            if (cliente.getApellidoMaterno().trim().isEmpty()) {
-                cliente.setApellidoMaterno(null);
-            }
-            if (cliente.getTelefono().trim().isEmpty()) {
-                cliente.setTelefono(null);
-            }
-            if (cliente.getCelular().trim().isEmpty()) {
-                cliente.setCelular(null);
-            }
-            if (clienteDAO.crearCliente(cliente) == 0) {
-                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el cliente");
+        if (esFormularioValido()) {
+            domicilio.setIdMunicipio(municipio.getValue().getIdMunicipio());
+            if (domicilio.getIdDomicilio() == null) {
+                if (domicilioDAO.crearDomicilio(domicilio) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el domicilio del cliente");
+                    return;
+                }
             } else {
-                Util.dialogo(Alert.AlertType.INFORMATION, "Cliente creado correctamente");
-                actualizarClientes();
-                cancelar();
+                if (domicilioDAO.editarDomicilio(domicilio) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el domicilio del cliente");
+                    return;
+                }
             }
-        } else {
-            System.out.println("Corrige los campos antes de continuar");
-        }
-    }
-
-    public void editarCliente() {
-        Ocupacion ocupacionTMP = ocupacion.getValue();
-        if (ocupacionTMP == null) {
-            Util.dialogo(Alert.AlertType.ERROR, "Elige una ocupación");
-            return;
-        }
-        LocalDate fechaNacimientoTMP = fechaNacimiento.getValue();
-        if (fechaNacimientoTMP == null) {
-            Util.dialogo(Alert.AlertType.ERROR, "Selecciona una fecha de nacimiento");
-            return;
-        }
-        if (Period.between(fechaNacimientoTMP, LocalDate.now()).getYears() < 18) {
-            Util.dialogo(Alert.AlertType.ERROR, "Cliente es menor de edad");
-            return;
-        }
-        Estado estadoTMP = estado.getValue();
-        if (estadoTMP == null) {
-            Util.dialogo(Alert.AlertType.ERROR, "Elige un estado");
-            return;
-        }
-        Municipio municipioTMP = municipio.getValue();
-        if (municipioTMP == null) {
-            Util.dialogo(Alert.AlertType.ERROR, "Elige un municipio");
-            return;
-        }
-        if (formulario.isValid()) {
-            domicilio.setIdMunicipio(municipioTMP.getIdMunicipio());
-            if (domicilioDAO.crearDomicilio(domicilio) == 0) {
-                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el domicilio del cliente");
-                return;
-            }
-            cliente.setIdOcupacion(ocupacionTMP.getIdOcupacion());
+            cliente.setIdOcupacion(ocupacion.getValue().getIdOcupacion());
             cliente.setIdDomicilio(domicilio.getIdDomicilio());
-            if (cliente.getApellidoMaterno().trim().isEmpty()) {
-                cliente.setApellidoMaterno(null);
-            }
-            if (cliente.getTelefono().trim().isEmpty()) {
-                cliente.setTelefono(null);
-            }
-            if (cliente.getCelular().trim().isEmpty()) {
-                cliente.setCelular(null);
-            }
-            if (clienteDAO.editarCliente(cliente) == 0) {
-                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el cliente");
+            cliente.setFechaNacimiento(Date.valueOf(fechaNacimiento.getValue()));
+            if (cliente.getIdCliente() == null) {
+                if (clienteDAO.crearCliente(cliente) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el cliente");
+                } else {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Cliente creado correctamente");
+                    actualizarClientes();
+                    cancelar();
+                }
             } else {
-                Util.dialogo(Alert.AlertType.INFORMATION, "Cliente editar correctamente");
-                actualizarClientes();
-                cancelar();
+                if (clienteDAO.editarCliente(cliente) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el cliente");
+                } else {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Cliente editado correctamente");
+                    actualizarClientes();
+                    cancelar();
+                }
             }
         } else {
             System.out.println("Corrige los campos antes de continuar");
@@ -368,17 +276,11 @@ public class ClientesController implements Initializable {
         limpiarFormulario();
         form.setDisable(true);
     }
-
-    private void actualizarClientes() {
-        clientes.getItems().clear();
-        if (buscar.getText().trim().isEmpty()) {
-            clientes.getItems().setAll(clienteDAO.obtenerClientes());
-        } else {
-            clientes.getItems().setAll(clienteDAO.buscarClientes(buscar.getText()));
-        }
-    }
-
+    
     private void limpiarFormulario() {
+        guardar.setText("Guardar");
+        clientes.getSelectionModel().clearSelection();
+        fechaNacimiento.setValue(null);
         ocupacion.getSelectionModel().clearSelection();
         ocupacion.getItems().clear();
         estado.getSelectionModel().clearSelection();
@@ -389,7 +291,79 @@ public class ClientesController implements Initializable {
         Domicilio domicilioNuevo = new Domicilio(null, "", "", "", null, "", null);
         cargarCliente(clienteNuevo, domicilioNuevo);
     }
+    
+    private boolean esFormularioValido() {
+        if (ocupacion.getValue() == null) {
+            Util.dialogo(Alert.AlertType.ERROR, "Elige una ocupación");
+            return false;
+        }
+        if (fechaNacimiento.getValue() == null) {
+            Util.dialogo(Alert.AlertType.ERROR, "Selecciona una fecha de nacimiento");
+            return false;
+        }
+        if (Period.between(fechaNacimiento.getValue(), LocalDate.now()).getYears() < 18) {
+            Util.dialogo(Alert.AlertType.ERROR, "Cliente es menor de edad");
+            return false;
+        }
+        if (estado.getValue() == null) {
+            Util.dialogo(Alert.AlertType.ERROR, "Elige un estado");
+            return false;
+        }
+        if (municipio.getValue() == null) {
+            Util.dialogo(Alert.AlertType.ERROR, "Elige un municipio");
+            return false;
+        }
+        return true;
+    }
+    
+    private void cargarEstados() {
+        municipio.setDisable(true);
+        List<Estado> estados = estadoDAO.obtenerEstados();
+        if (estados != null && !estados.isEmpty()) {
+            municipio.getSelectionModel().clearSelection();
+            estado.getItems().setAll(estados);
+            if (domicilio.getIdMunicipio() != null) {
+                estado.getSelectionModel().select(estadoDAO.obtenerEstado(municipioDAO.obtenerMunicipio(domicilio.getIdMunicipio()).getIdEstado()));
+            }
+        } else {
+            Util.dialogo(Alert.AlertType.ERROR, "No hay estados en el sistema");
+        }
+    }
 
+    private void cargarMunicipios(int estado) {
+        List<Municipio> municipios = municipioDAO.obtenerMunicipiosPorEstado(estado);
+        if (municipios != null && !municipios.isEmpty()) {
+            municipio.getItems().setAll(municipios);
+            if (domicilio.getIdMunicipio() != null) {
+                municipio.getSelectionModel().select(municipioDAO.obtenerMunicipio(domicilio.getIdMunicipio()));
+            }
+            municipio.setDisable(false);
+        } else {
+            Util.dialogo(Alert.AlertType.ERROR, "No hay municipios en el sistema");
+        }
+    }
+
+    private void cargarOcupaciones() {
+        List<Ocupacion> ocupaciones = ocupacionDAO.obtenerOcupaciones();
+        if (ocupaciones != null && !ocupaciones.isEmpty()) {
+            ocupacion.getItems().setAll(ocupaciones);
+            if (cliente.getIdOcupacion() != null) {
+                ocupacion.getSelectionModel().select(ocupacionDAO.obtenerOcupacion(cliente.getIdOcupacion()));
+            }
+        } else {
+            Util.dialogo(Alert.AlertType.ERROR, "No hay ocupaciones en el sistema");
+        }
+    }
+
+    private void actualizarClientes() {
+        clientes.getItems().clear();
+        if (buscar.getText().trim().isEmpty()) {
+            clientes.getItems().setAll(clienteDAO.obtenerClientes());
+        } else {
+            clientes.getItems().setAll(clienteDAO.buscarClientes(buscar.getText()));
+        }
+    }
+    
     private void cargarCliente(Cliente cliente) {
         cargarCliente(cliente, domicilioDAO.obtenerDomicilio(cliente.getIdDomicilio()));
     }
@@ -400,14 +374,21 @@ public class ClientesController implements Initializable {
         this.cliente.setIdDomicilio(cliente.getIdDomicilio());
         this.cliente.setNombre(cliente.getNombre());
         this.cliente.setApellidoPaterno(cliente.getApellidoPaterno());
-        this.cliente.setApellidoMaterno(cliente.getApellidoMaterno());
-        this.cliente.setTelefono(cliente.getTelefono());
-        this.cliente.setCelular(cliente.getCelular());
+        this.cliente.setApellidoMaterno(Objects.toString(cliente.getApellidoMaterno(), ""));
+        this.cliente.setTelefono(Objects.toString(cliente.getTelefono(), ""));
+        this.cliente.setCelular(Objects.toString(cliente.getCelular(), ""));
         this.cliente.setFechaNacimiento(cliente.getFechaNacimiento());
         this.cliente.setCurp(cliente.getCurp());
         this.cliente.setRfc(cliente.getRfc());
         this.cliente.setHuellaCliete(cliente.getHuellaCliete());
         this.cliente.setListaNegra(cliente.getListaNegra());
+        this.domicilio.setIdDomicilio(domicilio.getIdDomicilio());
+        this.domicilio.setCalle(domicilio.getCalle());
+        this.domicilio.setNumero(domicilio.getNumero());
+        this.domicilio.setColonia(domicilio.getColonia());
+        this.domicilio.setCodigoPostal(domicilio.getCodigoPostal());
+        this.domicilio.setLocalidad(domicilio.getLocalidad());
+        this.domicilio.setIdMunicipio(domicilio.getIdMunicipio());
         cargarEstados();
         cargarOcupaciones();
     }

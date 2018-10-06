@@ -20,4 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <select id="obtenerEstados" resultType="empenofacil.model.Estado">
         SELECT * FROM estado
     </select>
+    <select id="obtenerEstado" parameterType="int" resultType="empenofacil.model.Estado">
+        SELECT * FROM estado WHERE idEstado = #{idEstado}
+    </select>
 </mapper>

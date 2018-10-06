@@ -16,6 +16,8 @@
  */
 package empenofacil.model;
 
+import java.util.Objects;
+
 /**
  *
  * @author Carlos
@@ -51,5 +53,25 @@ public class Ocupacion {
     @Override
     public String toString() {
         return getOcupacion();
+    }
+    
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Ocupacion other = (Ocupacion) obj;
+        return Objects.equals(this.idOcupacion, other.idOcupacion);
     }
 }

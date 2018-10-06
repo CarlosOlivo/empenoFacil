@@ -25,4 +25,5 @@ import java.util.List;
  */
 public interface IMunicipioDAO {
     public List<Municipio> obtenerMunicipiosPorEstado(Integer idEstado);
+    public Municipio obtenerMunicipio(Integer idMunicipio);
 }

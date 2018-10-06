@@ -16,6 +16,8 @@
  */
 package empenofacil.model;
 
+import java.util.Objects;
+
 /**
  *
  * @author Carlos
@@ -61,5 +63,25 @@ public class Municipio {
     @Override
     public String toString() {
         return getMunicipio();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Municipio other = (Municipio) obj;
+        return Objects.equals(this.idMunicipio, other.idMunicipio);
     }
 }

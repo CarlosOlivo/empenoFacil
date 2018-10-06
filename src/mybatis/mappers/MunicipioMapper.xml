@@ -20,4 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <select id="obtenerMunicipiosPorEstado" parameterType="int" resultType="empenofacil.model.Municipio">
         SELECT * FROM municipio WHERE idEstado = #{idEstado} ORDER BY municipio
     </select>
+    <select id="obtenerMunicipio" parameterType="int" resultType="empenofacil.model.Municipio">
+        SELECT * FROM municipio WHERE idMunicipio = #{idMunicipio}
+    </select>
 </mapper>

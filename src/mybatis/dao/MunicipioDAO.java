@@ -40,4 +40,19 @@ public class MunicipioDAO implements IMunicipioDAO {
         }
         return list;
     }
+    
+    @Override
+    public Municipio obtenerMunicipio(Integer idMunicipio) {
+        Municipio municipio = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IMunicipioDAO municipioDAO = conn.getMapper(IMunicipioDAO.class);
+            municipio = municipioDAO.obtenerMunicipio(idMunicipio);
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return municipio;
+    }
 }

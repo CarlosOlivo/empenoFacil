@@ -40,4 +40,19 @@ public class EstadoDAO implements IEstadoDAO {
         }
         return list;
     }
+    
+    @Override
+    public Estado obtenerEstado(Integer idEstado) {
+        Estado estado = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IEstadoDAO estadoDAO = conn.getMapper(IEstadoDAO.class);
+            estado = estadoDAO.obtenerEstado(idEstado);
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return estado;
+    }
 }

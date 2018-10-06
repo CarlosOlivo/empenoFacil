@@ -25,4 +25,5 @@ import java.util.List;
  */
 public interface IOcupacionDAO {
     public List<Ocupacion> obtenerOcupaciones();
+    public Ocupacion obtenerOcupacion(Integer idOcupacion);
 }
