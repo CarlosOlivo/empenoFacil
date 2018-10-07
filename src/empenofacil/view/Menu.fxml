@@ -47,6 +47,11 @@
             </TabPane>
          </content>
       </Tab>
+      <Tab text="Empleados">
+        <content>
+          <fx:include source="Empleados.fxml" />
+        </content>
+      </Tab>
       <Tab text="Clientes">
          <content>
             <fx:include source="Clientes.fxml" />

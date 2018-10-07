@@ -64,11 +64,6 @@ public class LoginController implements Initializable {
     }
     
     @FXML
-    private void registro() {
-        Util.registro();
-    }
-        
-    @FXML
     private void salir() {
         Platform.exit();
     }

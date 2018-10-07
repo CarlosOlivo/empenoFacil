@@ -18,6 +18,7 @@ package mybatis.dao;
 
 import empenofacil.Util;
 import empenofacil.model.Empleado;
+import java.util.List;
 import mybatis.MyBatisUtil;
 import mybatis.idao.IEmpleadoDAO;
 import org.apache.ibatis.session.SqlSession;
@@ -25,6 +26,36 @@ import org.apache.ibatis.session.SqlSession;
 
 public class EmpleadoDAO implements IEmpleadoDAO {
 
+    @Override
+    public List<Empleado> buscarEmpleados(String busqueda) {
+        List<Empleado> list = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IEmpleadoDAO empleadoDAO = conn.getMapper(IEmpleadoDAO.class);
+            list = empleadoDAO.buscarEmpleados("%"+busqueda+"%");
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return list;
+    }
+    
+    @Override
+    public List<Empleado> obtenerEmpleados() {
+        List<Empleado> list = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IEmpleadoDAO empleadoDAO = conn.getMapper(IEmpleadoDAO.class);
+            list = empleadoDAO.obtenerEmpleados();
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return list;
+    }
+    
     @Override
     public Empleado obtenerEmpleado(String usuario, String contrasenia) {
         Empleado empleado = null;
@@ -38,5 +69,37 @@ public class EmpleadoDAO implements IEmpleadoDAO {
             conn.close();
         }
         return empleado;
+    }
+    
+    @Override
+    public Empleado obtenerEmpleadoPorUsuario(String usuario) {
+        Empleado empleado = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IEmpleadoDAO empleadoDAO = conn.getMapper(IEmpleadoDAO.class);
+            empleado = empleadoDAO.obtenerEmpleadoPorUsuario(usuario);
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return empleado;
+    }
+    
+    @Override
+    public int crearEmpleado(Empleado empleado) {
+        int rows = 0;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IEmpleadoDAO empleadoDAO = conn.getMapper(IEmpleadoDAO.class);
+            rows = empleadoDAO.crearEmpleado(empleado);
+            conn.commit();
+        } catch (Exception e) {
+            conn.rollback();
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return rows;
     }
 }

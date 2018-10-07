@@ -98,26 +98,6 @@ public class Util {
             Util.excepcion(ioEx);
         }
     }
-    
-    /**
-     * Muestra la ventana de registro
-     */
-    public static void registro() {
-        try {
-            FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Registro.fxml"));
-            Parent root = (Parent) loader.load();
-            Scene scene = new Scene(root);
-            EmpenoFacil.getStage().hide();
-            EmpenoFacil.getStage().setScene(scene);
-            EmpenoFacil.getStage().setTitle("Empeño fácil - Registo de usuario");
-            EmpenoFacil.getStage().setResizable(false);
-            EmpenoFacil.getStage().setMaximized(false);
-            EmpenoFacil.getStage().sizeToScene();
-            EmpenoFacil.getStage().show();
-        } catch (IOException ioEx) {
-            Util.excepcion(ioEx);
-        }
-    }
 
     /**
      * Muestra el menú principal
@@ -132,7 +112,7 @@ public class Util {
             Scene scene = new Scene(root);
             EmpenoFacil.getStage().hide();
             EmpenoFacil.getStage().setScene(scene);
-            EmpenoFacil.getStage().setTitle("Empeño fácil - Menu principal");
+            EmpenoFacil.getStage().setTitle("Empeño fácil - Menú principal");
             EmpenoFacil.getStage().setResizable(true);
             EmpenoFacil.getStage().setMaximized(false);
             EmpenoFacil.getStage().sizeToScene();

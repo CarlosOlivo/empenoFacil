@@ -27,16 +27,15 @@ import com.dlsc.formsfx.model.validators.StringLengthValidator;
 import com.dlsc.formsfx.view.renderer.FormRenderer;
 import com.dlsc.formsfx.view.util.ColSpan;
 import empenofacil.Util;
-import empenofacil.model.Cliente;
 import empenofacil.model.Domicilio;
+import empenofacil.model.Empleado;
 import empenofacil.model.Estado;
 import empenofacil.model.Municipio;
-import empenofacil.model.Ocupacion;
+import empenofacil.model.Rol;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
@@ -54,31 +53,31 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
-import mybatis.dao.ClienteDAO;
 import mybatis.dao.DomicilioDAO;
+import mybatis.dao.EmpleadoDAO;
 import mybatis.dao.EstadoDAO;
 import mybatis.dao.MunicipioDAO;
-import mybatis.dao.OcupacionDAO;
+import mybatis.dao.RolDAO;
 
 /**
  * FXML Controller class
  *
  * @author Carlos
  */
-public class ClientesController implements Initializable {
+public class EmpleadosController implements Initializable {
 
-    private final ClienteDAO clienteDAO;
+    private final EmpleadoDAO empleadoDAO;
     private final DomicilioDAO domicilioDAO;
     private final EstadoDAO estadoDAO;
     private final MunicipioDAO municipioDAO;
-    private final OcupacionDAO ocupacionDAO;
-    private final Cliente cliente;
+    private final RolDAO rolDAO;
+    private final Empleado empleado;
     private final Domicilio domicilio;
     private final Form formulario;
     private final DatePicker fechaNacimiento;
     private final ChoiceBox<Estado> estado;
     private final ChoiceBox<Municipio> municipio;
-    private final ChoiceBox<Ocupacion> ocupacion;
+    private final ChoiceBox<Rol> rol;
 
     @FXML
     private VBox form;
@@ -89,61 +88,71 @@ public class ClientesController implements Initializable {
     @FXML
     private TextField buscar;
     @FXML
-    private TableView<Cliente> clientes;
+    private TableView<Empleado> empleados;
     @FXML
-    private TableColumn<Cliente, String> nombre;
+    private TableColumn<Empleado, String> nombre;
     @FXML
-    private TableColumn<Cliente, String> apellidoP;
+    private TableColumn<Empleado, String> apellidoP;
     @FXML
-    private TableColumn<Cliente, String> curp;
+    private TableColumn<Empleado, String> curp;
     @FXML
-    private TableColumn<Cliente, String> rfc;
+    private TableColumn<Empleado, String> rfc;
 
-    public ClientesController() {
-        clienteDAO = new ClienteDAO();
+    public EmpleadosController() {
+        empleadoDAO = new EmpleadoDAO();
         domicilioDAO = new DomicilioDAO();
         estadoDAO = new EstadoDAO();
         municipioDAO = new MunicipioDAO();
-        ocupacionDAO = new OcupacionDAO();
-        cliente = new Cliente(null, null, null, "", "", "", "", "", null, "", "", null, null);
+        rolDAO = new RolDAO();
+        empleado = new Empleado(null, null, null, "", "", "", "", "", "", "", "", "", null, null);
         domicilio = new Domicilio(null, "", "", "", null, "", null);
         estado = new ChoiceBox<>();
         fechaNacimiento = new DatePicker();
         municipio = new ChoiceBox<>();
-        ocupacion = new ChoiceBox<>();
+        rol = new ChoiceBox<>();
         formulario = Form.of(
                 Section.of(
-                        Field.ofStringType(cliente.getNombreProperty())
+                        Field.ofStringType(empleado.getUsuarioProperty())
+                                .label("Usuario")
+                                .span(ColSpan.HALF)
+                                .validate(StringLengthValidator.atLeast(3, "Introduce un usuario valido de al menos 3 caracteres."))
+                                .required(true),
+                        Field.ofPasswordType(empleado.getContraseniaProperty())
+                                .label("Contraseña")
+                                .span(ColSpan.HALF)
+                                .validate(StringLengthValidator.atLeast(3, "Introduce una contraseña valida de al menos 3 caracteres."))
+                                .required(true),
+                        Field.ofStringType(empleado.getNombreProperty())
                                 .label("Nombe")
                                 .validate(RegexValidator.forPattern("(?![\\W])^[\\p{L} .'-]{3,}$", "Introduce un nombre valido."))
                                 .required(true),
-                        Field.ofStringType(cliente.getApellidoPaternoProperty())
+                        Field.ofStringType(empleado.getApellidoPaternoProperty())
                                 .label("Apellido paterno")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("(?![\\W])^[\\p{L} .'-]{3,}$", "Introduce un apellido paterno valido."))
                                 .required(true),
-                        Field.ofStringType(cliente.getApellidoMaternoProperty())
+                        Field.ofStringType(empleado.getApellidoMaternoProperty())
                                 .label("Apellido materno")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^\\.{0}$|(?![\\W])^[\\p{L} .'-]{3,}$", "Introduce un apellido materno valido.")),
-                        Field.ofStringType(cliente.getTelefonoProperty())
+                        Field.ofStringType(empleado.getTelefonoProperty())
                                 .label("Télefono")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^\\.{0}$|\\d{10}", "Introduce un número de telefono de 10 digitos.")),
-                        Field.ofStringType(cliente.getCelularProperty())
+                        Field.ofStringType(empleado.getCelularProperty())
                                 .label("Celular")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^\\.{0}$|\\d{10}", "Introduce un número de telefono de 10 digitos.")),
-                        NodeElement.of(Util.contenedor("Ocupación", ocupacion))
+                        NodeElement.of(Util.contenedor("Rol", rol))
                                 .span(ColSpan.HALF),
                         NodeElement.of(Util.contenedor("Fecha de nacimiento", fechaNacimiento))
                                 .span(ColSpan.HALF),
-                        Field.ofStringType(cliente.getCurpProperty())
+                        Field.ofStringType(empleado.getCurpProperty())
                                 .label("CURP")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{18}$", "Introduce una CURP de 18 caracteres."))
                                 .required(true),
-                        Field.ofStringType(cliente.getrfcProperty())
+                        Field.ofStringType(empleado.getRfcProperty())
                                 .label("RFC")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{13}$", "Introduce el RFC de 13 caracteres."))
@@ -185,26 +194,15 @@ public class ClientesController implements Initializable {
 
     /**
      * Initializes the controller class.
-     *
-     * @param url
-     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        clientes.setPlaceholder(new Text("No hay clientes en el sistema..."));
-        clientes.getItems().setAll(clienteDAO.obtenerClientes());
-        clientes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                guardar.setText("Actualizar");
-                cargarCliente(newValue);
-                fechaNacimiento.setValue(cliente.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                form.setDisable(false);
-            }
-        });
+        empleados.setPlaceholder(new Text("No hay empleados en el sistema..."));
+        empleados.getItems().setAll(empleadoDAO.obtenerEmpleados());
         nombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
         apellidoP.setCellValueFactory(data -> data.getValue().getApellidoPaternoProperty());
         curp.setCellValueFactory(data -> data.getValue().getCurpProperty());
-        rfc.setCellValueFactory(data -> data.getValue().getrfcProperty());
+        rfc.setCellValueFactory(data -> data.getValue().getRfcProperty());
         fechaNacimiento.setConverter(new DateFormat());
         fechaNacimiento.setPromptText("dd/MM/yyyy");
         formulario.binding(BindingMode.CONTINUOUS);
@@ -213,7 +211,7 @@ public class ClientesController implements Initializable {
         guardar.disableProperty().bind(formulario.validProperty().not());
         form.setDisable(true);
         buscar.textProperty().addListener((observable, oldValue, newValue) -> {
-            clientes.getItems().setAll(clienteDAO.buscarClientes(newValue));
+            empleados.getItems().setAll(empleadoDAO.buscarEmpleados(newValue));
         });
         buscar.setText("");
         estado.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -224,47 +222,30 @@ public class ClientesController implements Initializable {
             }
         });
     }
-    
+
     @FXML
     private void nuevo() {
         limpiarFormulario();
         form.setDisable(false);
     }
-    
+
     @FXML
     private void guardar() {
         if (esFormularioValido()) {
             domicilio.setIdMunicipio(municipio.getValue().getIdMunicipio());
-            if (domicilio.getIdDomicilio() == null) {
-                if (domicilioDAO.crearDomicilio(domicilio) == 0) {
-                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el domicilio del cliente");
-                    return;
-                }
-            } else {
-                if (domicilioDAO.editarDomicilio(domicilio) == 0) {
-                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el domicilio del cliente");
-                    return;
-                }
+            if (domicilioDAO.crearDomicilio(domicilio) == 0) {
+                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el domicilio del empleado");
+                return;
             }
-            cliente.setIdOcupacion(ocupacion.getValue().getIdOcupacion());
-            cliente.setIdDomicilio(domicilio.getIdDomicilio());
-            cliente.setFechaNacimiento(Date.valueOf(fechaNacimiento.getValue()));
-            if (cliente.getIdCliente() == null) {
-                if (clienteDAO.crearCliente(cliente) == 0) {
-                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el cliente");
-                } else {
-                    Util.dialogo(Alert.AlertType.INFORMATION, "Cliente creado correctamente");
-                    actualizarClientes();
-                    cancelar();
-                }
+            empleado.setIdRol(rol.getValue().getIdRol());
+            empleado.setIdDomicilio(domicilio.getIdDomicilio());
+            empleado.setFechaNacimiento(Date.valueOf(fechaNacimiento.getValue()));
+            if (empleadoDAO.crearEmpleado(empleado) == 0) {
+                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el empleado");
             } else {
-                if (clienteDAO.editarCliente(cliente) == 0) {
-                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el cliente");
-                } else {
-                    Util.dialogo(Alert.AlertType.INFORMATION, "Cliente editado correctamente");
-                    actualizarClientes();
-                    cancelar();
-                }
+                Util.dialogo(Alert.AlertType.INFORMATION, "Empleado creado correctamente");
+                actualizarEmpleados();
+                cancelar();
             }
         }
     }
@@ -274,25 +255,29 @@ public class ClientesController implements Initializable {
         limpiarFormulario();
         form.setDisable(true);
     }
-    
+
     private void limpiarFormulario() {
-        guardar.setText("Guardar");
-        clientes.getSelectionModel().clearSelection();
+        empleados.getSelectionModel().clearSelection();
         fechaNacimiento.setValue(null);
-        ocupacion.getSelectionModel().clearSelection();
-        ocupacion.getItems().clear();
+        rol.getSelectionModel().clearSelection();
+        rol.getItems().clear();
         estado.getSelectionModel().clearSelection();
         estado.getItems().clear();
         municipio.getSelectionModel().clearSelection();
         municipio.getItems().clear();
-        Cliente clienteNuevo = new Cliente(null, null, null, "", "", "", "", "", null, "", "", null, null);
+        Empleado empleadoNuevo = new Empleado(null, null, null, "", "", "", "", "", "", "", "", "", null, null);
         Domicilio domicilioNuevo = new Domicilio(null, "", "", "", null, "", null);
-        cargarCliente(clienteNuevo, domicilioNuevo);
+        cargarEmpleado(empleadoNuevo, domicilioNuevo);
     }
-    
+
     private boolean esFormularioValido() {
-        if (ocupacion.getValue() == null) {
-            Util.dialogo(Alert.AlertType.ERROR, "Elige una ocupación");
+        if (empleadoDAO.obtenerEmpleadoPorUsuario(empleado.getUsuario()) != null) {
+            Util.dialogo(Alert.AlertType.ERROR, "El nombre de usuario ya no esta disponible, elige otro");
+            empleado.setUsuario("");
+            return false;
+        }
+        if (rol.getValue() == null) {
+            Util.dialogo(Alert.AlertType.ERROR, "Elige un rol");
             return false;
         }
         if (fechaNacimiento.getValue() == null) {
@@ -300,7 +285,7 @@ public class ClientesController implements Initializable {
             return false;
         }
         if (Period.between(fechaNacimiento.getValue(), LocalDate.now()).getYears() < 18) {
-            Util.dialogo(Alert.AlertType.ERROR, "Cliente es menor de edad");
+            Util.dialogo(Alert.AlertType.ERROR, "Empleado es menor de edad");
             return false;
         }
         if (estado.getValue() == null) {
@@ -313,16 +298,13 @@ public class ClientesController implements Initializable {
         }
         return true;
     }
-    
+
     private void cargarEstados() {
         municipio.setDisable(true);
         List<Estado> estados = estadoDAO.obtenerEstados();
         if (estados != null && !estados.isEmpty()) {
             municipio.getSelectionModel().clearSelection();
             estado.getItems().setAll(estados);
-            if (domicilio.getIdMunicipio() != null) {
-                estado.getSelectionModel().select(estadoDAO.obtenerEstado(municipioDAO.obtenerMunicipio(domicilio.getIdMunicipio()).getIdEstado()));
-            }
         } else {
             Util.dialogo(Alert.AlertType.ERROR, "No hay estados en el sistema");
         }
@@ -332,54 +314,49 @@ public class ClientesController implements Initializable {
         List<Municipio> municipios = municipioDAO.obtenerMunicipiosPorEstado(estado);
         if (municipios != null && !municipios.isEmpty()) {
             municipio.getItems().setAll(municipios);
-            if (domicilio.getIdMunicipio() != null) {
-                municipio.getSelectionModel().select(municipioDAO.obtenerMunicipio(domicilio.getIdMunicipio()));
-            }
             municipio.setDisable(false);
         } else {
             Util.dialogo(Alert.AlertType.ERROR, "No hay municipios en el sistema");
         }
     }
 
-    private void cargarOcupaciones() {
-        List<Ocupacion> ocupaciones = ocupacionDAO.obtenerOcupaciones();
-        if (ocupaciones != null && !ocupaciones.isEmpty()) {
-            ocupacion.getItems().setAll(ocupaciones);
-            if (cliente.getIdOcupacion() != null) {
-                ocupacion.getSelectionModel().select(ocupacionDAO.obtenerOcupacion(cliente.getIdOcupacion()));
-            }
+    private void cargarRoles() {
+        List<Rol> roles = rolDAO.obtenerRoles();
+        if (roles != null && !roles.isEmpty()) {
+            rol.getItems().setAll(roles);
         } else {
-            Util.dialogo(Alert.AlertType.ERROR, "No hay ocupaciones en el sistema");
+            Util.dialogo(Alert.AlertType.ERROR, "No hay roles en el sistema");
         }
     }
 
-    private void actualizarClientes() {
-        clientes.getItems().clear();
+    private void actualizarEmpleados() {
+        empleados.getItems().clear();
         if (buscar.getText().trim().isEmpty()) {
-            clientes.getItems().setAll(clienteDAO.obtenerClientes());
+            empleados.getItems().setAll(empleadoDAO.obtenerEmpleados());
         } else {
-            clientes.getItems().setAll(clienteDAO.buscarClientes(buscar.getText()));
+            empleados.getItems().setAll(empleadoDAO.buscarEmpleados(buscar.getText()));
         }
     }
-    
-    private void cargarCliente(Cliente cliente) {
-        cargarCliente(cliente, domicilioDAO.obtenerDomicilio(cliente.getIdDomicilio()));
+
+    private void cargarEmpleado(Empleado empleado) {
+        cargarEmpleado(empleado, domicilioDAO.obtenerDomicilio(empleado.getIdDomicilio()));
     }
 
-    private void cargarCliente(Cliente cliente, Domicilio domicilio) {
-        this.cliente.setIdCliente(cliente.getIdCliente());
-        this.cliente.setIdOcupacion(cliente.getIdOcupacion());
-        this.cliente.setIdDomicilio(cliente.getIdDomicilio());
-        this.cliente.setNombre(cliente.getNombre());
-        this.cliente.setApellidoPaterno(cliente.getApellidoPaterno());
-        this.cliente.setApellidoMaterno(Objects.toString(cliente.getApellidoMaterno(), ""));
-        this.cliente.setTelefono(Objects.toString(cliente.getTelefono(), ""));
-        this.cliente.setCelular(Objects.toString(cliente.getCelular(), ""));
-        this.cliente.setFechaNacimiento(cliente.getFechaNacimiento());
-        this.cliente.setCurp(cliente.getCurp());
-        this.cliente.setRfc(cliente.getRfc());
-        this.cliente.setHuellaCliete(cliente.getHuellaCliete());
-        this.cliente.setListaNegra(cliente.getListaNegra());
+    private void cargarEmpleado(Empleado empleado, Domicilio domicilio) {
+        this.empleado.setIdEmpleado(empleado.getIdEmpleado());
+        this.empleado.setIdRol(empleado.getIdRol());
+        this.empleado.setIdDomicilio(empleado.getIdDomicilio());
+        this.empleado.setUsuario(empleado.getUsuario());
+        this.empleado.setContrasenia("");
+        this.empleado.setNombre(empleado.getNombre());
+        this.empleado.setApellidoPaterno(empleado.getApellidoPaterno());
+        this.empleado.setApellidoMaterno(Objects.toString(empleado.getApellidoMaterno(), ""));
+        this.empleado.setTelefono(Objects.toString(empleado.getTelefono(), ""));
+        this.empleado.setCelular(Objects.toString(empleado.getCelular(), ""));
+        this.empleado.setCurp(empleado.getCurp());
+        this.empleado.setRfc(empleado.getRfc());
+        this.empleado.setFechaNacimiento(empleado.getFechaNacimiento());
+        this.empleado.setHuellaEmpleado(empleado.getHuellaEmpleado());
         this.domicilio.setIdDomicilio(domicilio.getIdDomicilio());
         this.domicilio.setCalle(domicilio.getCalle());
         this.domicilio.setNumero(domicilio.getNumero());
@@ -388,7 +365,7 @@ public class ClientesController implements Initializable {
         this.domicilio.setLocalidad(domicilio.getLocalidad());
         this.domicilio.setIdMunicipio(domicilio.getIdMunicipio());
         cargarEstados();
-        cargarOcupaciones();
+        cargarRoles();
     }
 
     private static class DateFormat extends StringConverter<LocalDate> {

@@ -17,7 +17,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="mybatis.idao.IEmpleadoDAO">
+    <select id="buscarEmpleados" parameterType="string" resultType="empenofacil.model.Empleado">
+        SELECT * FROM empleado WHERE LOWER(nombre) LIKE LOWER(#{busqueda})
+        OR LOWER(apellidoPaterno) LIKE LOWER(#{busqueda})
+        OR LOWER(rfc) LIKE LOWER(#{busqueda})
+        OR LOWER(curp) LIKE LOWER(#{busqueda})
+    </select>
+    <select id="obtenerEmpleados" parameterType="map" resultType="empenofacil.model.Empleado">
+        SELECT * FROM empleado
+    </select>
     <select id="obtenerEmpleado" parameterType="map" resultType="empenofacil.model.Empleado">
         SELECT * FROM empleado WHERE usuario = #{usuario} AND contrasenia = SHA2(#{contrasenia},256)
     </select>
+    <select id="obtenerEmpleadoPorUsuario" parameterType="string" resultType="empenofacil.model.Empleado">
+        SELECT * FROM empleado WHERE usuario = #{usuario}
+    </select>
+    <insert id="crearEmpleado" parameterType="empenofacil.model.Empleado" useGeneratedKeys="true" keyProperty="idEmpleado">
+        INSERT INTO empleado(idRol,idDomicilio,usuario,contrasenia,nombre,apellidoPaterno,
+        apellidoMaterno,telefono,celular,curp,rfc,fechaNacimiento)
+        VALUES(#{idRol},#{idDomicilio},#{usuario},SHA2(#{contrasenia},256),#{nombre},#{apellidoPaterno},
+        IF(#{apellidoMaterno} = '', NULL, #{apellidoMaterno}),IF(#{telefono} = '', NULL, #{telefono}),
+        IF(#{celular} = '', NULL, #{celular}),#{curp},#{rfc},#{fechaNacimiento})
+    </insert>
 </mapper>
