@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
     <update id="editarPrenda" parameterType="empenofacil.model.Prenda"> 
         UPDATE prenda SET idCategoriaPrenda = #{idCategoriaPrenda}, idTipoPrenda = #{idTipoPrenda}, 
-        nomre = #{nombre}, tamanio = #{tamanio}, precio = #{precio}, peso = #{peso}, descripicion = #{descripcion}
+        nombre = #{nombre}, tamanio = #{tamanio}, precio = #{precio}, peso = #{peso}, descripicion = #{descripcion}
         WHERE idPrenda = ${idPrenda}
     </update>
     
