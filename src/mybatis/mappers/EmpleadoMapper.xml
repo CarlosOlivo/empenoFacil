@@ -40,7 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         IF(#{celular} = '', NULL, #{celular}),#{curp},#{rfc},#{fechaNacimiento})
     </insert>
     <update id="editarEmpleado" parameterType="empenofacil.model.Empleado">
-        UPDATE empleado SET idRol = #{idRol}, idDomicilio = #{idDomicilio}, usuario=#{usuario}, contrasenia=SHA2(#{contrasenia},256),
+        UPDATE empleado SET idRol = #{idRol}, idDomicilio = #{idDomicilio}, usuario=#{usuario},
         nombre=#{nombre}, apellidoPaterno=#{apellidoPaterno}, apellidoMaterno = IF(#{apellidoMaterno} = '', NULL, #{apellidoMaterno}),
         telefono = IF(#{telefono} = '', NULL, #{telefono}), celular = IF(#{celular} = '', NULL, #{celular}), curp = #{curp},
         rfc = #{rfc}, fechaNacimiento=#{fechaNacimiento} WHERE idEmpleado = ${idEmpleado}

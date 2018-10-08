@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <mappers>
         <mapper resource="mybatis/mappers/CategoriaPrendaMapper.xml"/>
         <mapper resource="mybatis/mappers/ClienteMapper.xml"/>
+        <mapper resource="mybatis/mappers/ContratoMapper.xml"/>
         <mapper resource="mybatis/mappers/DomicilioMapper.xml"/>
         <mapper resource="mybatis/mappers/EmpleadoMapper.xml"/>
         <mapper resource="mybatis/mappers/EstadoMapper.xml"/>

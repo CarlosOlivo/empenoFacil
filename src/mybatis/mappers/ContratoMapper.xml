@@ -18,39 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace = "mybatis.idao.IContratoDAO">
     <select id="obtenerContratos" resultType="empenofacil.model.Contrato">
-        SELECT 
-        contrato.folio,
-        contrato.id_estado,
-        contrato.rfc_empresa,
-        contrato.id_cliente,
-        contrato.num_bolsa,
-        contrato.fecha_inicio_contrato,
-        contrato.fecha_fin_contrato,
-        contato.iva,
-        contrato.subtotal,
-        contrato.total,
-        contrato.cotitular
-        FROM cotrato
+        SELECT * FROM contrato
     </select>
-    <select id="obtenerContrato" resultType="empeno.facil.Contrato" parameterType="int">
-        SELECT 
-        contrato.folio,
-        contrato.id_estado,
-        contrato.rfc_empresa,
-        contrato.id_cliente,
-        contrato.num_bolsa,
-        contrato.fecha_inicio_contrato,
-        contrato.fecha_fin_contrato,
-        contato.iva,
-        contrato.subtotal,
-        contrato.total,
-        contrato.cotitular
-        WHERE contrato.folio = #{folio}
+    <select id="obtenerContrato" parameterType="int" resultType="empenofacil.model.Contrato">
+        SELECT * FROM contrato WHERE folio = #{folio}
     </select>
     <insert id="crearContrato" parameterType="empenofacil.model.Contrato">
         INSERT INTO contrato(folio, id_estado, rfc_empresa, id_cliente, num_bolsa, 
         fecha_inicio_contrato, fecha_fin_contrato, iva, subtotal, total, coatitular)
         VALUES(#{folio}, #{id_estado}, #{rfc_empresa}, #{id_cliente}, #{num_bolsa}, #{fecha_inicio_contrato},        
-        #{fecha_fin_ontrato, #{iva}, #{subtotal}, #{cotitular})
+        #{fecha_fin_ontrato}, #{iva}, #{subtotal}, #{cotitular})
     </insert>
 </mapper>

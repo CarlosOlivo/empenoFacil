@@ -299,7 +299,6 @@ public class EmpleadosController implements Initializable {
 
     private boolean esFormularioValido() {
         if (empleado.getIdEmpleado() == null && empleadoDAO.obtenerEmpleadoPorUsuario(empleado.getUsuario()) != null) {
-            System.out.println(empleado.getIdEmpleado());
             Util.dialogo(Alert.AlertType.ERROR, "El nombre de usuario ya no esta disponible, elige otro");
             empleado.setUsuario("");
             return false;
