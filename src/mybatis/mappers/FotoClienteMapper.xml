@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="mybatis.idao.IFotoCliente">
+
+    <select id="obtenerEstado" parameterType="int" resultType="empenofacil.model.FotografiaCliente">
+        SELECT * FROM foto_cliente WHERE idFotoCliente = #{idFotoCliente}
+    </select>
+    <insert id="tomarFoto" parameterType="empenofacil.model.FotografiaCliente" useGeneratedKeys="true" keyProperty="idFotoCliente">
+        INSERT INTO foto_cliente(idTipoFoto,idCliente,foto) VALUES (#{idTipoFoto},#{idCliente},#{foto})
+    </insert>
+</mapper>
