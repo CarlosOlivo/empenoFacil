@@ -20,4 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <select id="obtenerRoles" resultType="empenofacil.model.Rol">
         SELECT * FROM rol
     </select>
+    <select id="obtenerRol" parameterType="int" resultType="empenofacil.model.Rol">
+        SELECT * FROM rol WHERE idRol = #{idRol}
+    </select>
 </mapper>

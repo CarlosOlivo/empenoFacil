@@ -26,4 +26,5 @@ public interface IEmpleadoDAO {
     public Empleado obtenerEmpleado(@Param("usuario") String usuario, @Param("contrasenia") String contrasenia);
     public Empleado obtenerEmpleadoPorUsuario(String usuario);
     public int crearEmpleado(Empleado empleado);
+    public int editarEmpleado(Empleado empleado);
 }

@@ -36,6 +36,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
@@ -199,6 +200,14 @@ public class EmpleadosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         empleados.setPlaceholder(new Text("No hay empleados en el sistema..."));
         empleados.getItems().setAll(empleadoDAO.obtenerEmpleados());
+        empleados.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                guardar.setText("Actualizar");
+                cargarEmpleado(newValue);
+                fechaNacimiento.setValue(empleado.getFechaNacimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                form.setDisable(false);
+            }
+        });
         nombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
         apellidoP.setCellValueFactory(data -> data.getValue().getApellidoPaternoProperty());
         curp.setCellValueFactory(data -> data.getValue().getCurpProperty());
@@ -233,19 +242,36 @@ public class EmpleadosController implements Initializable {
     private void guardar() {
         if (esFormularioValido()) {
             domicilio.setIdMunicipio(municipio.getValue().getIdMunicipio());
-            if (domicilioDAO.crearDomicilio(domicilio) == 0) {
-                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el domicilio del empleado");
-                return;
+            if (domicilio.getIdDomicilio() == null) {
+                if (domicilioDAO.crearDomicilio(domicilio) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el domicilio del empleado");
+                    return;
+                }
+            } else {
+                if (domicilioDAO.editarDomicilio(domicilio) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el domicilio del empleado");
+                    return;
+                }
             }
             empleado.setIdRol(rol.getValue().getIdRol());
             empleado.setIdDomicilio(domicilio.getIdDomicilio());
             empleado.setFechaNacimiento(Date.valueOf(fechaNacimiento.getValue()));
-            if (empleadoDAO.crearEmpleado(empleado) == 0) {
-                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el empleado");
+            if (empleado.getIdEmpleado() == null) {
+                if (empleadoDAO.crearEmpleado(empleado) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el empleado");
+                } else {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Empleado creado correctamente");
+                    actualizarEmpleados();
+                    cancelar();
+                }
             } else {
-                Util.dialogo(Alert.AlertType.INFORMATION, "Empleado creado correctamente");
-                actualizarEmpleados();
-                cancelar();
+                if (empleadoDAO.editarEmpleado(empleado) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el empleado");
+                } else {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Empleado editado correctamente");
+                    actualizarEmpleados();
+                    cancelar();
+                }
             }
         }
     }
@@ -257,6 +283,7 @@ public class EmpleadosController implements Initializable {
     }
 
     private void limpiarFormulario() {
+        guardar.setText("Guardar");
         empleados.getSelectionModel().clearSelection();
         fechaNacimiento.setValue(null);
         rol.getSelectionModel().clearSelection();
@@ -271,7 +298,8 @@ public class EmpleadosController implements Initializable {
     }
 
     private boolean esFormularioValido() {
-        if (empleadoDAO.obtenerEmpleadoPorUsuario(empleado.getUsuario()) != null) {
+        if (empleado.getIdEmpleado() == null && empleadoDAO.obtenerEmpleadoPorUsuario(empleado.getUsuario()) != null) {
+            System.out.println(empleado.getIdEmpleado());
             Util.dialogo(Alert.AlertType.ERROR, "El nombre de usuario ya no esta disponible, elige otro");
             empleado.setUsuario("");
             return false;
@@ -305,6 +333,9 @@ public class EmpleadosController implements Initializable {
         if (estados != null && !estados.isEmpty()) {
             municipio.getSelectionModel().clearSelection();
             estado.getItems().setAll(estados);
+            if (domicilio.getIdMunicipio() != null) {
+                estado.getSelectionModel().select(estadoDAO.obtenerEstado(municipioDAO.obtenerMunicipio(domicilio.getIdMunicipio()).getIdEstado()));
+            }
         } else {
             Util.dialogo(Alert.AlertType.ERROR, "No hay estados en el sistema");
         }
@@ -314,6 +345,9 @@ public class EmpleadosController implements Initializable {
         List<Municipio> municipios = municipioDAO.obtenerMunicipiosPorEstado(estado);
         if (municipios != null && !municipios.isEmpty()) {
             municipio.getItems().setAll(municipios);
+            if (domicilio.getIdMunicipio() != null) {
+                municipio.getSelectionModel().select(municipioDAO.obtenerMunicipio(domicilio.getIdMunicipio()));
+            }
             municipio.setDisable(false);
         } else {
             Util.dialogo(Alert.AlertType.ERROR, "No hay municipios en el sistema");
@@ -324,6 +358,9 @@ public class EmpleadosController implements Initializable {
         List<Rol> roles = rolDAO.obtenerRoles();
         if (roles != null && !roles.isEmpty()) {
             rol.getItems().setAll(roles);
+            if (empleado.getIdRol()!= null) {
+                rol.getSelectionModel().select(rolDAO.obtenerRol(empleado.getIdRol()));
+            }
         } else {
             Util.dialogo(Alert.AlertType.ERROR, "No hay roles en el sistema");
         }

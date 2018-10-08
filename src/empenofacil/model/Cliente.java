@@ -179,7 +179,7 @@ public class Cliente {
         this.curp.set(CURP);
     }
     
-    public StringProperty getrfcProperty() {
+    public StringProperty getRfcProperty() {
         return rfc;
     }
 

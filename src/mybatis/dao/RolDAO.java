@@ -40,4 +40,19 @@ public class RolDAO implements IRolDAO {
         }
         return list;
     }
+    
+    @Override
+    public Rol obtenerRol(Integer idRol) {
+        Rol rol = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IRolDAO rolDAO = conn.getMapper(IRolDAO.class);
+            rol = rolDAO.obtenerRol(idRol);
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return rol;
+    }
 }

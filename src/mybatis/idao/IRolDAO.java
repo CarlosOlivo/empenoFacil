@@ -25,4 +25,5 @@ import java.util.List;
  */
 public interface IRolDAO {
     public List<Rol> obtenerRoles();
+    public Rol obtenerRol(Integer idRol);
 }

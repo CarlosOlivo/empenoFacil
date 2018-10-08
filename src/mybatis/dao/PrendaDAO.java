@@ -27,7 +27,7 @@ import org.apache.ibatis.session.SqlSession;
  *
  * @author lunix
  */
-public class PrendaDao implements IPrendaDAO {
+public class PrendaDAO implements IPrendaDAO {
 
     @Override
     public List<Prenda> buscarPrenda(String busqueda) {
@@ -65,7 +65,7 @@ public class PrendaDao implements IPrendaDAO {
         Prenda prenda = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
-            IPrendaDAO prendaDAO = conn.getMapper(PrendaDao.class);
+            IPrendaDAO prendaDAO = conn.getMapper(IPrendaDAO.class);
             prenda = prendaDAO.obtenerPrenda(idPrenda);
         } catch (Exception e) {
             Util.excepcion(e);
@@ -97,7 +97,7 @@ public class PrendaDao implements IPrendaDAO {
         int rows = 0;
         SqlSession conn = MyBatisUtil.getSession();
         try {
-            IPrendaDAO prendaDAO  = conn.getMapper(IPrendaDAO.class);
+            IPrendaDAO prendaDAO = conn.getMapper(IPrendaDAO.class);
             rows = prendaDAO.editarPrenda(prenda);
             conn.commit();
         } catch (Exception e) {

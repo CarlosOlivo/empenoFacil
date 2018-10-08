@@ -102,4 +102,21 @@ public class EmpleadoDAO implements IEmpleadoDAO {
         }
         return rows;
     }
+    
+    @Override
+    public int editarEmpleado(Empleado empleado) {
+        int rows = 0;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IEmpleadoDAO empleadoDAO = conn.getMapper(IEmpleadoDAO.class);
+            rows = empleadoDAO.editarEmpleado(empleado);
+            conn.commit();
+        } catch (Exception e) {
+            conn.rollback();
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return rows;
+    }
 }

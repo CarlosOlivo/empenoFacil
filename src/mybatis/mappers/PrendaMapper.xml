@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
     <insert id="crearPrenda" parameterType="empenofacil.model.Prenda" useGeneratedKeys="true" keyProperty="idPrenda">
         INSERT INTO prenda(idCategoriaPrenda,idTipoPrenda,nombre,tamanio,precio,peso,descripcion) 
-        VALUES(#{idCategoriaPrenda},#{idTipoPrenda},#{nombre},#{tamanio},#{precio},#{peso},#{}descripcion)
+        VALUES(#{idCategoriaPrenda},#{idTipoPrenda},#{nombre},#{tamanio},#{precio},#{peso},#{descripcion})
     </insert>
     
     <update id="editarPrenda" parameterType="empenofacil.model.Prenda"> 

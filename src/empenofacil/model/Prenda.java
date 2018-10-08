@@ -16,7 +16,10 @@
  */
 package empenofacil.model;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -25,27 +28,30 @@ import javafx.beans.property.SimpleStringProperty;
 public class Prenda {
 
     private Integer idPrenda;
-    private Integer idCategoriaprenda;
+    private Integer idCategoriaPrenda;
     private Integer idTipoPrenda;
-    private SimpleStringProperty nombre;
-    private double tamanio;
-    private double precio;
-    private double peso;
-    private SimpleStringProperty descripcion;
+    private final StringProperty nombre;
+    private final DoubleProperty tamanio;
+    private final DoubleProperty precio;
+    private final DoubleProperty peso;
+    private final StringProperty descripcion;
     
     public Prenda() {
         this.nombre = new SimpleStringProperty();
+        this.tamanio = new SimpleDoubleProperty();
+        this.precio = new SimpleDoubleProperty();
+        this.peso = new SimpleDoubleProperty();
         this.descripcion = new SimpleStringProperty();
     }
     
-    public Prenda(Integer idPrenda, Integer idCategoriaprenda, Integer idTipoPrenda, String nombre, double tamanio, double precio, double peso, String descripcion) {
+    public Prenda(Integer idPrenda, Integer idCategoriaPrenda, Integer idTipoPrenda, String nombre, Double tamanio, Double precio, Double peso, String descripcion) {
         this.idPrenda = idPrenda;
-        this.idCategoriaprenda = idCategoriaprenda;
+        this.idCategoriaPrenda = idCategoriaPrenda;
         this.idTipoPrenda = idTipoPrenda;
         this.nombre = new SimpleStringProperty(nombre);
-        this.tamanio = tamanio;
-        this.precio = precio;
-        this.peso = peso;
+        this.tamanio = new SimpleDoubleProperty(tamanio);
+        this.precio = new SimpleDoubleProperty(precio);
+        this.peso = new SimpleDoubleProperty(peso);
         this.descripcion = new SimpleStringProperty(descripcion);
     }
     
@@ -57,12 +63,12 @@ public class Prenda {
         this.idPrenda = idPrenda;
     }
     
-    public Integer getIdCategoriaprenda() {
-        return idCategoriaprenda;
+    public Integer getIdCategoriaPrenda() {
+        return idCategoriaPrenda;
     }
     
-    public void setIdCategoriaprenda(Integer idCategoriaprenda) {
-        this.idCategoriaprenda = idCategoriaprenda;
+    public void setIdCategoriaPrenda(Integer idCategoriaPrenda) {
+        this.idCategoriaPrenda = idCategoriaPrenda;
     }
     
     public Integer getIdTipoPrenda() {
@@ -73,43 +79,63 @@ public class Prenda {
         this.idTipoPrenda = idTipoPrenda;
     }
     
-    public SimpleStringProperty getNombre() {
+    public StringProperty getNombreProperty() {
         return nombre;
     }
     
-    public void setNombre(SimpleStringProperty nombre) {
-        this.nombre = nombre;
+    public String getNombre() {
+        return nombre.get();
     }
     
-    public double getTamanio() {
+    public void setNombre(String nombre) {
+        this.nombre.set(nombre);
+    }
+    
+    public DoubleProperty getTamanioProperty() {
         return tamanio;
     }
     
-    public void setTamanio(double tamanio) {
-        this.tamanio = tamanio;
+    public Double getTamanio() {
+        return tamanio.getValue();
     }
     
-    public double getPrecio() {
+    public void setTamanio(Double tamanio) {
+        this.tamanio.set(tamanio);
+    }
+    
+    public DoubleProperty getPrecioProperty() {
         return precio;
     }
     
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public Double getPrecio() {
+        return precio.get();
     }
     
-    public double getPeso() {
+    public void setPrecio(Double precio) {
+        this.precio.set(precio);
+    }
+    
+    public DoubleProperty getPesoProperty() {
         return peso;
     }
     
-    public void setPeso(double peso) {
-        this.peso = peso;
+    public Double getPeso() {
+        return peso.get();
     }
     
-    public SimpleStringProperty getDescripcion() {
+    public void setPeso(Double peso) {
+        this.peso.set(peso);
+    }
+    
+    public StringProperty getDescripcionProperty() {
         return descripcion;
     }
     
-    public void setDescripcion(SimpleStringProperty descripcion) {
-        this.descripcion = descripcion;
+    public String getDescripcion() {
+        return descripcion.get();
+    }
+    
+    public void setDescripcion(String descripcion) {
+        this.descripcion.set(descripcion);
     }    
 }

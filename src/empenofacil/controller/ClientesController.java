@@ -143,7 +143,7 @@ public class ClientesController implements Initializable {
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{18}$", "Introduce una CURP de 18 caracteres."))
                                 .required(true),
-                        Field.ofStringType(cliente.getrfcProperty())
+                        Field.ofStringType(cliente.getRfcProperty())
                                 .label("RFC")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{13}$", "Introduce el RFC de 13 caracteres."))
@@ -204,7 +204,7 @@ public class ClientesController implements Initializable {
         nombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
         apellidoP.setCellValueFactory(data -> data.getValue().getApellidoPaternoProperty());
         curp.setCellValueFactory(data -> data.getValue().getCurpProperty());
-        rfc.setCellValueFactory(data -> data.getValue().getrfcProperty());
+        rfc.setCellValueFactory(data -> data.getValue().getRfcProperty());
         fechaNacimiento.setConverter(new DateFormat());
         fechaNacimiento.setPromptText("dd/MM/yyyy");
         formulario.binding(BindingMode.CONTINUOUS);
