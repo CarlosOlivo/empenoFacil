@@ -5,12 +5,14 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
-<mapper namespace="mybatis.idao.IFotoCliente">
-
-    <select id="obtenerEstado" parameterType="int" resultType="empenofacil.model.FotografiaCliente">
-        SELECT * FROM foto_cliente WHERE idFotoCliente = #{idFotoCliente}
+<mapper namespace="mybatis.idao.IFotoClienteDAO">
+    <select id="obtenerFotoCliente" parameterType="map" resultType="empenofacil.model.FotoCliente">
+        SELECT * FROM foto_cliente WHERE idCliente = #{idCliente} AND idTipoFoto = #{idTipoFoto}
     </select>
-    <insert id="tomarFoto" parameterType="empenofacil.model.FotografiaCliente" useGeneratedKeys="true" keyProperty="idFotoCliente">
+    <insert id="crearFotoCliente" parameterType="empenofacil.model.FotoCliente" useGeneratedKeys="true" keyProperty="idFotoCliente">
         INSERT INTO foto_cliente(idTipoFoto,idCliente,foto) VALUES (#{idTipoFoto},#{idCliente},#{foto})
     </insert>
+    <update id="editarFotoCliente" parameterType="empenofacil.model.FotoCliente">
+        UPDATE foto_cliente SET idTipoFoto = #{idTipoFoto}, idCliente = #{idCliente}, foto = #{foto} WHERE idFotoCliente = ${idFotoCliente}
+    </update>
 </mapper>

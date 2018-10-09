@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         OR LOWER(rfc) LIKE LOWER(#{busqueda})
         OR LOWER(curp) LIKE LOWER(#{busqueda})
     </select>
-    <select id="obtenerEmpleados" parameterType="map" resultType="empenofacil.model.Empleado">
+    <select id="obtenerEmpleados" resultType="empenofacil.model.Empleado">
         SELECT * FROM empleado
     </select>
     <select id="obtenerEmpleado" parameterType="map" resultType="empenofacil.model.Empleado">

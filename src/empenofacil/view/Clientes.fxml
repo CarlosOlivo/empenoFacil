@@ -28,6 +28,7 @@
                       <TableColumn fx:id="apellidoP" prefWidth="75.0" text="Apellido Paterno" />
                       <TableColumn fx:id="curp" prefWidth="75.0" text="CURP" />
                       <TableColumn fx:id="rfc" prefWidth="75.0" text="RFC" />
+                  <TableColumn fx:id="colAcciones" prefWidth="75.0" text="Opciones" />
                   </columns>
                   <columnResizePolicy>
                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -43,10 +43,14 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -98,6 +102,8 @@ public class ClientesController implements Initializable {
     private TableColumn<Cliente, String> curp;
     @FXML
     private TableColumn<Cliente, String> rfc;
+    @FXML
+    private TableColumn<Cliente, Void> colAcciones;
 
     public ClientesController() {
         clienteDAO = new ClienteDAO();
@@ -205,6 +211,7 @@ public class ClientesController implements Initializable {
         apellidoP.setCellValueFactory(data -> data.getValue().getApellidoPaternoProperty());
         curp.setCellValueFactory(data -> data.getValue().getCurpProperty());
         rfc.setCellValueFactory(data -> data.getValue().getRfcProperty());
+        colAcciones.setCellFactory(param -> new Opciones());
         fechaNacimiento.setConverter(new DateFormat());
         fechaNacimiento.setPromptText("dd/MM/yyyy");
         formulario.binding(BindingMode.CONTINUOUS);
@@ -224,13 +231,13 @@ public class ClientesController implements Initializable {
             }
         });
     }
-    
+
     @FXML
     private void nuevo() {
         limpiarFormulario();
         form.setDisable(false);
     }
-    
+
     @FXML
     private void guardar() {
         if (esFormularioValido()) {
@@ -274,7 +281,7 @@ public class ClientesController implements Initializable {
         limpiarFormulario();
         form.setDisable(true);
     }
-    
+
     private void limpiarFormulario() {
         guardar.setText("Guardar");
         clientes.getSelectionModel().clearSelection();
@@ -289,7 +296,7 @@ public class ClientesController implements Initializable {
         Domicilio domicilioNuevo = new Domicilio(null, "", "", "", null, "", null);
         cargarCliente(clienteNuevo, domicilioNuevo);
     }
-    
+
     private boolean esFormularioValido() {
         if (ocupacion.getValue() == null) {
             Util.dialogo(Alert.AlertType.ERROR, "Elige una ocupación");
@@ -313,7 +320,7 @@ public class ClientesController implements Initializable {
         }
         return true;
     }
-    
+
     private void cargarEstados() {
         municipio.setDisable(true);
         List<Estado> estados = estadoDAO.obtenerEstados();
@@ -361,7 +368,7 @@ public class ClientesController implements Initializable {
             clientes.getItems().setAll(clienteDAO.buscarClientes(buscar.getText()));
         }
     }
-    
+
     private void cargarCliente(Cliente cliente) {
         cargarCliente(cliente, domicilioDAO.obtenerDomicilio(cliente.getIdDomicilio()));
     }
@@ -409,6 +416,28 @@ public class ClientesController implements Initializable {
                 return null;
             }
             return LocalDate.parse(dateString, dateTimeFormatter);
+        }
+    }
+
+    private class Opciones extends TableCell<Cliente, Void> {
+
+        private final Hyperlink fotos = new Hyperlink("Fotos");
+        private final HBox hb = new HBox(fotos);
+
+        {
+            hb.setSpacing(5);
+            hb.setPadding(new Insets(-3.5d, 0d, 0d, 0d));
+            hb.setAlignment(Pos.TOP_LEFT);
+            fotos.setOnAction(event -> {
+                Cliente cliente = getTableView().getItems().get(getIndex());
+                Util.capturarFoto(cliente);
+            });
+        }
+
+        @Override
+        protected void updateItem(Void item, boolean empty) {
+            super.updateItem(item, empty);
+            setGraphic(empty ? null : hb);
         }
     }
 }

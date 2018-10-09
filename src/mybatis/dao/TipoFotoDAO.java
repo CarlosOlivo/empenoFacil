@@ -20,21 +20,21 @@ import empenofacil.Util;
 import empenofacil.model.TipoFoto;
 import java.util.List;
 import mybatis.MyBatisUtil;
-import mybatis.idao.ITipoDAO;
 import org.apache.ibatis.session.SqlSession;
+import mybatis.idao.ITipoFotoDAO;
 
 /**
  *
  * @author lunix
  */
-public class TipoFotoDAO implements ITipoDAO {
+public class TipoFotoDAO implements ITipoFotoDAO {
 
     @Override
     public List<TipoFoto> obtenerTiposFoto() {
         List<TipoFoto> list = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
-            ITipoDAO tipofotoDAo = conn.getMapper(ITipoDAO.class);
+            ITipoFotoDAO tipofotoDAo = conn.getMapper(ITipoFotoDAO.class);
             list = tipofotoDAo.obtenerTiposFoto();
         } catch (Exception e) {
             Util.excepcion(e);
@@ -49,7 +49,7 @@ public class TipoFotoDAO implements ITipoDAO {
         TipoFoto tipoFoto = null;
         SqlSession conn = MyBatisUtil.getSession();   
         try {
-            ITipoDAO tipoDao = conn.getMapper(ITipoDAO.class);
+            ITipoFotoDAO tipoDao = conn.getMapper(ITipoFotoDAO.class);
             tipoFoto = tipoDao.obtenerTipoFoto(idTipoFoto);
         } catch (Exception e) {
             Util.excepcion(e);

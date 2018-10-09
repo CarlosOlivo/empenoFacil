@@ -17,7 +17,7 @@
 package mybatis.dao;
 
 import empenofacil.Util;
-import empenofacil.model.FotografiaCliente;
+import empenofacil.model.FotoCliente;
 import mybatis.idao.IFotoClienteDAO;
 import mybatis.MyBatisUtil;
 import org.apache.ibatis.session.SqlSession;
@@ -29,12 +29,12 @@ import org.apache.ibatis.session.SqlSession;
 public class FotoClienteDAO implements IFotoClienteDAO{
 
     @Override
-    public FotografiaCliente obtenerFotografiaCliente(Integer idFotoCliente) {
-        FotografiaCliente fotografiaCliente = null;
+    public FotoCliente obtenerFotoCliente(Integer idCliente, Integer idTipoFoto) {
+        FotoCliente fotografiaCliente = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
             IFotoClienteDAO fotografiaDAO = conn.getMapper(IFotoClienteDAO.class);
-            fotografiaCliente = fotografiaDAO.obtenerFotografiaCliente(idFotoCliente);
+            fotografiaCliente = fotografiaDAO.obtenerFotoCliente(idCliente, idTipoFoto);
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {
@@ -44,12 +44,12 @@ public class FotoClienteDAO implements IFotoClienteDAO{
     }
 
     @Override
-    public int tomarFoto(FotografiaCliente fotoCliente) {
+    public int crearFotoCliente(FotoCliente fotoCliente) {
         int rows = 0;
         SqlSession conn = MyBatisUtil.getSession();
         try {
             IFotoClienteDAO fotograClienteDAO = conn.getMapper(IFotoClienteDAO.class);
-            rows = fotograClienteDAO.tomarFoto(fotoCliente);
+            rows = fotograClienteDAO.crearFotoCliente(fotoCliente);
             conn.commit();
         } catch (Exception e) {
             conn.rollback();
@@ -58,5 +58,22 @@ public class FotoClienteDAO implements IFotoClienteDAO{
             conn.close();
         }
         return rows;
-    }   
+    }
+    
+    @Override
+    public int editarFotoCliente(FotoCliente fotoCliente) {
+        int rows = 0;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IFotoClienteDAO fotograClienteDAO = conn.getMapper(IFotoClienteDAO.class);
+            rows = fotograClienteDAO.editarFotoCliente(fotoCliente);
+            conn.commit();
+        } catch (Exception e) {
+            conn.rollback();
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return rows;
+    }
 }

@@ -24,8 +24,7 @@ public class TipoFoto {
     private Integer idTipoFoto;
     private String tipoFoto;
 
-    public TipoFoto() {
-    }
+    public TipoFoto() {}
 
     public TipoFoto(Integer idTipoFoto, String tipoFoto) {
         this.idTipoFoto = idTipoFoto;
@@ -46,5 +45,10 @@ public class TipoFoto {
 
     public void setTipoFoto(String tipoFoto) {
         this.tipoFoto = tipoFoto;
+    }
+
+    @Override
+    public String toString() {
+        return getTipoFoto();
     }
 }

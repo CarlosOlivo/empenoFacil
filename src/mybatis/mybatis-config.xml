@@ -37,10 +37,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <mapper resource="mybatis/mappers/DomicilioMapper.xml"/>
         <mapper resource="mybatis/mappers/EmpleadoMapper.xml"/>
         <mapper resource="mybatis/mappers/EstadoMapper.xml"/>
+        <mapper resource="mybatis/mappers/FotoClienteMapper.xml"/>
         <mapper resource="mybatis/mappers/MunicipioMapper.xml"/>
         <mapper resource="mybatis/mappers/OcupacionMapper.xml"/>
         <mapper resource="mybatis/mappers/PrendaMapper.xml"/>
         <mapper resource="mybatis/mappers/RolMapper.xml"/>
+        <mapper resource="mybatis/mappers/TipoFotoMapper.xml"/>
         <mapper resource="mybatis/mappers/TipoPrendaMapper.xml"/>
     </mappers>
 </configuration>

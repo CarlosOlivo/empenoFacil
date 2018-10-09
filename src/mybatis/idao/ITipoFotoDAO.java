@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author lunix
  */
-public interface ITipoDAO {
+public interface ITipoFotoDAO {
     public List<TipoFoto> obtenerTiposFoto();
     public TipoFoto obtenerTipoFoto(Integer idTipoFoto);
 }

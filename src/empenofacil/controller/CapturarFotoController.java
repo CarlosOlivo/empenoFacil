@@ -18,77 +18,204 @@ package empenofacil.controller;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
-import java.awt.event.ActionEvent;
-
+import empenofacil.Util;
+import empenofacil.model.Cliente;
+import empenofacil.model.FotoCliente;
+import empenofacil.model.TipoFoto;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.event.EventHandler;
+import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderImage;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import mybatis.dao.FotoClienteDAO;
+import mybatis.dao.TipoFotoDAO;
 
 
 public class CapturarFotoController implements Initializable {
 
+    private Stage dialogStage;
+    private final SwingNode webCamPanel;
+    private WebcamPanel panel;
+    private String NAMECAM;
+    private Webcam webcam;
+    private BufferedImage img;
+    private boolean ready;
+    private Cliente cliente;
+    private final TipoFotoDAO tipoFotoDAO;
+    private final FotoClienteDAO fotoClienteDAO;
+    
     @FXML
-    private ComboBox<String> seleccionaCamara;
-
+    private ChoiceBox<String> seleccionaCamara;
     @FXML
     private Pane panelFoto;
-
     @FXML
     private Button tomarFoto;
-
     @FXML
-    private Button fotoguardar;
+    private Button tomarFotoDeNuevo;
+    @FXML
+    private Button guardarFoto;
+    @FXML
+    private VBox panelOpciones;
+    @FXML
+    private VBox clienteV;
+    @FXML
+    private ChoiceBox<TipoFoto> clienteC;
+    @FXML
+    private VBox prendaV;
 
-    private Webcam webcam;
-    private BufferedImage image;
-    private boolean ready = false;
-    private String NAMECAM = null;
-    private WebcamPanel panel = null;
+    public CapturarFotoController() {
+        webCamPanel = new SwingNode();
+        ready = false;
+        cliente = new Cliente();
+        tipoFotoDAO = new TipoFotoDAO();
+        fotoClienteDAO = new FotoClienteDAO();
+    }
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        cargarWebcams();
+        cargarCanvasWebcam();
+        seleccionaCamara.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (ready && (newValue == null ? oldValue != null : !newValue.equals(oldValue)) && newValue != null) {
+                NAMECAM = newValue;
+            }
+        });
+        tomarFoto.managedProperty().bind(tomarFoto.visibleProperty());
+        tomarFotoDeNuevo.managedProperty().bind(tomarFotoDeNuevo.visibleProperty());
+        tomarFotoDeNuevo.visibleProperty().bind(tomarFoto.visibleProperty().not());
+        guardarFoto.visibleProperty().bind(tomarFotoDeNuevo.visibleProperty());
+        ready = true;
+    }
 
     public void cargarWebcams() {
         List<Webcam> list = Webcam.getWebcams();
         if (list != null && list.size() > 0) {
             NAMECAM = list.get(0).getName();
-            System.out.println("*1* " + NAMECAM);
             for (Webcam w : list) {
                 this.seleccionaCamara.getItems().add(w.getName());
                 NAMECAM = w.getName();
             }
-            System.out.println("*2* " + NAMECAM);
-            seleccionaCamara.getSelectionModel().getSelectedItem();
+            seleccionaCamara.getSelectionModel().select(NAMECAM);
         }
     }
-
-    private void showPicture() {
-        if (image != null) {
-            this.panelFoto.getChildren().removeAll();
-            Label picture = new Label();
-            picture.setGraphic(picture);
-            this.panelFoto.getChildren().add(picture);
+    
+    private void cargarCanvasWebcam(){
+        if(NAMECAM != null){
+            if(webcam != null && webcam.isOpen()){
+                webcam.close();
+            }
+            webcam = Webcam.getWebcamByName(NAMECAM);
+            webcam.setViewSize(new Dimension(640,480));
+            panel = new WebcamPanel(webcam);
+            webCamPanel.setContent(panel);
+            panelFoto.getChildren().setAll(webCamPanel);
         }
     }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        tomarFoto.setOnAction((javafx.event.ActionEvent event) -> {
-            image = webcam.getImage();
-            tomarFoto.setVisible(false);
-            fotoguardar.setVisible(true);
-            showPicture();
-        });
-        fotoguardar.setOnAction((javafx.event.ActionEvent event) -> {
+    
+    @FXML
+    private void tomarFoto() {
+        img = webcam.getImage();
+        tomarFoto.setVisible(false);
+        mostrarFoto();
+    }
+    
+    @FXML
+    private void tomarFotoDeNuevo() {
+        tomarFoto.setVisible(true);
+        webCamPanel.setContent(panel);
+    }
+    
+    private void mostrarFoto(){
+        if(img != null){
+            JLabel foto = new JLabel(new ImageIcon(img));
+            webCamPanel.setContent(foto);
+        }
+    }
+    
+    @FXML
+    private void guardarFoto() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(img, "jpg", baos);
+            baos.flush();
+            byte[] imgBytes = baos.toByteArray();
+            baos.close();
+            TipoFoto tipoFoto = clienteC.getValue();
+            if(tipoFoto == null) {
+                Util.dialogo(Alert.AlertType.ERROR, "Selecciona un tipo de foto");
+                return;
+            }
+            FotoCliente fotoCliente = fotoClienteDAO.obtenerFotoCliente(cliente.getIdCliente(), tipoFoto.getIdTipoFoto());
+            if(fotoCliente == null) {
+                if(fotoClienteDAO.crearFotoCliente(new FotoCliente(null, tipoFoto.getIdTipoFoto(), cliente.getIdCliente(), imgBytes)) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al guardar la foto");
+                } else {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Foto guardada correctamente");
+                }
+            } else {
+                Optional<ButtonType> opcion = Util.confirmacion("Foto duplicada", "Ya existe una foto, ¿Deseas reemplazarla?");
+                if(opcion.get() == ButtonType.YES) {
+                    fotoCliente.setFoto(imgBytes);
+                    if(fotoClienteDAO.editarFotoCliente(fotoCliente) == 0) {
+                        Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al reemplazar la foto");
+                    } else {
+                        Util.dialogo(Alert.AlertType.INFORMATION, "Foto reemplazaada correctamente");
+                    }
+                } else {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Foto descartada");
+                }
+            }
+            tomarFotoDeNuevo();
+            clienteC.getSelectionModel().clearSelection();
+        } catch (IOException ex) {
+            Util.excepcion(ex);
+        }
+    }
+    
+    @FXML
+    private void cerrar() {
+        dialogStage.close();
+    }
+    
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+        panelOpciones.getChildren().remove(prendaV);
+        cargarTiposFotoCliente();
+    }
+    
+    private void cargarTiposFotoCliente() {
+        List<TipoFoto> tiposFoto = tipoFotoDAO.obtenerTiposFoto();
+        if (tiposFoto != null && !tiposFoto.isEmpty()) {
+            clienteC.getItems().setAll(tiposFoto);
+        } else {
+            Util.dialogo(Alert.AlertType.ERROR, "No hay tipos de fotos en el sistema");
+        }
+    }
+    
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+        salir();
+    }
+    
+    private void salir() {
+        dialogStage.setOnHiding((event) -> {
+            webcam.close();
         });
     }
-
 }

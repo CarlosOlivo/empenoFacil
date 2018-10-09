@@ -16,15 +16,15 @@
  */
 package mybatis.idao;
 
-import empenofacil.model.FotografiaCliente;
+import empenofacil.model.FotoCliente;
+import org.apache.ibatis.annotations.Param;
 
 /**
  *
  * @author lunix
  */
 public interface IFotoClienteDAO {
-    public FotografiaCliente obtenerFotografiaCliente(Integer idFotoCliente);
-    
-    public int tomarFoto(FotografiaCliente fotoCliente);
-    
+    public FotoCliente obtenerFotoCliente(@Param("idCliente") Integer idCliente, @Param("idTipoFoto") Integer idTipoFoto);
+    public int crearFotoCliente(FotoCliente fotoCliente);
+    public int editarFotoCliente(FotoCliente fotoCliente);
 }

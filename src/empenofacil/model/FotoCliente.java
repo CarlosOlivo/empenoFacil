@@ -20,17 +20,16 @@ package empenofacil.model;
  *
  * @author lunix
  */
-public class FotografiaCliente {
+public class FotoCliente {
 
     private Integer idFotoCliente;
     private Integer idTipoFoto;
     private Integer idCliente;
     private Object foto;
 
-    public FotografiaCliente() {
-    }
+    public FotoCliente() {}
 
-    public FotografiaCliente(Integer idFotoCliente, Integer idTipoFoto, Integer idCliente, Object foto) {
+    public FotoCliente(Integer idFotoCliente, Integer idTipoFoto, Integer idCliente, Object foto) {
         this.idFotoCliente = idFotoCliente;
         this.idTipoFoto = idTipoFoto;
         this.idCliente = idCliente;
@@ -68,5 +67,4 @@ public class FotografiaCliente {
     public void setFoto(Object foto) {
         this.foto = foto;
     }
-
 }
