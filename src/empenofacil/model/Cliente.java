@@ -206,4 +206,9 @@ public class Cliente {
     public void setListaNegra(Boolean listaNegra) {
         this.listaNegra = listaNegra;
     }
+
+    @Override
+    public String toString() {
+        return getNombre() + " " + getApellidoPaterno();
+    }
 }

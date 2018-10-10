@@ -16,6 +16,7 @@
  */
 package empenofacil.controller;
 
+import empenofacil.Util;
 import empenofacil.model.Empleado;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -46,5 +47,10 @@ public class MenuController implements Initializable {
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
         usuario.setText("Bienvenid@ " + getEmpleado().getNombre() + " " + getEmpleado().getApellidoPaterno());
+    }
+    
+    @FXML
+    private void cerrarSesion() {
+        Util.login();
     }
 }

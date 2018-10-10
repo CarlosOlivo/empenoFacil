@@ -104,4 +104,21 @@ public class ClienteDAO implements IClienteDAO {
         }
         return rows;
     }
+    
+    @Override
+    public int editarListaNegraCliente(Cliente cliente) {
+        int rows = 0;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IClienteDAO clienteDAO = conn.getMapper(IClienteDAO.class);
+            rows = clienteDAO.editarListaNegraCliente(cliente);
+            conn.commit();
+        } catch (Exception e) {
+            conn.rollback();
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return rows;
+    }
 }

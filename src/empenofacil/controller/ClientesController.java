@@ -40,6 +40,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -47,6 +48,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
@@ -422,7 +424,8 @@ public class ClientesController implements Initializable {
     private class Opciones extends TableCell<Cliente, Void> {
 
         private final Hyperlink fotos = new Hyperlink("Fotos");
-        private final HBox hb = new HBox(fotos);
+        private final Hyperlink lista = new Hyperlink("Lista negra");
+        private final HBox hb = new HBox(fotos, lista);
 
         {
             hb.setSpacing(5);
@@ -431,6 +434,30 @@ public class ClientesController implements Initializable {
             fotos.setOnAction(event -> {
                 Cliente cliente = getTableView().getItems().get(getIndex());
                 Util.capturarFoto(cliente);
+            });
+            lista.setOnAction(event -> {
+                Cliente cliente = getTableView().getItems().get(getIndex());
+                if(cliente.getListaNegra()) {
+                    Optional<ButtonType> confirmacion = Util.confirmacion("Lista negra", "El cliente se encuentra en la lista negra, ¿desea eliminarlo?");
+                    if(confirmacion.get() == ButtonType.YES) {
+                        cliente.setListaNegra(false);
+                        if(clienteDAO.editarListaNegraCliente(cliente) > 0) {
+                            Util.dialogo(Alert.AlertType.INFORMATION, "Cliente eliminado de la lista negra correctamente.");
+                        } else {
+                            Util.dialogo(Alert.AlertType.INFORMATION, "Ocurrio un error al eliminar al Cliente de la lista negra.");
+                        }
+                    }
+                } else {
+                    Optional<ButtonType> confirmacion = Util.confirmacion("Lista negra", "El cliente no se encuentra en la lista negra, ¿desea agregarlo?");
+                    if(confirmacion.get() == ButtonType.YES) {
+                        cliente.setListaNegra(true);
+                        if(clienteDAO.editarListaNegraCliente(cliente) > 0) {
+                            Util.dialogo(Alert.AlertType.INFORMATION, "Cliente agregado a la lista negra correctamente.");
+                        } else {
+                            Util.dialogo(Alert.AlertType.INFORMATION, "Ocurrio un error al agregar al Cliente de la lista negra.");
+                        }
+                    }
+                }
             });
         }
 

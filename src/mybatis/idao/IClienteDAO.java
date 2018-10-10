@@ -29,4 +29,5 @@ public interface IClienteDAO {
     public Cliente obtenerCliente(Integer idCliente);
     public int crearCliente(Cliente cliente);
     public int editarCliente(Cliente cliente);
+    public int editarListaNegraCliente(Cliente cliente);
 }

@@ -41,4 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         telefono = IF(#{telefono} = '', NULL, #{telefono}), celular = IF(#{celular} = '', NULL, #{celular}), fechaNacimiento=#{fechaNacimiento},
         curp = #{curp}, rfc = #{rfc} WHERE idCliente = ${idCliente}
     </update>
+    <update id="editarListaNegraCliente" parameterType="empenofacil.model.Cliente">
+        UPDATE cliente SET listaNegra = #{listaNegra} WHERE idCliente = ${idCliente}
+    </update>
 </mapper>
