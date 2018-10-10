@@ -20,22 +20,22 @@ import empenofacil.Util;
 import empenofacil.model.CategoriaPrenda;
 import java.util.List;
 import mybatis.MyBatisUtil;
-import mybatis.idao.ICategoriaPrenda;
 import org.apache.ibatis.session.SqlSession;
+import mybatis.idao.ICategoriaPrendaDAO;
 
 /**
  *
  * @author lunix
  */
-public class CategoriaPrendaDAO implements ICategoriaPrenda{
+public class CategoriaPrendaDAO implements ICategoriaPrendaDAO{
 
     @Override
-    public List<CategoriaPrenda> obtenerPrendas() {
+    public List<CategoriaPrenda> obtenerCategoriasPrenda(Integer idTipoPrenda) {
         List<CategoriaPrenda> list = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
-            ICategoriaPrenda categoriaPrenda = conn.getMapper(ICategoriaPrenda.class);
-            list = categoriaPrenda.obtenerPrendas();
+            ICategoriaPrendaDAO categoriaPrenda = conn.getMapper(ICategoriaPrendaDAO.class);
+            list = categoriaPrenda.obtenerCategoriasPrenda(idTipoPrenda);
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {

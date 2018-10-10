@@ -25,6 +25,6 @@ import java.util.List;
  */
 public interface ITipoPrendaDAO {
 
-    public List<TipoPrenda> obtenerTipoPrendas();
+    public List<TipoPrenda> obtenerTiposPrenda();
 
 }

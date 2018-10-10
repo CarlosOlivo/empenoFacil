@@ -23,8 +23,8 @@ import java.util.List;
  *
  * @author lunix
  */
-public interface ICategoriaPrenda {
+public interface ICategoriaPrendaDAO {
 
-    public List<CategoriaPrenda> obtenerPrendas();
+    public List<CategoriaPrenda> obtenerCategoriasPrenda(Integer idTipoPrenda);
 
 }

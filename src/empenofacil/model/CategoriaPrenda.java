@@ -24,14 +24,16 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class CategoriaPrenda {
     private Integer idCategoriaPrenda;
+    private Integer idTipoPrenda;
     private SimpleStringProperty categoriaPrenda;
     
     public CategoriaPrenda(){
         this.categoriaPrenda = new SimpleStringProperty();
     }
 
-    public CategoriaPrenda(Integer idCategoriaPrenda, String categoriaPrenda) {
+    public CategoriaPrenda(Integer idCategoriaPrenda, Integer idTipoPrenda, String categoriaPrenda) {
         this.idCategoriaPrenda = idCategoriaPrenda;
+        this.idTipoPrenda = idTipoPrenda;
         this.categoriaPrenda = new SimpleStringProperty(categoriaPrenda);
     }
 
@@ -43,11 +45,28 @@ public class CategoriaPrenda {
         this.idCategoriaPrenda = idCategoriaPrenda;
     }
 
-    public SimpleStringProperty getCategoriaPrenda() {
-        return categoriaPrenda;
+    public Integer getIdTipoPrenda() {
+        return idTipoPrenda;
     }
 
-    public void setCategoriaPrenda(SimpleStringProperty categoriaPrenda) {
-        this.categoriaPrenda = categoriaPrenda;
+    public void setIdTipoPrenda(Integer idTipoPrenda) {
+        this.idTipoPrenda = idTipoPrenda;
+    }
+    
+    public SimpleStringProperty getCategoriaPrendaProperty() {
+        return categoriaPrenda;
+    }
+    
+    public String getCategoriaPrenda() {
+        return categoriaPrenda.get();
+    }
+
+    public void setCategoriaPrenda(String categoriaPrenda) {
+        this.categoriaPrenda.set(categoriaPrenda);
+    }
+
+    @Override
+    public String toString() {
+        return getCategoriaPrenda();
     }
 }

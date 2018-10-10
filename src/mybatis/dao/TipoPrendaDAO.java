@@ -30,12 +30,12 @@ import org.apache.ibatis.session.SqlSession;
 public class TipoPrendaDAO implements ITipoPrendaDAO{
 
     @Override
-    public List<TipoPrenda> obtenerTipoPrendas() {
+    public List<TipoPrenda> obtenerTiposPrenda() {
         List<TipoPrenda> list = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
             ITipoPrendaDAO tipoPrendaDAO = conn.getMapper(ITipoPrendaDAO.class);
-            list = tipoPrendaDAO.obtenerTipoPrendas();
+            list = tipoPrendaDAO.obtenerTiposPrenda();
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {

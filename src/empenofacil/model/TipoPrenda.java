@@ -43,12 +43,21 @@ public class TipoPrenda {
     public void setIdTipoPrenda(Integer idTipoPrenda) {
         this.idTipoPrenda = idTipoPrenda;
     }
-
-    public SimpleStringProperty getTipoPrenda() {
+    
+    public SimpleStringProperty getTipoPrendaProperty() {
         return tipoPrenda;
     }
 
-    public void setTipoPrenda(SimpleStringProperty tipoPrenda) {
-        this.tipoPrenda = tipoPrenda;
+    public String getTipoPrenda() {
+        return tipoPrenda.get();
+    }
+
+    public void setTipoPrenda(String tipoPrenda) {
+        this.tipoPrenda.set(tipoPrenda);
+    }
+
+    @Override
+    public String toString() {
+        return getTipoPrenda();
     }
 }

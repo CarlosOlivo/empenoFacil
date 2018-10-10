@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="mybatis.idao.ITipoPrendaDAO">
-    <select id="obtenerTipoPrenda" resultType="empenofacil.model.TipoPrenda">
+    <select id="obtenerTiposPrenda" resultType="empenofacil.model.TipoPrenda">
        SELECT * FROM tipo_prenda
     </select>
 </mapper>    

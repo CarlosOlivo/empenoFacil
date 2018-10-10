@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="mybatis.idao.ICategoriaPrendaDAO">
-    <select id="obtenerCategoriaPrenda" resultType="empenofacil.model.CategoriaPrenda">
-       SELECT * FROM categoria_prenda
+    <select id="obtenerCategoriasPrenda" parameterType="int" resultType="empenofacil.model.CategoriaPrenda">
+       SELECT * FROM categoria_prenda WHERE idTipoPrenda = #{idTipoPrenda}
     </select>
 </mapper>
