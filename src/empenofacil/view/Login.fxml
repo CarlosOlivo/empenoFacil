@@ -41,7 +41,7 @@
       </GridPane>
       <HBox alignment="CENTER" spacing="5.0">
          <children>
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#login" text="Iniciar sesión" />
+            <Button fx:id="login" defaultButton="true" mnemonicParsing="false" onAction="#login" text="Iniciar sesión" />
             <Button cancelButton="true" mnemonicParsing="false" onAction="#salir" text="Salir" />
          </children>
          <VBox.margin>

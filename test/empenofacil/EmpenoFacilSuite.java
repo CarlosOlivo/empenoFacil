@@ -21,7 +21,9 @@ import org.junit.runners.Suite;
 
 @RunWith(value = Suite.class)
 @Suite.SuiteClasses({
-  EmpleadoTest.class
+  EmpleadoTest.class,
+  LoginTest.class,
+  LoginTestGUI.class
 })
 public class EmpenoFacilSuite {
     // TODO

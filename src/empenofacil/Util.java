@@ -48,6 +48,16 @@ import javafx.stage.StageStyle;
  */
 public class Util {
     
+    private static boolean JUnit = false;
+
+    public static boolean isJUnit() {
+        return JUnit;
+    }
+
+    public static void setJUnit(boolean JUnit) {
+        Util.JUnit = JUnit;
+    }
+    
     /**
      * Despliega una confirmación JavaFX
      * 
@@ -78,6 +88,8 @@ public class Util {
         Alert alert = new Alert(tipo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
+        Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        okButton.setId("OK");
         alert.show();
     }
 
@@ -136,6 +148,10 @@ public class Util {
      * @param empleado Empleado del sistema
      */
     public static void menu(Empleado empleado) {
+        if(isJUnit()) {
+            dialogo(Alert.AlertType.INFORMATION, "Menú");
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Menu.fxml"));
             Parent root = (Parent) loader.load();
