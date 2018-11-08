@@ -19,19 +19,51 @@ package empenofacil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.DialogPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.testfx.api.FxRobotContext;
 
 /**
- *
+ * Clase utilitaria de pruebas
+ * 
  * @author Carlos
  */
 @Ignore
 public class UtilTest {
 
+    /**
+     * Inicializa un Stage principal
+     * @param stage Stage principal a inicializar
+     * @param fxml Archivo .FXML a cargar
+     * @throws Exception Exepción
+     */
+    public static void cargarStage(Stage stage, String fxml) throws Exception {
+        FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource(fxml));
+        Parent root = (Parent) loader.load();
+        Scene scene = new Scene(root);
+        stage.hide();
+        stage.setScene(scene);
+        stage.setTitle("Empeño fácil");
+        stage.setResizable(false);
+        stage.setMaximized(false);
+        stage.sizeToScene();
+        stage.show();
+        stage.toFront();
+    }
+
+    /**
+     * Obtiene el Stage del primer dialogo modal que encuentre al frente
+     * 
+     * @param robotContext Contexto
+     * @return Stage del dialogo modal
+     */
     public static Stage getTopModalStage(final FxRobotContext robotContext) {
         final List<Window> allWindows = new ArrayList<>(robotContext.getWindowFinder().listWindows());
         Collections.reverse(allWindows);
@@ -42,5 +74,17 @@ public class UtilTest {
                 .filter(window -> ((javafx.stage.Stage) window).getModality() == Modality.APPLICATION_MODAL)
                 .findFirst()
                 .orElse(null);
+    }
+    
+    /**
+     * Obtiene el primer DialogPane que se encuentre al frente
+     * 
+     * @param fxRobotContext Contexto
+     * @return DialogPane encontrado
+     */
+    public static DialogPane getTopDialogPane(final FxRobotContext fxRobotContext) {
+        final Stage actualAlertDialog = UtilTest.getTopModalStage(fxRobotContext);
+        Assert.assertNotNull(actualAlertDialog);
+        return (DialogPane) actualAlertDialog.getScene().getRoot();
     }
 }

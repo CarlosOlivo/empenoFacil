@@ -29,8 +29,9 @@ import javafx.scene.control.TextField;
 import mybatis.dao.EmpleadoDAO;
 
 public class LoginController implements Initializable {
+
     private final EmpleadoDAO empleadoDAO;
-    
+
     @FXML
     private TextField user;
     @FXML
@@ -39,32 +40,40 @@ public class LoginController implements Initializable {
     public LoginController() {
         empleadoDAO = new EmpleadoDAO();
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-    
+
     @FXML
     private void login() {
-        if(user.getText().isEmpty()) {
+        if (user.getText().isEmpty()) {
             Util.dialogo(Alert.AlertType.ERROR, "El campo usuario esta vacio");
             return;
         }
-        if(pass.getText().isEmpty()) {
+        if (pass.getText().isEmpty()) {
             Util.dialogo(Alert.AlertType.ERROR, "El campo contraseña esta vacio");
             return;
         }
         Empleado empleado = empleadoDAO.obtenerEmpleado(user.getText(), pass.getText());
-        if(empleado != null) {
-            Util.menu(empleado);
+        if (empleado != null) {
+            if (Util.isDebug()) {
+                Util.dialogo(Alert.AlertType.INFORMATION, "Menú");
+            } else {
+                Util.menu(empleado);
+            }
         } else {
             Util.dialogo(Alert.AlertType.ERROR, "Usuario y/o contraseña invalidos");
         }
     }
-    
+
     @FXML
     private void salir() {
-        Platform.exit();
+        if (Util.isDebug()) {
+            Util.dialogo(Alert.AlertType.INFORMATION, "Salir");
+        } else {
+            Platform.exit();
+        }
     }
 }

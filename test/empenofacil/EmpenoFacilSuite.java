@@ -18,12 +18,12 @@ package empenofacil;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
-@RunWith(value = Suite.class)
-@Suite.SuiteClasses({
+@RunWith(Suite.class)
+@SuiteClasses({
   EmpleadoTest.class,
-  LoginTest.class,
-  LoginTestGUI.class
+  LoginTest.class
 })
 public class EmpenoFacilSuite {
     // TODO

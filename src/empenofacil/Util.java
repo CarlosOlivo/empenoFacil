@@ -48,14 +48,24 @@ import javafx.stage.StageStyle;
  */
 public class Util {
     
-    private static boolean JUnit = false;
+    private static boolean debug = false;
 
-    public static boolean isJUnit() {
-        return JUnit;
+    /**
+     * Regresa el estado de la bandera de depuración
+     * 
+     * @return Estado de bandera actual
+     */
+    public static boolean isDebug() {
+        return debug;
     }
 
-    public static void setJUnit(boolean JUnit) {
-        Util.JUnit = JUnit;
+    /**
+     * Cambia el estado de la bandera de depuración
+     * 
+     * @param debug Nuevo estado de bandera
+     */
+    public static void setDebug(boolean debug) {
+        Util.debug = debug;
     }
     
     /**
@@ -90,7 +100,11 @@ public class Util {
         alert.setContentText(mensaje);
         Button okButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
         okButton.setId("OK");
-        alert.show();
+        if(isDebug()) {
+            alert.showAndWait();
+        } else {
+            alert.show();
+        }
     }
 
     /**
@@ -148,10 +162,6 @@ public class Util {
      * @param empleado Empleado del sistema
      */
     public static void menu(Empleado empleado) {
-        if(isJUnit()) {
-            dialogo(Alert.AlertType.INFORMATION, "Menú");
-            return;
-        }
         try {
             FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Menu.fxml"));
             Parent root = (Parent) loader.load();

@@ -42,7 +42,7 @@
       <HBox alignment="CENTER" spacing="5.0">
          <children>
             <Button fx:id="login" defaultButton="true" mnemonicParsing="false" onAction="#login" text="Iniciar sesión" />
-            <Button cancelButton="true" mnemonicParsing="false" onAction="#salir" text="Salir" />
+            <Button fx:id="salir" cancelButton="true" mnemonicParsing="false" onAction="#salir" text="Salir" />
          </children>
          <VBox.margin>
             <Insets bottom="5.0" />

@@ -119,39 +119,50 @@ public class ClientesController implements Initializable {
         fechaNacimiento = new DatePicker();
         municipio = new ChoiceBox<>();
         ocupacion = new ChoiceBox<>();
+        ocupacion.setId("ocupacionC");
+        fechaNacimiento.setId("fechaNacimientoF");
+        estado.setId("estadoC");
+        municipio.setId("municipioC");
         formulario = Form.of(
                 Section.of(
                         Field.ofStringType(cliente.getNombreProperty())
+                                .id("nombreF")
                                 .label("Nombe")
                                 .validate(RegexValidator.forPattern("(?![\\W])^[\\p{L} .'-]{3,}$", "Introduce un nombre valido."))
                                 .required(true),
                         Field.ofStringType(cliente.getApellidoPaternoProperty())
+                                .id("apellidoPaternoF")
                                 .label("Apellido paterno")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("(?![\\W])^[\\p{L} .'-]{3,}$", "Introduce un apellido paterno valido."))
                                 .required(true),
                         Field.ofStringType(cliente.getApellidoMaternoProperty())
+                                .id("apellidoMaternoF")
                                 .label("Apellido materno")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^\\.{0}$|(?![\\W])^[\\p{L} .'-]{3,}$", "Introduce un apellido materno valido.")),
                         Field.ofStringType(cliente.getTelefonoProperty())
+                                .id("telefonoF")
                                 .label("Télefono")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^\\.{0}$|\\d{10}", "Introduce un número de telefono de 10 digitos.")),
                         Field.ofStringType(cliente.getCelularProperty())
+                                .id("celularF")
                                 .label("Celular")
                                 .span(ColSpan.HALF)
-                                .validate(RegexValidator.forPattern("^\\.{0}$|\\d{10}", "Introduce un número de telefono de 10 digitos.")),
+                                .validate(RegexValidator.forPattern("^\\.{0}$|\\d{10}", "Introduce un número de celular de 10 digitos.")),
                         NodeElement.of(Util.contenedor("Ocupación", ocupacion))
                                 .span(ColSpan.HALF),
                         NodeElement.of(Util.contenedor("Fecha de nacimiento", fechaNacimiento))
                                 .span(ColSpan.HALF),
                         Field.ofStringType(cliente.getCurpProperty())
+                                .id("CURPF")
                                 .label("CURP")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{18}$", "Introduce una CURP de 18 caracteres."))
                                 .required(true),
                         Field.ofStringType(cliente.getRfcProperty())
+                                .id("RFCF")
                                 .label("RFC")
                                 .span(ColSpan.HALF)
                                 .validate(RegexValidator.forPattern("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{13}$", "Introduce el RFC de 13 caracteres."))
@@ -159,26 +170,31 @@ public class ClientesController implements Initializable {
                 ).title("Datos personales").collapsible(false),
                 Section.of(
                         Field.ofStringType(domicilio.getCalleProperty())
+                                .id("calleF")
                                 .label("Calle")
                                 .span(9)
                                 .validate(StringLengthValidator.atLeast(1, "Introduce la calle de tu domicilio."))
                                 .required(true),
                         Field.ofStringType(domicilio.getNumeroProperty())
+                                .id("numeroF")
                                 .label("Número")
                                 .span(3)
                                 .validate(StringLengthValidator.between(1, 5, "Introduce el número de tu domicilio, maximo 5 caracteres."))
                                 .required(true),
                         Field.ofStringType(domicilio.getColoniaProperty())
+                                .id("coloniaF")
                                 .label("Colonia")
                                 .span(5)
                                 .validate(StringLengthValidator.atLeast(1, "Introduce la colonia de tu domicilio."))
                                 .required(true),
                         Field.ofStringType(domicilio.getLocalidadProperty())
+                                .id("localidadF")
                                 .label("Localidad")
                                 .span(4)
                                 .validate(StringLengthValidator.atLeast(1, "Introduce la localidad de tu domicilio."))
                                 .required(true),
                         Field.ofIntegerType(domicilio.getCodigoPostalProperty())
+                                .id("codigoPostalF")
                                 .label("Codigo postal")
                                 .span(3)
                                 .validate(IntegerRangeValidator.between(10000, 99999, "Introduce un codigo postal valido de 5 digitos."))
@@ -245,34 +261,51 @@ public class ClientesController implements Initializable {
         if (esFormularioValido()) {
             domicilio.setIdMunicipio(municipio.getValue().getIdMunicipio());
             if (domicilio.getIdDomicilio() == null) {
-                if (domicilioDAO.crearDomicilio(domicilio) == 0) {
-                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el domicilio del cliente");
-                    return;
+                if (Util.isDebug()) {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Nuevo domicilio");
+                } else {
+                    if (domicilioDAO.crearDomicilio(domicilio) == 0) {
+                        Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el domicilio del cliente");
+                        return;
+                    }
                 }
             } else {
-                if (domicilioDAO.editarDomicilio(domicilio) == 0) {
-                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el domicilio del cliente");
-                    return;
+                if (Util.isDebug()) {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Edición domicilio");
+                } else {
+                    if (domicilioDAO.editarDomicilio(domicilio) == 0) {
+                        Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el domicilio del cliente");
+                        return;
+                    }
                 }
+
             }
             cliente.setIdOcupacion(ocupacion.getValue().getIdOcupacion());
             cliente.setIdDomicilio(domicilio.getIdDomicilio());
             cliente.setFechaNacimiento(Date.valueOf(fechaNacimiento.getValue()));
             if (cliente.getIdCliente() == null) {
-                if (clienteDAO.crearCliente(cliente) == 0) {
-                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el cliente");
+                if (Util.isDebug()) {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Nuevo cliente");
                 } else {
-                    Util.dialogo(Alert.AlertType.INFORMATION, "Cliente creado correctamente");
-                    actualizarClientes();
-                    cancelar();
+                    if (clienteDAO.crearCliente(cliente) == 0) {
+                        Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el cliente");
+                    } else {
+                        Util.dialogo(Alert.AlertType.INFORMATION, "Cliente creado correctamente");
+                        actualizarClientes();
+                        cancelar();
+                    }
                 }
             } else {
-                if (clienteDAO.editarCliente(cliente) == 0) {
-                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el cliente");
+                if (Util.isDebug()) {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Edición domicilio");
                 } else {
-                    Util.dialogo(Alert.AlertType.INFORMATION, "Cliente editado correctamente");
-                    actualizarClientes();
-                    cancelar();
+                    if (clienteDAO.editarCliente(cliente) == 0) {
+                        Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el cliente");
+                    } else {
+                        Util.dialogo(Alert.AlertType.INFORMATION, "Cliente editado correctamente");
+                        actualizarClientes();
+                        cancelar();
+                    }
                 }
             }
         }
@@ -437,11 +470,11 @@ public class ClientesController implements Initializable {
             });
             lista.setOnAction(event -> {
                 Cliente cliente = getTableView().getItems().get(getIndex());
-                if(cliente.getListaNegra()) {
+                if (cliente.getListaNegra()) {
                     Optional<ButtonType> confirmacion = Util.confirmacion("Lista negra", "El cliente se encuentra en la lista negra, ¿desea eliminarlo?");
-                    if(confirmacion.get() == ButtonType.YES) {
+                    if (confirmacion.get() == ButtonType.YES) {
                         cliente.setListaNegra(false);
-                        if(clienteDAO.editarListaNegraCliente(cliente) > 0) {
+                        if (clienteDAO.editarListaNegraCliente(cliente) > 0) {
                             Util.dialogo(Alert.AlertType.INFORMATION, "Cliente eliminado de la lista negra correctamente.");
                         } else {
                             Util.dialogo(Alert.AlertType.INFORMATION, "Ocurrio un error al eliminar al Cliente de la lista negra.");
@@ -449,9 +482,9 @@ public class ClientesController implements Initializable {
                     }
                 } else {
                     Optional<ButtonType> confirmacion = Util.confirmacion("Lista negra", "El cliente no se encuentra en la lista negra, ¿desea agregarlo?");
-                    if(confirmacion.get() == ButtonType.YES) {
+                    if (confirmacion.get() == ButtonType.YES) {
                         cliente.setListaNegra(true);
-                        if(clienteDAO.editarListaNegraCliente(cliente) > 0) {
+                        if (clienteDAO.editarListaNegraCliente(cliente) > 0) {
                             Util.dialogo(Alert.AlertType.INFORMATION, "Cliente agregado a la lista negra correctamente.");
                         } else {
                             Util.dialogo(Alert.AlertType.INFORMATION, "Ocurrio un error al agregar al Cliente de la lista negra.");
