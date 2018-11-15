@@ -19,7 +19,7 @@
                         <TextField fx:id="busquedaTxt" />
                         <ToolBar>
                           <items>
-                            <Button mnemonicParsing="false" text="Button" />
+                            <Button fx:id="btnBusqueda1" mnemonicParsing="false" text="Button" />
                               <Button mnemonicParsing="false" text="Button" />
                           </items>
                         </ToolBar>
@@ -42,14 +42,14 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Clave:" />
-                        <TextField GridPane.columnIndex="1" />
-                        <Label text="Direccion:" GridPane.columnIndex="4" />
-                        <TextField GridPane.columnIndex="5" />
-                        <Label text="Nombre:" GridPane.columnIndex="2" />
-                        <TextField GridPane.columnIndex="3" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Acomulado:" GridPane.rowIndex="1" />
+                        <Label fx:id="lbclave" text="Clave:" />
+                        <TextField fx:id="clavef" GridPane.columnIndex="1" />
+                        <Label fx:id="direccionl" text="Direccion:" GridPane.columnIndex="4" />
+                        <TextField fx:id="direccionf" GridPane.columnIndex="5" />
+                        <Label fx:id="nombrel" text="Nombre:" GridPane.columnIndex="2" />
+                        <TextField fx:id="nombref" GridPane.columnIndex="3" />
+                        <TextField fx:id="acomuladof" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="lblAcumlado" text="Acomulado:" GridPane.rowIndex="1" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -57,9 +57,9 @@
                   </GridPane>
                   <HBox alignment="CENTER_LEFT" spacing="20.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Agregar Articulos" />
-                        <Button mnemonicParsing="false" text="Cancelar" />
-                        <CheckBox mnemonicParsing="false" text="Imprimir Nota" />
+                        <Button fx:id="agregarab" mnemonicParsing="false" text="Agregar Articulos" />
+                        <Button fx:id="cncelarb" mnemonicParsing="false" text="Cancelar" />
+                        <CheckBox fx:id="notacb" mnemonicParsing="false" text="Imprimir Nota" />
                         <HBox alignment="CENTER_LEFT" spacing="20.0" visible="false">
                            <children>
                               <Button mnemonicParsing="false" text="Agregar Articulos" />
@@ -88,7 +88,7 @@
                <children>
                   <TableView layoutY="6.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn minWidth="-1.0" prefWidth="-1.0" text="BOLSA" />
+                      <TableColumn fx:id="articulotabla" minWidth="-1.0" prefWidth="-1.0" text="BOLSA" />
                       <TableColumn minWidth="-1.0" prefWidth="-1.0" text="CTR" />
                         <TableColumn prefWidth="75.0" text="DESCRIPCION" />
                         <TableColumn prefWidth="75.0" text="P. COMER" />
@@ -121,14 +121,14 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="SubTotal:" />
-                  <Label text="IVA:" GridPane.rowIndex="1" />
-                  <Label text="Total:" GridPane.rowIndex="2" />
-                  <Label text="Descuento:" GridPane.columnIndex="2" />
-                  <TextField GridPane.columnIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField GridPane.columnIndex="3" />
+                  <Label fx:id="subtotall" text="SubTotal:" />
+                  <Label fx:id="ival" text="IVA:" GridPane.rowIndex="1" />
+                  <Label fx:id="totall" text="Total:" GridPane.rowIndex="2" />
+                  <Label fx:id="descuentol" text="Descuento:" GridPane.columnIndex="2" />
+                  <TextField fx:id="subtotalf" GridPane.columnIndex="1" />
+                  <TextField fx:id="ivaf" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="totalf" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="descuentof" GridPane.columnIndex="3" />
                </children>
             </GridPane>
          </children>

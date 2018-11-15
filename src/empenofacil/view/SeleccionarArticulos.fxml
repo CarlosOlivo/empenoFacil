@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox spacing="20.0">
+         <children>
+            <RadioButton contentDisplay="CENTER" mnemonicParsing="false" text="Fecha y Tipo" />
+            <RadioButton contentDisplay="CENTER" mnemonicParsing="false" text="Serie, modelo o bolsa">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </RadioButton>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="20.0">
+         <children>
+            <Label alignment="CENTER_RIGHT" text="Inicio">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets left="15.0" right="-15.0" />
+               </padding>
+            </Label>
+            <DatePicker />
+            <Label alignment="CENTER_RIGHT" text="Fin">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets left="15.0" right="-15.0" />
+               </padding>
+            </Label>
+            <DatePicker />
+            <Label text="Prendas con:">
+               <padding>
+                  <Insets left="15.0" right="-15.0" />
+               </padding>
+            </Label>
+            <RadioButton mnemonicParsing="false" text="Oro" />
+            <RadioButton mnemonicParsing="false" text="Aparatos" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" spacing="20.0">
+         <children>
+            <Button mnemonicParsing="false" text="Buscar" />
+            <Button mnemonicParsing="false" text="Limpiar" />
+         </children>
+      </HBox>
+      <HBox VBox.vgrow="ALWAYS">
+         <children>
+            <AnchorPane HBox.hgrow="ALWAYS">
+               <children>
+                  <TableView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="Seleccionado" />
+                      <TableColumn prefWidth="75.0" text="Bolsa" />
+                        <TableColumn prefWidth="75.0" text="Contrato" />
+                        <TableColumn minWidth="-Infinity" prefWidth="350.0" text="Descripción" />
+                        <TableColumn prefWidth="75.0" text="Piezas" />
+                        <TableColumn prefWidth="75.0" text="Modelo" />
+                        <TableColumn prefWidth="75.0" text="Prestamo" />
+                        <TableColumn prefWidth="75.0" text="Interes" />
+                        <TableColumn prefWidth="75.0" text="Total" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="20.0">
+         <children>
+            <Button mnemonicParsing="false" text="Aceptar" />
+            <Button mnemonicParsing="false" text="Cancelar" />
+         </children>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>
