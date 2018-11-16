@@ -16,15 +16,25 @@
  */
 package empenofacil.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -32,7 +42,8 @@ import javafx.scene.control.TextField;
  * @author lunix
  */
 public class VentasController implements Initializable {
-  @FXML
+
+    @FXML
     private Button agregarab;
 
     @FXML
@@ -100,9 +111,28 @@ public class VentasController implements Initializable {
 
     @FXML
     private Label labelBusqueda;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+        agregarab.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    abrirSeccionArticulos();
+                } catch (IOException ex) {
+                    System.out.println("IOException: " + ex.getMessage());
+                }
+            }
+        });
+    }
+
+    public void abrirSeccionArticulos() throws IOException {
+        FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("../empenofacil/view/SeleccionarArticulos.fxml"));
+        Parent root = (Parent) fXMLLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Selecione articulos");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 }

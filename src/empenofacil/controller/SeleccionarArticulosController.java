@@ -20,6 +20,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.layout.HBox;
+
 /**
  * FXML Controller class
  *
@@ -27,12 +35,51 @@ import javafx.fxml.Initializable;
  */
 public class SeleccionarArticulosController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
+    @FXML
+    private Label prendasl;
+
+    @FXML
+    private Button aceptarbn;
+
+    @FXML
+    private Button buscarbn;
+
+    @FXML
+    private TableColumn<?, ?> articulostable;
+
+    @FXML
+    private RadioButton seriebolsar;
+
+    @FXML
+    private DatePicker fincalendar;
+
+    @FXML
+    private RadioButton ororb;
+
+    @FXML
+    private Label finl;
+
+    @FXML
+    private Button cancelarbn;
+
+    @FXML
+    private Button limpiarbn;
+
+    @FXML
+    private RadioButton fechar;
+
+    @FXML
+    private HBox iniciol;
+
+    @FXML
+    private RadioButton aparatosrb;
+
+    @FXML
+    private DatePicker iniciocalendar;
+
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+    public void initialize(URL location, ResourceBundle resources) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
