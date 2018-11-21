@@ -45,6 +45,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <mapper resource="mybatis/mappers/PrendaMapper.xml"/>
         <mapper resource="mybatis/mappers/RolMapper.xml"/>
         <mapper resource="mybatis/mappers/TipoFotoMapper.xml"/>
+        <mapper resource="mybatis/mappers/TipoPrendaMapper.xml"/>
         <mapper resource="mybatis/mappers/VentaMapper.xml"/>
         <mapper resource="mybatis/mappers/Venta_DetalleMapper.xml"/>
     </mappers>
