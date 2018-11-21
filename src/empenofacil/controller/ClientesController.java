@@ -472,7 +472,7 @@ public class ClientesController implements Initializable {
                 Cliente cliente = getTableView().getItems().get(getIndex());
                 if (cliente.getListaNegra()) {
                     Optional<ButtonType> confirmacion = Util.confirmacion("Lista negra", "El cliente se encuentra en la lista negra, ¿desea eliminarlo?");
-                    if (confirmacion.get() == ButtonType.YES) {
+                    if (confirmacion.isPresent() && confirmacion.get() == ButtonType.YES) {
                         cliente.setListaNegra(false);
                         if (clienteDAO.editarListaNegraCliente(cliente) > 0) {
                             Util.dialogo(Alert.AlertType.INFORMATION, "Cliente eliminado de la lista negra correctamente.");
@@ -482,7 +482,7 @@ public class ClientesController implements Initializable {
                     }
                 } else {
                     Optional<ButtonType> confirmacion = Util.confirmacion("Lista negra", "El cliente no se encuentra en la lista negra, ¿desea agregarlo?");
-                    if (confirmacion.get() == ButtonType.YES) {
+                    if (confirmacion.isPresent() && confirmacion.get() == ButtonType.YES) {
                         cliente.setListaNegra(true);
                         if (clienteDAO.editarListaNegraCliente(cliente) > 0) {
                             Util.dialogo(Alert.AlertType.INFORMATION, "Cliente agregado a la lista negra correctamente.");

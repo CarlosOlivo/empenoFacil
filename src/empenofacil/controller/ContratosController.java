@@ -26,29 +26,43 @@ import com.dlsc.formsfx.model.validators.StringLengthValidator;
 import com.dlsc.formsfx.view.renderer.FormRenderer;
 import com.dlsc.formsfx.view.util.ColSpan;
 import empenofacil.Util;
+import empenofacil.model.Bolsa;
 import empenofacil.model.CategoriaPrenda;
 import empenofacil.model.Cliente;
 import empenofacil.model.Contrato;
 import empenofacil.model.Prenda;
 import empenofacil.model.TipoPrenda;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import mybatis.dao.BolsaDAO;
 import mybatis.dao.CategoriaPrendaDAO;
 import mybatis.dao.ClienteDAO;
 import mybatis.dao.ContratoDAO;
+import mybatis.dao.ParametrosDAO;
+import mybatis.dao.PrendaDAO;
 import mybatis.dao.TipoPrendaDAO;
 
 /**
@@ -58,10 +72,13 @@ import mybatis.dao.TipoPrendaDAO;
  */
 public class ContratosController implements Initializable {
 
+    private final BolsaDAO bolsaDAO;
     private final ContratoDAO contratoDAO;
     private final ClienteDAO clienteDAO;
     private final TipoPrendaDAO tipoPrendaDAO;
     private final CategoriaPrendaDAO categoriaPrendaDAO;
+    private final ParametrosDAO parametrosDAO;
+    private final PrendaDAO prendaDAO;
     private final Prenda prenda;
     private final ChoiceBox<CategoriaPrenda> categorias;
     private final ChoiceBox<TipoPrenda> tipos;
@@ -81,13 +98,17 @@ public class ContratosController implements Initializable {
     @FXML
     private TableView<Contrato> contratos;
     @FXML
-    private TableColumn<Contrato, Number> folio;
-    @FXML
-    private TableColumn<Contrato, String> cliente;
+    private TableColumn<Contrato, String> folio;
     @FXML
     private TableColumn<Contrato, String> estadoContrato;
     @FXML
-    private TableColumn<Contrato, Number> total;
+    private TableColumn<Contrato, String> avaluoContrato;
+    @FXML
+    private TableColumn<Contrato, String> prestamoContrato;
+    @FXML
+    private TableColumn<Contrato, String> fechaInicioContrato;
+    @FXML
+    private TableColumn<Contrato, String> fechaFinContrato;
     @FXML
     private ChoiceBox<Cliente> clientesC;
     @FXML
@@ -95,18 +116,29 @@ public class ContratosController implements Initializable {
     @FXML
     private TableColumn<Prenda, String> nombre;
     @FXML
-    private TableColumn<Prenda, Number> precio;
+    private TableColumn<Prenda, String> avaluo;
+    @FXML
+    private TableColumn<Prenda, String> prestamo;
     @FXML
     private TableColumn<Prenda, String> descripcion;
     @FXML
+    private TableColumn<Prenda, Void> colAcciones;
+    @FXML
     private Button guardarPrenda;
+    @FXML
+    private TextField cotitular;
+    @FXML
+    private Label porcentajePrestamo;
 
     public ContratosController() {
+        bolsaDAO = new BolsaDAO();
         contratoDAO = new ContratoDAO();
         clienteDAO = new ClienteDAO();
         tipoPrendaDAO = new TipoPrendaDAO();
         categoriaPrendaDAO = new CategoriaPrendaDAO();
-        prenda = new Prenda(null, null, null, "", 0d, 0d, 0d, "");
+        parametrosDAO = new ParametrosDAO();
+        prendaDAO = new PrendaDAO();
+        prenda = new Prenda(null, null, null, "", 0d, 0d, "", 0d, 0d);
         tipos = new ChoiceBox<>();
         categorias = new ChoiceBox<>();
         formulario = Form.of(
@@ -123,10 +155,10 @@ public class ContratosController implements Initializable {
                         Field.ofDoubleType(prenda.getTamanioProperty())
                                 .label("Tamaño")
                                 .span(ColSpan.HALF),
-                        Field.ofDoubleType(prenda.getPrecioProperty())
-                                .label("Precio")
+                        Field.ofDoubleType(prenda.prestamoProperty())
+                                .label("Prestamo")
                                 .span(ColSpan.HALF)
-                                .validate(DoubleRangeValidator.atLeast(0.1d, "Introduce un precio"))
+                                .validate(DoubleRangeValidator.atLeast(0.1d, "Introduce la cantidad a prestar."))
                                 .required(true),
                         Field.ofDoubleType(prenda.getPesoProperty())
                                 .label("Peso")
@@ -147,6 +179,12 @@ public class ContratosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         contratos.setPlaceholder(new Text("No hay empeños en el sistema..."));
+        folio.setCellValueFactory(data -> data.getValue().folioPropertyFormato());
+        estadoContrato.setCellValueFactory(data -> data.getValue().estadoContratoPropertyFormato());
+        avaluoContrato.setCellValueFactory(data -> data.getValue().totalAvaluoPropertyFormato());
+        prestamoContrato.setCellValueFactory(data -> data.getValue().totalPrestamoPropertyFormato());
+        fechaInicioContrato.setCellValueFactory(data -> data.getValue().fechaInicioContratoFormato());
+        fechaFinContrato.setCellValueFactory(data -> data.getValue().fechaFinContratoFormato());
         contratos.getItems().setAll(contratoDAO.obtenerContratos());
         formulario.binding(BindingMode.CONTINUOUS);
         form.getChildren().setAll(new FormRenderer(formulario));
@@ -160,38 +198,125 @@ public class ContratosController implements Initializable {
         });
         prendas.setPlaceholder(new Text("No hay prendas, agrega al menos una..."));
         nombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
-        precio.setCellValueFactory(data -> data.getValue().getPrecioProperty());
+        avaluo.setCellValueFactory(data -> data.getValue().avaluoPropertyFormato());
+        prestamo.setCellValueFactory(data -> data.getValue().prestamoPropertyFormato());
         descripcion.setCellValueFactory(data -> data.getValue().getDescripcionProperty());
+        colAcciones.setCellFactory(param -> new Opciones());
         prendas.setItems(lista_prendas);
     }
 
     @FXML
     private void nuevoContrato() {
+        clientesC.getSelectionModel().clearSelection();
+        clientesC.getItems().clear();
         cargarClientes();
+        porcentajePrestamo.setText(String.format("Porcentaje de prestamo: %.2f%%", MenuController.getParametrosPredeterminados().getPorcentajePrestamo()*100));
         contratosV.setVisible(false);
         prendasV.setVisible(true);
+        if(clientesC.getItems().isEmpty()) {
+            regresarContratos();
+            Util.dialogo(Alert.AlertType.ERROR, "No hay clientes en el sistema");
+        }
     }
 
     @FXML
     private void nuevaPrenda() {
-        if(lista_prendas.size() > 5) {
+        if(lista_prendas.size() >= 5) {
             Util.dialogo(Alert.AlertType.ERROR, "Solo puedes empeñar 5 prendas a la vez.");
             return;
         }
         cargarTipos();
         prendasV.setVisible(false);
         formV.setVisible(true);
+        if(tipos.getItems().isEmpty()) {
+            regresarPrendas();
+            Util.dialogo(Alert.AlertType.ERROR, "No hay tipos de prenda en el sistema");
+        }
     }
 
     @FXML
     private void regresarContratos() {
+        if(!lista_prendas.isEmpty()) {
+            Optional<ButtonType> confirmacion = Util.confirmacion("Nuevo empleño", "Se descartara el empeño, ¿Deseas continuar?");
+            if(confirmacion.isPresent() && confirmacion.get() == ButtonType.YES) {
+                lista_prendas.clear();
+                cotitular.clear();
+            }
+            if(confirmacion.isPresent() && confirmacion.get() == ButtonType.NO) {
+                return;
+            }
+        }
         prendasV.setVisible(false);
         contratosV.setVisible(true);
     }
 
     @FXML
     private void guardarContrato() {
-        // TODO
+        if(esContratoValido()) {
+            Double totalAvaluo = 0d;
+            Double totalPrestamo = 0d;
+            Contrato contrato = new Contrato(
+                    null, // folio
+                    clientesC.getSelectionModel().getSelectedItem().getIdCliente(), // idCliente
+                    Contrato.ESTADO_CONTRATO.ACTIVO.ordinal(), //idEstadoContrato
+                    1, // idSucursal
+                    MenuController.getEmpleado().getIdEmpleado(), // idEmpleado
+                    0, // numBolsa
+                    new Date(), // FechaInicioContrato
+                    Util.agregarDiasFecha(new Date(), MenuController.getParametrosPredeterminados().getDiasEnTotal()), // FechaFinContrato
+                    cotitular.getText().trim(), //cotitular
+                    totalAvaluo, //totalAvaluo
+                    totalPrestamo //totalPrestamo
+            );
+            if(contratoDAO.crearContrato(contrato) == 0) {
+                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el contrato");
+                return;
+            }
+            if(parametrosDAO.crearParametros(contrato.getFolio()) == 0) {
+                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear los parametros del contrato");
+                return;
+            }
+            for(Prenda prendaTMP : lista_prendas) {
+                totalAvaluo += prendaTMP.getAvaluo();
+                totalPrestamo += prendaTMP.getPrestamo();
+                if(prendaDAO.crearPrenda(prendaTMP) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear la prenda");
+                    return;
+                }
+                if(bolsaDAO.crearBolsa(new Bolsa(contrato.getFolio(), prendaTMP.getIdPrenda())) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al agregar la prenda a la bolsa");
+                    return;
+                }
+            }
+            contrato.setNumBolsa(contrato.getFolio());
+            contrato.setTotalAvaluo(totalAvaluo);
+            contrato.setTotalPrestamo(totalPrestamo);
+            if(contratoDAO.editarContrato(contrato) == 0) {
+                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el contrato");
+            } else {
+                Util.dialogo(Alert.AlertType.INFORMATION, "Contrato creado correctamente");
+                lista_prendas.clear();
+                cotitular.clear();
+                actualizarContratos();
+                regresarContratos();
+            }
+        }
+    }
+    
+    private boolean esContratoValido() {
+        if(clientesC.getSelectionModel().getSelectedItem() == null) {
+            Util.dialogo(Alert.AlertType.ERROR, "Elige un cliente");
+            return false;
+        }
+        if(lista_prendas.isEmpty()) {
+            Util.dialogo(Alert.AlertType.ERROR, "Agrega al menos una prenda");
+            return false;
+        }
+        if(cotitular.getText().trim().isEmpty()) {
+            Util.dialogo(Alert.AlertType.ERROR, "Introduce el nombre del cotitular");
+            return false;
+        }
+        return true;
     }
 
     @FXML
@@ -208,24 +333,38 @@ public class ContratosController implements Initializable {
             return;
         }
         prenda.setIdCategoriaPrenda(categoriaPrendaTMP.getIdCategoriaPrenda());
-        agregarPrenda();
+        lista_prendas.add(
+                new Prenda(
+                        prenda.getIdPrenda(),
+                        prenda.getIdCategoriaPrenda(),
+                        prenda.getIdTipoPrenda(),
+                        prenda.getNombre(),
+                        prenda.getTamanio(),
+                        prenda.getPeso(),
+                        prenda.getDescripcion(),
+                        prenda.getPrestamo()/MenuController.getParametrosPredeterminados().getPorcentajePrestamo(),
+                        prenda.getPrestamo()
+                )
+        );
+        descartarPrenda();
         regresarPrendas();
     }
     
-    private void agregarPrenda() {
-        lista_prendas.add(new Prenda(prenda.getIdPrenda(), prenda.getIdCategoriaPrenda(), prenda.getIdTipoPrenda(), prenda.getNombre(), prenda.getTamanio(), prenda.getPrecio(), prenda.getPeso(), prenda.getDescripcion()));
+    private void descartarPrenda() {
         prenda.setIdPrenda(null);
         prenda.setIdCategoriaPrenda(null);
         prenda.setIdTipoPrenda(null);
         prenda.setNombre("");
         prenda.setTamanio(0d);
-        prenda.setPrecio(0d);
         prenda.setPeso(0d);
         prenda.setDescripcion("");
+        prenda.setAvaluo(0d);
+        prenda.setPrestamo(0d);
     }
 
     @FXML
     private void regresarPrendas() {
+        descartarPrenda();
         formV.setVisible(false);
         prendasV.setVisible(true);
     }
@@ -234,18 +373,15 @@ public class ContratosController implements Initializable {
         List<Cliente> clientes = clienteDAO.obtenerClientes();
         if (clientes != null && !clientes.isEmpty()) {
             clientesC.getItems().setAll(clientes);
-        } else {
-            regresarContratos();
-            Util.dialogo(Alert.AlertType.ERROR, "No hay clientes en el sistema");
         }
     }
     
     private void cargarTipos() {
         categorias.setDisable(true);
-        List<TipoPrenda> clientes = tipoPrendaDAO.obtenerTiposPrenda();
-        if (clientes != null && !clientes.isEmpty()) {
+        List<TipoPrenda> tiposPrenda = tipoPrendaDAO.obtenerTiposPrenda();
+        if (tiposPrenda != null && !tiposPrenda.isEmpty()) {
             categorias.getSelectionModel().clearSelection();
-            tipos.getItems().setAll(clientes);
+            tipos.getItems().setAll(tiposPrenda);
         } else {
             regresarContratos();
             Util.dialogo(Alert.AlertType.ERROR, "No hay tipos de prenda en el sistema");
@@ -253,12 +389,39 @@ public class ContratosController implements Initializable {
     }
     
     private void cargarCategorias(int idTipoPrenda) {
-        List<CategoriaPrenda> municipios = categoriaPrendaDAO.obtenerCategoriasPrenda(idTipoPrenda);
-        if (municipios != null && !municipios.isEmpty()) {
-            categorias.getItems().setAll(municipios);
+        List<CategoriaPrenda> categoriasPrenda = categoriaPrendaDAO.obtenerCategoriasPrenda(idTipoPrenda);
+        if (categoriasPrenda != null && !categoriasPrenda.isEmpty()) {
+            categorias.getItems().setAll(categoriasPrenda);
             categorias.setDisable(false);
         } else {
             Util.dialogo(Alert.AlertType.ERROR, "No hay categorias en el sistema");
+        }
+    }
+    
+    private void actualizarContratos() {
+        contratos.getItems().clear();
+        contratos.getItems().setAll(contratoDAO.obtenerContratos());
+    }
+    
+    private class Opciones extends TableCell<Prenda, Void> {
+
+        private final Hyperlink eliminar = new Hyperlink("❌ Eliminar prenda");
+        private final HBox hb = new HBox(eliminar);
+
+        {
+            hb.setSpacing(5);
+            hb.setPadding(new Insets(-3.5d, 0d, 0d, 0d));
+            hb.setAlignment(Pos.TOP_LEFT);
+            eliminar.setTooltip(new Tooltip("Eliminar prenda"));
+            eliminar.setOnAction(event -> {
+                lista_prendas.remove(getIndex());
+            });
+        }
+
+        @Override
+        protected void updateItem(Void item, boolean empty) {
+            super.updateItem(item, empty);
+            setGraphic(empty ? null : hb);
         }
     }
 }

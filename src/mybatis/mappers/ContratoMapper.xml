@@ -23,10 +23,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <select id="obtenerContrato" parameterType="int" resultType="empenofacil.model.Contrato">
         SELECT * FROM contrato WHERE folio = #{folio}
     </select>
-    <insert id="crearContrato" parameterType="empenofacil.model.Contrato">
-        INSERT INTO contrato(folio, id_estado, rfc_empresa, id_cliente, num_bolsa, 
-        fecha_inicio_contrato, fecha_fin_contrato, iva, subtotal, total, coatitular)
-        VALUES(#{folio}, #{id_estado}, #{rfc_empresa}, #{id_cliente}, #{num_bolsa}, #{fecha_inicio_contrato},        
-        #{fecha_fin_ontrato}, #{iva}, #{subtotal}, #{cotitular})
+    <insert id="crearContrato" parameterType="empenofacil.model.Contrato" useGeneratedKeys="true" keyProperty="folio">
+        INSERT INTO contrato(idCliente, idEstadoContrato, idSucursal, idEmpleado, numBolsa, 
+        fechaInicioContrato, fechaFinContrato, cotitular, totalAvaluo, totalPrestamo)
+        VALUES(#{idCliente}, #{idEstadoContrato}, #{idSucursal}, #{idEmpleado}, #{numBolsa},
+        #{fechaInicioContrato}, #{fechaFinContrato}, #{cotitular,}, #{totalAvaluo}, #{totalPrestamo})
     </insert>
+    <update id="editarContrato" parameterType="empenofacil.model.Contrato">
+        UPDATE contrato SET idCliente = #{idCliente}, idEstadoContrato = #{idEstadoContrato}, idSucursal = #{idSucursal},
+        idEmpleado = #{idEmpleado}, numBolsa = #{numBolsa}, fechaInicioContrato = #{fechaInicioContrato}, fechaFinContrato = #{fechaFinContrato},
+        cotitular = #{cotitular,}, totalAvaluo = #{totalAvaluo}, totalPrestamo = #{totalPrestamo} WHERE folio = ${folio}
+    </update>
 </mapper>

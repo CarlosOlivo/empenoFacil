@@ -20,20 +20,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <select id="obtenerPrendas" resultType="empenofacil.model.Prenda">
         SELECT * FROM prenda
     </select>
-    
     <select id="obtenerPrenda" parameterType="int" resultType="empenofacil.model.Prenda"> 
         SELECT * FROM prenda WHERE idPrenda = #{idPrenda}
     </select>
-    
     <insert id="crearPrenda" parameterType="empenofacil.model.Prenda" useGeneratedKeys="true" keyProperty="idPrenda">
-        INSERT INTO prenda(idCategoriaPrenda,idTipoPrenda,nombre,tamanio,precio,peso,descripcion) 
-        VALUES(#{idCategoriaPrenda},#{idTipoPrenda},#{nombre},#{tamanio},#{precio},#{peso},#{descripcion})
+        INSERT INTO prenda(idCategoriaPrenda,idTipoPrenda,nombre,tamanio,peso,descripcion,avaluo,prestamo) 
+        VALUES(#{idCategoriaPrenda},#{idTipoPrenda},#{nombre},#{tamanio},#{peso},#{descripcion},#{avaluo},#{prestamo})
     </insert>
-    
     <update id="editarPrenda" parameterType="empenofacil.model.Prenda"> 
         UPDATE prenda SET idCategoriaPrenda = #{idCategoriaPrenda}, idTipoPrenda = #{idTipoPrenda}, 
-        nombre = #{nombre}, tamanio = #{tamanio}, precio = #{precio}, peso = #{peso}, descripicion = #{descripcion}
-        WHERE idPrenda = ${idPrenda}
+        nombre = #{nombre}, tamanio = #{tamanio}, peso = #{peso}, descripicion = #{descripcion},
+        avaluo = #{avaluo}, prestamo = #{prestamo} WHERE idPrenda = ${idPrenda}
     </update>
-    
 </mapper>

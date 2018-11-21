@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 lunix
+ * Copyright (C) 2018 Carlos
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,16 +16,15 @@
  */
 package mybatis.idao;
 
-import empenofacil.model.Contrato;
-import java.util.List;
+import empenofacil.model.Parametros;
 
 /**
  *
- * @author lunix
+ * @author Carlos
  */
-public interface IContratoDAO {
-    public List<Contrato> obtenerContratos();
-    public Contrato obtenerContrato(Integer folio);
-    public int crearContrato(Contrato contrato);
-    public int editarContrato(Contrato contrato);
+public interface IParametrosDAO {
+    public Integer obtenerParametroEntero(String parametro);
+    public Double obtenerParametroDoble(String parametro);
+    public Parametros obtenerParametros(String folio);
+    public int crearParametros(Integer folio);
 }

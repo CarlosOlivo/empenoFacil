@@ -20,7 +20,7 @@ import java.util.Date;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Empleado {
+public final class Empleado {
     private Integer idEmpleado;
     private Integer idRol;
     private Integer idDomicilio;
@@ -61,11 +61,7 @@ public class Empleado {
         this.celular = new SimpleStringProperty(celular);
         this.curp = new SimpleStringProperty(curp);
         this.rfc = new SimpleStringProperty(rfc);
-        if(fechaNacimiento != null) {
-            this.fechaNacimiento = new Date(fechaNacimiento.getTime());
-        } else {
-            this.fechaNacimiento = new Date();
-        }
+        setFechaNacimiento(fechaNacimiento);
         this.huellaEmpleado = huellaEmpleado;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 lunix
+ * Copyright (C) 2018 Carlos
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,18 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mybatis.idao;
-
-import empenofacil.model.Contrato;
-import java.util.List;
+package empenofacil.model;
 
 /**
  *
- * @author lunix
+ * @author Carlos
  */
-public interface IContratoDAO {
-    public List<Contrato> obtenerContratos();
-    public Contrato obtenerContrato(Integer folio);
-    public int crearContrato(Contrato contrato);
-    public int editarContrato(Contrato contrato);
+public class Bolsa {
+    private Integer folio;
+    private Integer idPrenda;
+
+    public Bolsa() {
+    }
+
+    public Bolsa(Integer folio, Integer idPrenda) {
+        this.folio = folio;
+        this.idPrenda = idPrenda;
+    }
+
+    public Integer getFolio() {
+        return folio;
+    }
+
+    public void setFolio(Integer folio) {
+        this.folio = folio;
+    }
+
+    public Integer getIdPrenda() {
+        return idPrenda;
+    }
+
+    public void setIdPrenda(Integer idPrenda) {
+        this.idPrenda = idPrenda;
+    }
 }

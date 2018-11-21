@@ -32,27 +32,30 @@ public class Prenda {
     private Integer idTipoPrenda;
     private final StringProperty nombre;
     private final DoubleProperty tamanio;
-    private final DoubleProperty precio;
     private final DoubleProperty peso;
     private final StringProperty descripcion;
+    private final DoubleProperty avaluo;
+    private final DoubleProperty prestamo;
     
     public Prenda() {
         this.nombre = new SimpleStringProperty();
         this.tamanio = new SimpleDoubleProperty();
-        this.precio = new SimpleDoubleProperty();
         this.peso = new SimpleDoubleProperty();
         this.descripcion = new SimpleStringProperty();
+        this.avaluo = new SimpleDoubleProperty();
+        this.prestamo = new SimpleDoubleProperty();
     }
     
-    public Prenda(Integer idPrenda, Integer idCategoriaPrenda, Integer idTipoPrenda, String nombre, Double tamanio, Double precio, Double peso, String descripcion) {
+    public Prenda(Integer idPrenda, Integer idCategoriaPrenda, Integer idTipoPrenda, String nombre, Double tamanio, Double peso, String descripcion, Double avaluo, Double prestamo) {
         this.idPrenda = idPrenda;
         this.idCategoriaPrenda = idCategoriaPrenda;
         this.idTipoPrenda = idTipoPrenda;
         this.nombre = new SimpleStringProperty(nombre);
         this.tamanio = new SimpleDoubleProperty(tamanio);
-        this.precio = new SimpleDoubleProperty(precio);
         this.peso = new SimpleDoubleProperty(peso);
         this.descripcion = new SimpleStringProperty(descripcion);
+        this.avaluo = new SimpleDoubleProperty(avaluo);
+        this.prestamo = new SimpleDoubleProperty(prestamo);
     }
     
     public Integer getIdPrenda() {
@@ -103,18 +106,6 @@ public class Prenda {
         this.tamanio.set(tamanio);
     }
     
-    public DoubleProperty getPrecioProperty() {
-        return precio;
-    }
-    
-    public Double getPrecio() {
-        return precio.get();
-    }
-    
-    public void setPrecio(Double precio) {
-        this.precio.set(precio);
-    }
-    
     public DoubleProperty getPesoProperty() {
         return peso;
     }
@@ -137,5 +128,37 @@ public class Prenda {
     
     public void setDescripcion(String descripcion) {
         this.descripcion.set(descripcion);
-    }    
+    }
+    
+    public DoubleProperty avaluoProperty() {
+        return avaluo;
+    }
+    
+    public StringProperty avaluoPropertyFormato() {
+        return new SimpleStringProperty(String.format("$%.2f", getAvaluo()));
+    }
+    
+    public Double getAvaluo() {
+        return avaluo.get();
+    }
+
+    public void setAvaluo(Double avaluo) {
+        this.avaluo.set(avaluo);
+    }
+    
+    public DoubleProperty prestamoProperty() {
+        return prestamo;
+    }
+
+    public StringProperty prestamoPropertyFormato() {
+        return new SimpleStringProperty(String.format("$%.2f", getPrestamo()));
+    }
+    
+    public Double getPrestamo() {
+        return prestamo.get();
+    }
+
+    public void setPrestamo(Double prestamo) {
+        this.prestamo.set(prestamo);
+    }
 }

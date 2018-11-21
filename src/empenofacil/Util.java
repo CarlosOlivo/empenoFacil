@@ -23,6 +23,9 @@ import empenofacil.model.Empleado;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Optional;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -166,11 +169,12 @@ public class Util {
             FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/Menu.fxml"));
             Parent root = (Parent) loader.load();
             MenuController controller = (MenuController) loader.getController();
-            controller.setEmpleado(empleado);
+            MenuController.setEmpleado(empleado);
             Scene scene = new Scene(root);
             EmpenoFacil.getStage().hide();
             EmpenoFacil.getStage().setScene(scene);
             EmpenoFacil.getStage().setTitle("Empeño fácil - Menú principal");
+            controller.inicializar();
             EmpenoFacil.getStage().setResizable(true);
             EmpenoFacil.getStage().setMaximized(false);
             EmpenoFacil.getStage().sizeToScene();
@@ -225,5 +229,17 @@ public class Util {
         gridPane.add(new Label(label), 0, 0, 1, 1);
         gridPane.add(anchorPane, 1, 0, 1, 1);
         return gridPane;
+    }
+    
+    /**
+     * Agrega dias a una fecha determinada
+     * 
+     * @param fecha Fecha a agregar dias
+     * @param dias Dias a agregar
+     * @return Fecha con los dias agregados
+     */
+    public static Date agregarDiasFecha(Date fecha, int dias) {
+        LocalDateTime localDateTime = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return Date.from(localDateTime.plusDays(dias).atZone(ZoneId.systemDefault()).toInstant());
     }
 }

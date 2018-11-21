@@ -170,7 +170,7 @@ public class CapturarFotoController implements Initializable {
                 }
             } else {
                 Optional<ButtonType> opcion = Util.confirmacion("Foto duplicada", "Ya existe una foto, ¿Deseas reemplazarla?");
-                if(opcion.get() == ButtonType.YES) {
+                if(opcion.isPresent() && opcion.get() == ButtonType.YES) {
                     fotoCliente.setFoto(imgBytes);
                     if(fotoClienteDAO.editarFotoCliente(fotoCliente) == 0) {
                         Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al reemplazar la foto");

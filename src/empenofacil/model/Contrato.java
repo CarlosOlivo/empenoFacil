@@ -16,39 +16,59 @@
  */
 package empenofacil.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
  * @author lunix
  */
-public class Contrato {
+public final class Contrato {
     private Integer folio;
-    private Integer id_estado;
-    private String rfc_empresa;
-    private Integer id_cliente;
-    private Integer num_bolsa;
-    private Date fecha_inicio_contrato;
-    private Date fecha_fin_contrato;
-    private double iva;
-    private double subtotal;
-    private double total;
-    private String cotitular;
+    private Integer idCliente;
+    private Integer idEstadoContrato;
+    private Integer idSucursal;
+    private Integer idEmpleado;
+    private final IntegerProperty numBolsa;
+    private Date fechaInicioContrato;
+    private Date fechaFinContrato;
+    private final StringProperty cotitular;
+    private final DoubleProperty totalAvaluo;
+    private final DoubleProperty totalPrestamo;
 
-    public Contrato() {}
+    public Contrato() {
+        numBolsa = new SimpleIntegerProperty();
+        cotitular = new SimpleStringProperty();
+        totalAvaluo = new SimpleDoubleProperty();
+        totalPrestamo = new SimpleDoubleProperty();
+    }
 
-    public Contrato(Integer folio, Integer id_estado, String rfc_empresa, Integer id_cliente, Integer num_bolsa, Date fecha_inicio_contrato, Date fecha_fin_contrato, double iva, double subtotal, double total, String cotitular) {
+    public Contrato(Integer folio, Integer idCliente, Integer idEstadoContrato, Integer idSucursal, Integer idEmpleado, Integer numBolsa, Date fechaInicioContrato, Date fechaFinContrato, String cotitular, Double totalAvaluo, Double totalPrestamo) {
         this.folio = folio;
-        this.id_estado = id_estado;
-        this.rfc_empresa = rfc_empresa;
-        this.id_cliente = id_cliente;
-        this.num_bolsa = num_bolsa;
-        this.fecha_inicio_contrato = fecha_inicio_contrato;
-        this.fecha_fin_contrato = fecha_fin_contrato;
-        this.iva = iva;
-        this.subtotal = subtotal;
-        this.total = total;
-        this.cotitular = cotitular;
+        this.idCliente = idCliente;
+        this.idEstadoContrato = idEstadoContrato;
+        this.idSucursal = idSucursal;
+        this.idEmpleado = idEmpleado;
+        this.numBolsa = new SimpleIntegerProperty(numBolsa);
+        setFechaInicioContrato(fechaInicioContrato);
+        setFechaFinContrato(fechaFinContrato);
+        this.cotitular = new SimpleStringProperty(cotitular);
+        this.totalAvaluo = new SimpleDoubleProperty(totalAvaluo);
+        this.totalPrestamo = new SimpleDoubleProperty(totalPrestamo);
+    }
+    
+    public enum ESTADO_CONTRATO {
+        INVALIDO, ACTIVO
+    }
+    
+    public StringProperty folioPropertyFormato() {
+        return new SimpleStringProperty("#" + getFolio());
     }
 
     public Integer getFolio() {
@@ -59,92 +79,111 @@ public class Contrato {
         this.folio = folio;
     }
 
-    public Integer getId_estado() {
-        return id_estado;
+    public Integer getIdCliente() {
+        return idCliente;
     }
 
-    public void setId_estado(Integer id_estado) {
-        this.id_estado = id_estado;
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+    
+    public StringProperty estadoContratoPropertyFormato() {
+        return new SimpleStringProperty(Contrato.ESTADO_CONTRATO.values()[getIdEstadoContrato()].toString());
     }
 
-    public String getRfc_empresa() {
-        return rfc_empresa;
+    public Integer getIdEstadoContrato() {
+        return idEstadoContrato;
     }
 
-    public void setRfc_empresa(String rfc_empresa) {
-        this.rfc_empresa = rfc_empresa;
+    public void setIdEstadoContrato(Integer idEstadoContrato) {
+        this.idEstadoContrato = idEstadoContrato;
     }
 
-    public Integer getId_cliente() {
-        return id_cliente;
+    public Integer getIdSucursal() {
+        return idSucursal;
     }
 
-    public void setId_cliente(Integer id_cliente) {
-        this.id_cliente = id_cliente;
+    public void setIdSucursal(Integer idSucursal) {
+        this.idSucursal = idSucursal;
     }
 
-    public Integer getNum_bolsa() {
-        return num_bolsa;
+    public Integer getIdEmpleado() {
+        return idEmpleado;
     }
 
-    public void setNum_bolsa(Integer num_bolsa) {
-        this.num_bolsa = num_bolsa;
+    public void setIdEmpleado(Integer idEmpleado) {
+        this.idEmpleado = idEmpleado;
     }
 
-    public Date getFecha_inicio_contrato() {
-        return fecha_inicio_contrato;
+    public Integer getNumBolsa() {
+        return numBolsa.get();
     }
 
-    public void setFecha_inicio_contrato(Date fecha_inicio_contrato) {
-        this.fecha_inicio_contrato = fecha_inicio_contrato;
+    public void setNumBolsa(Integer numBolsa) {
+        this.numBolsa.set(numBolsa);
+    }
+    
+    public StringProperty fechaInicioContratoFormato() {
+        return new SimpleStringProperty(new SimpleDateFormat("dd/MM/yyyy").format(getFechaInicioContrato()));
     }
 
-    public Date getFecha_fin_contrato() {
-        return fecha_fin_contrato;
+    public Date getFechaInicioContrato() {
+        return new Date(fechaInicioContrato.getTime());
+    }
+    
+    public void setFechaInicioContrato(Date fechaInicioContrato) {
+        if(fechaInicioContrato != null) {
+            this.fechaInicioContrato = new Date(fechaInicioContrato.getTime());
+        } else {
+            this.fechaInicioContrato = new Date();
+        }
+    }
+    
+    public StringProperty fechaFinContratoFormato() {
+        return new SimpleStringProperty(new SimpleDateFormat("dd/MM/yyyy").format(getFechaFinContrato()));
     }
 
-    public void setFecha_fin_contrato(Date fecha_fin_contrato) {
-        this.fecha_fin_contrato = fecha_fin_contrato;
+    public Date getFechaFinContrato() {
+        return new Date(fechaFinContrato.getTime());
     }
 
-    public double getIva() {
-        return iva;
-    }
-
-    public void setIva(double iva) {
-        this.iva = iva;
-    }
-
-    public double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
+    public void setFechaFinContrato(Date fechaFinContrato) {
+        if(fechaFinContrato != null) {
+            this.fechaFinContrato = new Date(fechaFinContrato.getTime());
+        } else {
+            this.fechaFinContrato = new Date();
+        }
     }
 
     public String getCotitular() {
-        return cotitular;
+        return cotitular.get();
     }
 
     public void setCotitular(String cotitular) {
-        this.cotitular = cotitular;
+        this.cotitular.set(cotitular);
+    }
+    
+    public StringProperty totalAvaluoPropertyFormato() {
+        return new SimpleStringProperty(String.format("$%.2f", getTotalAvaluo()));
     }
 
-    @Override
-    public String toString() {
-        return "Contrato{" + "folio=" + folio + ", id_estado=" + id_estado + ", "
-                + "rfc_empresa=" + rfc_empresa + ", id_cliente=" + id_cliente + ","
-                + " num_bolsa=" + num_bolsa + ", fecha_inicio_contrato=" + fecha_inicio_contrato + ","
-                + " fecha_fin_contrato=" + fecha_fin_contrato + ", iva=" + iva + ", subtotal=" + subtotal + ","
-                + " total=" + total + ", cotitular=" + cotitular + '}';
+    public Double getTotalAvaluo() {
+        return totalAvaluo.get();
+    }
+
+    public void setTotalAvaluo(Double totalAvaluo) {
+        this.totalAvaluo.set(totalAvaluo);
+    }
+    
+    public StringProperty totalPrestamoPropertyFormato() {
+        return new SimpleStringProperty(String.format("$%.2f", getTotalPrestamo()));
+    }
+
+    public Double getTotalPrestamo() {
+        return totalPrestamo.get();
+    }
+
+    public void setTotalPrestamo(Double totalPrestamo) {
+        this.totalPrestamo.set(totalPrestamo);
     }
 }

@@ -18,11 +18,13 @@ package empenofacil.controller;
 
 import empenofacil.Util;
 import empenofacil.model.Empleado;
+import empenofacil.model.Parametros;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import mybatis.dao.ParametrosDAO;
 
 /**
  * FXML Controller class
@@ -30,23 +32,47 @@ import javafx.scene.control.Label;
  * @author Carlos
  */
 public class MenuController implements Initializable {
-    private Empleado empleado;
+    private static Empleado empleado;
+    private static final Parametros PARAMETROS = new Parametros();
+    private static final ParametrosDAO PARAMETROS_DAO = new ParametrosDAO();
     
     @FXML
     private Label usuario;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        PARAMETROS.setFolio(PARAMETROS_DAO.obtenerParametroEntero("folio"));
+        PARAMETROS.setIva(PARAMETROS_DAO.obtenerParametroDoble("iva"));
+        PARAMETROS.setNumPeriodos(PARAMETROS_DAO.obtenerParametroEntero("numPeriodos"));
+        PARAMETROS.setDiasPorPeriodo(PARAMETROS_DAO.obtenerParametroEntero("diasPorPeriodo"));
+        PARAMETROS.setDiasEnTotal(PARAMETROS_DAO.obtenerParametroEntero("diasEnTotal"));
+        PARAMETROS.setNumPeriodosExtension(PARAMETROS_DAO.obtenerParametroEntero("numPeriodosExtension"));
+        PARAMETROS.setDiasPorPeriodoExtension(PARAMETROS_DAO.obtenerParametroEntero("diasPorPeriodoExtension"));
+        PARAMETROS.setDiasEnTotalExtension(PARAMETROS_DAO.obtenerParametroEntero("diasEnTotalExtension"));
+        PARAMETROS.setDiasParaCancelarContrato(PARAMETROS_DAO.obtenerParametroEntero("diasParaCancelarContrato"));
+        PARAMETROS.setPorcentajePrestamo(PARAMETROS_DAO.obtenerParametroDoble("porcentajePrestamo"));
+        PARAMETROS.setInteresPorPeriodo(PARAMETROS_DAO.obtenerParametroDoble("interesPorPeriodo"));
+        PARAMETROS.setComercializacion(PARAMETROS_DAO.obtenerParametroDoble("comercializacion"));
+        PARAMETROS.setTasaInteres(PARAMETROS_DAO.obtenerParametroDoble("tasaInteres"));
+        PARAMETROS.setCostoAnualTotal(PARAMETROS_DAO.obtenerParametroDoble("costoAnualTotal"));
+        PARAMETROS.setCostoMensual(PARAMETROS_DAO.obtenerParametroDoble("costoMensual"));
+        PARAMETROS.setCostoDiario(PARAMETROS_DAO.obtenerParametroDoble("costoDiario"));
      }
+    
+    public void inicializar() {
+        usuario.setText("Bienvenid@ " + getEmpleado().getNombre() + " " + getEmpleado().getApellidoPaterno());
+    }
+    
+    public static Parametros getParametrosPredeterminados() {
+        return PARAMETROS;
+    }
 
-    public Empleado getEmpleado() {
+    public static Empleado getEmpleado() {
         return empleado;
     }
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
-        usuario.setText("Bienvenid@ " + getEmpleado().getNombre() + " " + getEmpleado().getApellidoPaterno());
+    public static void setEmpleado(Empleado empleado) {
+        MenuController.empleado = empleado;
     }
     
     @FXML

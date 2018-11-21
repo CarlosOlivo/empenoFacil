@@ -17,52 +17,66 @@
 package mybatis.dao;
 
 import empenofacil.Util;
-import empenofacil.model.Contrato;
-import java.util.List;
+import empenofacil.model.Parametros;
 import mybatis.MyBatisUtil;
-import mybatis.idao.IContratoDAO;
+import mybatis.idao.IParametrosDAO;
 import org.apache.ibatis.session.SqlSession;
 
 
-public class ContratoDAO implements IContratoDAO {
+public class ParametrosDAO implements IParametrosDAO {
 
     @Override
-    public List<Contrato> obtenerContratos() {
-        List<Contrato> list = null;
+    public Integer obtenerParametroEntero(String parametro) {
+        Integer param = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
-            IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
-            list = contratoDAO.obtenerContratos();
+            IParametrosDAO parametrosDAO = conn.getMapper(IParametrosDAO.class);
+            param = parametrosDAO.obtenerParametroEntero(parametro);
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {
             conn.close();
         }
-        return list;
+        return param;
     }
 
     @Override
-    public Contrato obtenerContrato(Integer folio) {
-        Contrato contrato = null;
+    public Double obtenerParametroDoble(String parametro) {
+        Double param = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
-            IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
-            contrato = contratoDAO.obtenerContrato(folio);
+            IParametrosDAO parametrosDAO = conn.getMapper(IParametrosDAO.class);
+            param = parametrosDAO.obtenerParametroDoble(parametro);
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {
             conn.close();
         }
-        return contrato;
+        return param;
     }
 
     @Override
-    public int crearContrato(Contrato contrato) {
+    public Parametros obtenerParametros(String folio) {
+        Parametros param = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IParametrosDAO parametrosDAO = conn.getMapper(IParametrosDAO.class);
+            param = parametrosDAO.obtenerParametros(folio);
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return param;
+    }
+
+    @Override
+    public int crearParametros(Integer folio) {
         int rows = 0;
         SqlSession conn = MyBatisUtil.getSession();
         try {
-            IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
-            rows = contratoDAO.crearContrato(contrato);
+            IParametrosDAO parametrosDAO = conn.getMapper(IParametrosDAO.class);
+            rows = parametrosDAO.crearParametros(folio);
             conn.commit();
         } catch (Exception e) {
             conn.rollback();
@@ -73,20 +87,4 @@ public class ContratoDAO implements IContratoDAO {
         return rows;
     }
     
-    @Override
-    public int editarContrato(Contrato contrato) {
-        int rows = 0;
-        SqlSession conn = MyBatisUtil.getSession();
-        try {
-            IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
-            rows = contratoDAO.editarContrato(contrato);
-            conn.commit();
-        } catch (Exception e) {
-            conn.rollback();
-            Util.excepcion(e);
-        } finally {
-            conn.close();
-        }
-        return rows;
-    }
 }

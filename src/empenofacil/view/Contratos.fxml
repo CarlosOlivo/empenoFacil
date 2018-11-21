@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="empenofacil.controller.ContratosController">
+<StackPane stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="empenofacil.controller.ContratosController">
     <children>
         <VBox fx:id="contratosV">
             <children>
@@ -33,9 +33,11 @@
                         <TableView fx:id="contratos" prefHeight="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
                             <columns>
                                 <TableColumn fx:id="folio" prefWidth="75.0" text="Folio" />
-                                <TableColumn fx:id="cliente" prefWidth="75.0" text="Cliente" />
                                 <TableColumn fx:id="estadoContrato" prefWidth="75.0" text="Estado" />
-                                <TableColumn fx:id="total" prefWidth="75.0" text="Total" />
+                                <TableColumn fx:id="avaluoContrato" prefWidth="75.0" text="Avaluo" />
+                                <TableColumn fx:id="prestamoContrato" prefWidth="75.0" text="Prestamo" />
+                        <TableColumn fx:id="fechaInicioContrato" prefWidth="75.0" text="Fecha Inicio" />
+                        <TableColumn fx:id="fechaFinContrato" prefWidth="75.0" text="Fecha Fin" />
                             </columns>
                             <columnResizePolicy>
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -55,7 +57,7 @@
             <children>
                 <AnchorPane VBox.vgrow="ALWAYS">
                     <children>
-                  <HBox layoutX="5.0" layoutY="5.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <HBox alignment="CENTER_LEFT" layoutX="5.0" layoutY="5.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                               <Label text="Nuevo empeño">
                                   <font>
@@ -64,20 +66,25 @@
                               </Label>
                         <Button mnemonicParsing="false" onAction="#nuevaPrenda" text="Agregar prenda" />
                               <Button mnemonicParsing="false" onAction="#regresarContratos" text="Regresar a empeños" />
+                        <Label fx:id="porcentajePrestamo" text="Porcentaje de prestamo: ?%" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
                      <children>
                         <Label text="Cliente" />
                         <ChoiceBox fx:id="clientesC" prefWidth="150.0" />
-                        <Button fx:id="guardarContrato" mnemonicParsing="false" text="Guardar empeño" />
+                        <Label layoutX="10.0" layoutY="14.0" text="Cotitular" />
+                        <TextField fx:id="cotitular" promptText="Nombre" />
+                        <Button fx:id="guardarContrato" mnemonicParsing="false" onAction="#guardarContrato" text="Guardar empeño" />
                      </children>
                   </HBox>
                         <TableView fx:id="prendas" prefHeight="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
                             <columns>
                                 <TableColumn fx:id="nombre" prefWidth="75.0" text="Nombre" />
-                                <TableColumn fx:id="precio" prefWidth="75.0" text="Precio" />
                                 <TableColumn fx:id="descripcion" prefWidth="75.0" text="Descripción" />
+                        <TableColumn fx:id="avaluo" prefWidth="75.0" text="Avaluo" />
+                                <TableColumn fx:id="prestamo" prefWidth="75.0" text="Prestamo" />
+                        <TableColumn fx:id="colAcciones" prefWidth="75.0" text="Acciones" />
                             </columns>
                             <columnResizePolicy>
                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -108,7 +115,7 @@
                            </font>
                         </Label>
                         <Button fx:id="guardarPrenda" mnemonicParsing="false" onAction="#guardarPrenda" text="Guardar prenda" />
-                        <Button mnemonicParsing="false" onAction="#regresarPrendas" text="Regresar a prendas" />
+                        <Button mnemonicParsing="false" onAction="#regresarPrendas" text="Descartar prenda" />
                      </children>
                   </HBox>
                   <VBox fx:id="form" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
