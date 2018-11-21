@@ -17,34 +17,43 @@
 package empenofacil.model;
 
 import java.util.Date;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 /**
  *
  * @author lunix
  */
-public class Venta {
+public final class Venta {
 
     private Integer idVenta;
     private Integer idEmpleado;
+    private Integer idSucursal;
     private Date tiempoCreacion;
-    private double precio;
-    private double descuento;
-    private double subtotal;
-    private double iva;
-    private double total;
+    private final DoubleProperty precio;
+    private final DoubleProperty descuento;
+    private final DoubleProperty subtotal;
+    private final DoubleProperty iva;
+    private final DoubleProperty total;
 
     public Venta() {
+        precio = new SimpleDoubleProperty();
+        descuento = new SimpleDoubleProperty();
+        subtotal = new SimpleDoubleProperty();
+        iva = new SimpleDoubleProperty();
+        total = new SimpleDoubleProperty();
     }
 
-    public Venta(Integer idVenta, Integer idEmpleado, Date tiempoCreacion, double precio, double descuento, double subtotal, double iva, double total) {
+    public Venta(Integer idVenta, Integer idEmpleado, Integer idSucursal, Date tiempoCreacion, double precio, double descuento, double subtotal, double iva, double total) {
         this.idVenta = idVenta;
         this.idEmpleado = idEmpleado;
-        this.tiempoCreacion = tiempoCreacion;
-        this.precio = precio;
-        this.descuento = descuento;
-        this.subtotal = subtotal;
-        this.iva = iva;
-        this.total = total;
+        this.idSucursal = idSucursal;
+        setTiempoCreacion(tiempoCreacion);
+        this.precio = new SimpleDoubleProperty(precio);
+        this.descuento = new SimpleDoubleProperty(descuento);
+        this.subtotal = new SimpleDoubleProperty(subtotal);
+        this.iva = new SimpleDoubleProperty(iva);
+        this.total = new SimpleDoubleProperty(total);
     }
 
     public Integer getIdVenta() {
@@ -63,51 +72,63 @@ public class Venta {
         this.idEmpleado = idEmpleado;
     }
 
+    public Integer getIdSucursal() {
+        return idSucursal;
+    }
+
+    public void setIdSucursal(Integer idSucursal) {
+        this.idSucursal = idSucursal;
+    }
+
     public Date getTiempoCreacion() {
-        return tiempoCreacion;
+        return new Date(tiempoCreacion.getTime());
     }
 
     public void setTiempoCreacion(Date tiempoCreacion) {
-        this.tiempoCreacion = tiempoCreacion;
+        if(tiempoCreacion != null) {
+            this.tiempoCreacion = new Date(tiempoCreacion.getTime());
+        } else {
+            this.tiempoCreacion = new Date();
+        }
     }
 
-    public double getPrecio() {
-        return precio;
+    public Double getPrecio() {
+        return precio.get();
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setPrecio(Double precio) {
+        this.precio.set(precio);
     }
 
-    public double getDescuento() {
-        return descuento;
+    public Double getDescuento() {
+        return descuento.get();
     }
 
-    public void setDescuento(double descuento) {
-        this.descuento = descuento;
+    public void setDescuento(Double descuento) {
+        this.descuento.set(descuento);
     }
 
-    public double getSubtotal() {
-        return subtotal;
+    public Double getSubtotal() {
+        return subtotal.get();
     }
 
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
+    public void setSubtotal(Double subtotal) {
+        this.subtotal.set(subtotal);
     }
 
-    public double getIva() {
-        return iva;
+    public Double getIva() {
+        return iva.get();
     }
 
-    public void setIva(double iva) {
-        this.iva = iva;
+    public void setIva(Double iva) {
+        this.iva.set(iva);
     }
 
-    public double getTotal() {
-        return total;
+    public Double getTotal() {
+        return total.get();
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setTotal(Double total) {
+        this.total.set(total);
     }
 }
