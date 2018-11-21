@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2018 lunix
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="mybatis.idao.IVenta_DetalleDAO">
+    <select id="buscarVentaDetalle" parameterType="string" resultSets="empenofacil.model.Venta_Detalle">
+        SELECT FROM venta_detalle WHERE LOWER(nombre) LIKE LOWER(#{busqueda})
+    </select>
+    <select id="obtenerVentasDetalle" resultType="empenofacil.model.Venta_Detalle">
+        SELECT * FROM venta_detalle
+    </select>
+    <select id="obtenerVentaDetalle" parameterType="int" resultType="empenofacil.model.Venta_Detalle">
+        SELECT * FROM venta_detalle WHERE idVenta = #{idVenta}
+    </select>
+    <insert id="crearVentaDetalle" parameterType="empenofacil.model.Venta_Detalle" useGeneratedKeys="true" keyProperty="idVenta">
+        INSER INTO venta_detalle(idPrenda,concepto,precio,descuento,tasaiva,iva,subtotal,total)
+        VALUES(#{idPrenda},#{concepto},#{precio},#{descuento},#{tasaiva},#{iva},#{subtotal},#{total})
+    </insert>
+    <update id="editarVentaDetalle" parameterType="empenofacil.model.Venta_Detalle">
+        UPDATE venta_detalle SET idPrenda = #{idPrenda}, concepto = #{concepto},
+        precio = #{precio}, descuento = #{descuento}, tasaiva = #{tasaiva}, iva = #{iva},
+        subtotal = #{subtotal}, total = #{total} WHERE idVenta = ${idVenta}
+    </update>
+</mapper>

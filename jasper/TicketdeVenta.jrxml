@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TicketdeVenta" pageWidth="198" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="158" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="a30c1bb3-2f94-40a9-a413-5bf6440efa6d">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Empenofacil"/>
 	<property name="com.jaspersoft.studio.unit." value="cm"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
@@ -11,20 +11,89 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="p_idSucursal" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[SELECT sucursal.`idSucursal`,
+	sucursal.`idDomicilio`,
+	sucursal.nombre,
+	sucursal.rfc,
+	sucursal.telefono,
+	sucursal.email
+FROM sucursal
+WHERE sucursal.`idSucursal` = $P{p_idSucursal}]]>
 	</queryString>
+	<field name="idSucursal" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idSucursal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
+	</field>
+	<field name="idDomicilio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idDomicilio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
+	</field>
+	<field name="rfc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="rfc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="173" splitType="Stretch">
 			<staticText>
-				<reportElement x="-20" y="0" width="198" height="30" uuid="5286d03a-332c-46e8-a7f1-0c62396b24e6"/>
+				<reportElement x="-20" y="0" width="198" height="20" uuid="5286d03a-332c-46e8-a7f1-0c62396b24e6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[EMPEÑOS EMPEÑO FACIL S.A. DE C.V]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-20" y="20" width="100" height="20" uuid="b83483e5-f646-45b1-832e-786cef5b8453"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[No. De Venta:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="60" width="90" height="20" uuid="b2909742-e448-4f4a-8d3c-23a912395279"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="40" width="198" height="20" uuid="4ea5911d-2626-4fe1-9b8e-11453c7ae4f5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="60" width="60" height="20" uuid="70418793-9088-4d4b-9e81-a1e9e77edac9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RFC:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="80" width="198" height="30" uuid="75f6b89b-e82e-492f-9f76-b7272925ad17"/>
+				<textFieldExpression><![CDATA[$F{idDomicilio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm " isBlankWhenNull="true">
+				<reportElement x="79" y="110" width="91" height="17" uuid="929ca45b-fc18-436d-b0f2-b0c689f7ad76"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-20" y="110" width="99" height="17" uuid="f427209a-7cd2-4ef5-bcff-ebb9114543c4"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha:]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -41,9 +110,17 @@
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="59" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="58" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="40" width="198" height="18" uuid="a46bf757-81c2-4fd6-b380-6dec3f62e955"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[GRACIAS POR SU COMPRA]]></text>
+			</staticText>
+		</band>
 	</summary>
 </jasperReport>

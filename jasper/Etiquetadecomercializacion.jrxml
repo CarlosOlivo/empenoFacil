@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Etiquetadecomercializacion" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="50b6ab66-abbb-4016-bde8-814c9d3a31a0">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Etiquetadecomercializacion" pageWidth="216" pageHeight="144" columnWidth="176" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="50b6ab66-abbb-4016-bde8-814c9d3a31a0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Empenofacil"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="p_idArticulo" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[SELECT 
+articulo.idArticulo, 
+articulo.idCategoriaPrenda,
+articulo.idTipoPrenda,
+articulo.idEStadoArticulo,
+articulo.nombre,
+articulo.tamanio,
+articulo.precio,
+articulo.peso,
+articulo.descripcion
+FROM articulo
+WHERE articulo.idArticulo = $P{p_idArticulo}
+]]>
 	</queryString>
 	<background>
 		<band splitType="Stretch"/>
