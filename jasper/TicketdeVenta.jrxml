@@ -12,20 +12,61 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<parameter name="p_idSucursal" class="java.lang.Integer"/>
+	<parameter name="p_idVenta" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT sucursal.`idSucursal`,
-	sucursal.`idDomicilio`,
-	sucursal.nombre,
-	sucursal.rfc,
-	sucursal.telefono,
-	sucursal.email
-FROM sucursal
-WHERE sucursal.`idSucursal` = $P{p_idSucursal}]]>
+		<![CDATA[SELECT * FROM venta v INNER JOIN venta_detalle vd ON v.idVenta= vd.idventa INNER JOIN sucursal s ON v.idSucursal = s.idSucursal  WHERE v.idVenta  =  $P{p_idVenta}]]>
 	</queryString>
+	<field name="idVenta" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idVenta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="idEmpleado" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idEmpleado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
 	<field name="idSucursal" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="idSucursal"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="tiempoCreacion" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="tiempoCreacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="precio" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="precio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="descuento" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="descuento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="subtotal" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="subtotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="iva" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="iva"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="COLUMN_10" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idVenta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
+	</field>
+	<field name="idPrenda" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idPrenda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
+	</field>
+	<field name="concepto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="concepto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
+	</field>
+	<field name="tasaiva" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="tasaiva"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
 	</field>
 	<field name="idDomicilio" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="idDomicilio"/>
@@ -51,7 +92,7 @@ WHERE sucursal.`idSucursal` = $P{p_idSucursal}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="173" splitType="Stretch">
+		<band height="166" splitType="Stretch">
 			<staticText>
 				<reportElement x="-20" y="0" width="198" height="20" uuid="5286d03a-332c-46e8-a7f1-0c62396b24e6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -64,16 +105,6 @@ WHERE sucursal.`idSucursal` = $P{p_idSucursal}]]>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[No. De Venta:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="80" y="60" width="90" height="20" uuid="b2909742-e448-4f4a-8d3c-23a912395279"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="-20" y="40" width="198" height="20" uuid="4ea5911d-2626-4fe1-9b8e-11453c7ae4f5"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="20" y="60" width="60" height="20" uuid="70418793-9088-4d4b-9e81-a1e9e77edac9"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
@@ -81,45 +112,106 @@ WHERE sucursal.`idSucursal` = $P{p_idSucursal}]]>
 				</textElement>
 				<text><![CDATA[RFC:]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="-20" y="80" width="198" height="30" uuid="75f6b89b-e82e-492f-9f76-b7272925ad17"/>
-				<textFieldExpression><![CDATA[$F{idDomicilio}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy HH:mm " isBlankWhenNull="true">
-				<reportElement x="79" y="110" width="91" height="17" uuid="929ca45b-fc18-436d-b0f2-b0c689f7ad76"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="-20" y="110" width="99" height="17" uuid="f427209a-7cd2-4ef5-bcff-ebb9114543c4"/>
+				<reportElement x="-20" y="110" width="99" height="16" uuid="f427209a-7cd2-4ef5-bcff-ebb9114543c4"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Fecha:]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="20" width="80" height="20" uuid="81d12c11-b74c-419a-a518-7a2cf7adcbad"/>
+				<textFieldExpression><![CDATA[$F{idVenta}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="60" width="80" height="20" uuid="1aea12d5-0fcc-41d3-bd7d-17d484a750f2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="80" width="198" height="30" uuid="6e9ccf74-af5b-472d-903d-3afee1031a55"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{idDomicilio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm" isBlankWhenNull="true">
+				<reportElement x="79" y="110" width="80" height="16" uuid="61affdf4-8341-4f69-b013-5a39d690a9c3"/>
+				<textFieldExpression><![CDATA[$F{tiempoCreacion}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch"/>
-	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="31">
+			<staticText>
+				<reportElement x="-20" y="0" width="140" height="30" uuid="42be7e83-a8ad-4956-9ab9-4ee44767e674"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Concepto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="0" width="58" height="30" uuid="06565209-361b-4f37-b5c2-0a65406c3eed"/>
+				<textElement verticalAlignment="Bottom"/>
+				<text><![CDATA[Precio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="30" uuid="8c27d027-4963-4b48-9374-1b2c69cce66e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="46e8ae48-cca0-4187-a523-15a3cd8f00e3"/>
+				</reportElement>
+				<text><![CDATA[concepto]]></text>
+			</staticText>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="-20" y="-1" width="140" height="30" uuid="a760a794-a0af-48da-96ab-d88eadc711a1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="46e8ae48-cca0-4187-a523-15a3cd8f00e3"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="ElementGroupHeight" x="120" y="0" width="58" height="30" uuid="6b076c79-0320-4581-871e-32682923d549">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="052d0dfb-c8bf-4a0e-9f0c-f19cb5cb7d3d"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="59" splitType="Stretch"/>
-	</pageFooter>
 	<summary>
-		<band height="58" splitType="Stretch">
+		<band height="89" splitType="Stretch">
+			<line>
+				<reportElement x="-11" y="0" width="181" height="1" uuid="3c2a90c6-7438-46d4-ac66-38e9e87cb3d3"/>
+			</line>
 			<staticText>
-				<reportElement x="-20" y="40" width="198" height="18" uuid="a46bf757-81c2-4fd6-b380-6dec3f62e955"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[GRACIAS POR SU COMPRA]]></text>
+				<reportElement x="-20" y="60" width="198" height="22" uuid="2f14d95c-791b-4ee4-9d99-0d372e7bac36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[----GRACIAS POR SU COMPRA----]]></text>
+			</staticText>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="100" y="40" width="58" height="20" uuid="0c2083f2-02c6-455b-bf06-8ddb736e69b0"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="100" y="0" width="58" height="20" uuid="f68a68a0-af80-404e-a7af-35d8c3e0b289"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="100" y="20" width="58" height="20" uuid="ff8a48c7-2d9a-4c2b-8b53-4d3ffdd45ada"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="0" width="60" height="20" uuid="fcccd9dc-b32e-43b2-998a-1f8561c7e31d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Subtotal:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="20" width="50" height="20" uuid="b4e9182d-43cf-4a19-be72-dd1f796c260f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[IVA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="40" width="50" height="20" uuid="27cfd888-3699-454e-8355-3da48af99121"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Total:]]></text>
 			</staticText>
 		</band>
 	</summary>

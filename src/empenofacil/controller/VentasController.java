@@ -114,25 +114,20 @@ public class VentasController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        agregarab.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    abrirSeccionArticulos();
-                } catch (IOException ex) {
-                    System.out.println("IOException: " + ex.getMessage());
-                }
-            }
+        agregarab.setOnAction((ActionEvent event) -> {
+            abrirSeccionArticulos();
         });
     }
 
-    public void abrirSeccionArticulos() throws IOException {
-        FXMLLoader fXMLLoader = new FXMLLoader(getClass().getResource("../empenofacil/view/SeleccionarArticulos.fxml"));
-        Parent root = (Parent) fXMLLoader.load();
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Selecione articulos");
-        stage.setScene(new Scene(root));
-        stage.show();
+    public void abrirSeccionArticulos() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../empenofacil/view/SeleccionarArticulos.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            System.out.println("Exception" + e.getMessage());
+        }
     }
 }
