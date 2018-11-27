@@ -36,6 +36,11 @@
           <fx:include source="Contratos.fxml" />
         </content>
       </Tab>
+      <Tab text="Comercialización">
+         <content>
+          <fx:include source="Comercializacion.fxml" />
+        </content>
+      </Tab>
       <Tab text="Empleados">
         <content>
           <fx:include source="Empleados.fxml" />

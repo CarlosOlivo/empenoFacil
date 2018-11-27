@@ -460,7 +460,7 @@ public class ClientesController implements Initializable {
         private final Hyperlink lista = new Hyperlink("Lista negra");
         private final HBox hb = new HBox(fotos, lista);
 
-        {
+        public Opciones() {
             hb.setSpacing(5);
             hb.setPadding(new Insets(-3.5d, 0d, 0d, 0d));
             hb.setAlignment(Pos.TOP_LEFT);

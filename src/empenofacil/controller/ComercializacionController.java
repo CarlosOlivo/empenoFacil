@@ -14,17 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package mybatis.idao;
+package empenofacil.controller;
 
-import empenofacil.model.Parametros;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
 /**
+ * FXML Controller class
  *
  * @author Carlos
  */
-public interface IParametrosDAO {
-    public Integer obtenerParametroEntero(String parametro);
-    public Double obtenerParametroDoble(String parametro);
-    public Parametros obtenerParametros(Integer folio);
-    public int crearParametros(Integer folio);
+public class ComercializacionController implements Initializable {
+
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    }    
+    
 }

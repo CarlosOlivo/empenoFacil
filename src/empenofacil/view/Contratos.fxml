@@ -30,7 +30,18 @@
                      </children>
                   </HBox>
                         <TextField fx:id="buscar" promptText="Buscar empeño..." AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <TableView fx:id="contratos" prefHeight="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+                  <HBox fx:id="opcionesContrato" disable="true" layoutX="15.0" layoutY="15.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
+                     <children>
+                        <Label fx:id="opcionesContratoL" text="Empeño #?">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#cancelarContrato" text="Cancelar empeño" />
+                        <Button mnemonicParsing="false" onAction="#clonarContrato" text="Reempeño" />
+                     </children>
+                  </HBox>
+                        <TableView fx:id="contratos" prefHeight="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
                             <columns>
                                 <TableColumn fx:id="folio" prefWidth="75.0" text="Folio" />
                                 <TableColumn fx:id="estadoContrato" prefWidth="75.0" text="Estado" />

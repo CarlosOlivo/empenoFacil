@@ -17,6 +17,7 @@
 package empenofacil.model;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  *
@@ -26,7 +27,7 @@ public class Venta_Detalle {
 
     private Integer idVenta;
     private Integer idPrenda;
-    private SimpleStringProperty concepto;
+    private StringProperty concepto;
     private double precio;
     private double descuento;
     private double tasaiva;
@@ -66,12 +67,12 @@ public class Venta_Detalle {
         this.idPrenda = idPrenda;
     }
 
-    public SimpleStringProperty getConcepto() {
-        return concepto;
+    public String getConcepto() {
+        return concepto.get();
     }
 
-    public void setConcepto(SimpleStringProperty concepto) {
-        this.concepto = concepto;
+    public void setConcepto(String concepto) {
+        this.concepto.set(concepto);
     }
 
     public double getPrecio() {

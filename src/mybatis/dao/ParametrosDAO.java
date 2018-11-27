@@ -56,7 +56,7 @@ public class ParametrosDAO implements IParametrosDAO {
     }
 
     @Override
-    public Parametros obtenerParametros(String folio) {
+    public Parametros obtenerParametros(Integer folio) {
         Parametros param = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
