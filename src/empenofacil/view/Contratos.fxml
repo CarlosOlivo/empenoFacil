@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="empenofacil.controller.ContratosController">
+<StackPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="empenofacil.controller.ContratosController">
     <children>
         <VBox fx:id="contratosV">
             <children>
@@ -29,7 +29,15 @@
                               <Button mnemonicParsing="false" onAction="#nuevoContrato" text="Nuevo empeño" />
                      </children>
                   </HBox>
-                        <TextField fx:id="buscar" promptText="Buscar empeño..." AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label text="Filtrar por:" />
+                        <ChoiceBox fx:id="buscarC" prefWidth="150.0" />
+                              <TextField fx:id="buscarT" promptText="Buscar empeño..." />
+                        <Button defaultButton="true" mnemonicParsing="false" onAction="#buscarContrato" text="Buscar" />
+                        <Button cancelButton="true" mnemonicParsing="false" onAction="#actualizarContratos" text="Reestablecer Filtros" />
+                     </children>
+                  </HBox>
                   <HBox fx:id="opcionesContrato" disable="true" layoutX="15.0" layoutY="15.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
                      <children>
                         <Label fx:id="opcionesContratoL" text="Empeño #?">

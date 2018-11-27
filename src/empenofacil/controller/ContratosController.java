@@ -96,7 +96,9 @@ public class ContratosController implements Initializable {
     @FXML
     private VBox form;
     @FXML
-    private TextField buscar;
+    private ChoiceBox<String> buscarC;
+    @FXML
+    private TextField buscarT;
     @FXML
     private TableView<Contrato> contratos;
     @FXML
@@ -146,6 +148,7 @@ public class ContratosController implements Initializable {
         prendaDAO = new PrendaDAO();
         prenda = new Prenda(null, null, null, "", 0d, 0d, "", 0d, 0d);
         tipos = new ChoiceBox<>();
+        buscarC = new ChoiceBox<>();
         categorias = new ChoiceBox<>();
         formulario = Form.of(
                 Section.of(
@@ -184,6 +187,7 @@ public class ContratosController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        buscarC.getItems().setAll("Folio", "Cliente", "Prenda");
         contratos.setPlaceholder(new Text("No hay empeños en el sistema..."));
         folio.setCellValueFactory(data -> data.getValue().folioPropertyFormato());
         estadoContrato.setCellValueFactory(data -> data.getValue().estadoContratoPropertyFormato());
@@ -212,7 +216,7 @@ public class ContratosController implements Initializable {
         contratos.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 opcionesContrato.setDisable(false);
-                opcionesContratoL.setText("Empeño #"+newValue.getFolio());
+                opcionesContratoL.setText("Empeño #" + newValue.getFolio());
             }
         });
     }
@@ -414,31 +418,34 @@ public class ContratosController implements Initializable {
         }
     }
 
-    private void actualizarContratos() {
+    @FXML
+    public void actualizarContratos() {
+        buscarC.getSelectionModel().clearSelection();
+        buscarT.clear();
         contratos.getItems().clear();
         opcionesContrato.setDisable(true);
         opcionesContratoL.setText("Empeño #?");
         contratos.getItems().setAll(contratoDAO.obtenerContratos());
     }
-    
+
     @FXML
     private void cancelarContrato() {
         Contrato contratoTMP = contratos.getSelectionModel().getSelectedItem();
         long diasDesdeContrato = ChronoUnit.DAYS.between(contratoTMP.getFechaInicioContrato().toInstant(), new Date().toInstant());
         Parametros parametrosTMP = parametrosDAO.obtenerParametros(contratoTMP.getFolio());
-        if(contratoTMP.getIdEstadoContrato() == Contrato.ESTADO_CONTRATO.CANCELADO.ordinal()) {
+        if (contratoTMP.getIdEstadoContrato() == Contrato.ESTADO_CONTRATO.CANCELADO.ordinal()) {
             Util.dialogo(Alert.AlertType.WARNING, "El empeño ya se encuentra cancelado");
             return;
         }
-        if(contratoTMP.getFechaInicioContrato().getTime() > new Date().getTime()) {
+        if (contratoTMP.getFechaInicioContrato().getTime() > new Date().getTime()) {
             Util.dialogo(Alert.AlertType.WARNING, "Fecha de inicio de contrato invalida");
             return;
         }
-        if(diasDesdeContrato < parametrosTMP.getDiasParaCancelarContrato()) {
+        if (diasDesdeContrato < parametrosTMP.getDiasParaCancelarContrato()) {
             Optional<ButtonType> confirmacion = Util.confirmacion("Cancelar empeño", String.format("¿Desea cancelar el empeño #%d?", contratoTMP.getFolio()));
             if (confirmacion.isPresent() && confirmacion.get() == ButtonType.YES) {
                 contratoTMP.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.CANCELADO.ordinal());
-                if(contratoDAO.editarContrato(contratoTMP) > 0) {
+                if (contratoDAO.editarContrato(contratoTMP) > 0) {
                     Util.dialogo(Alert.AlertType.INFORMATION, "Empeño cancelado correctamente");
                     actualizarContratos();
                 } else {
@@ -449,10 +456,61 @@ public class ContratosController implements Initializable {
             Util.dialogo(Alert.AlertType.ERROR, String.format("No se puede cancelar un contrato después de %d día(s), el límite es de < %d día(s)", diasDesdeContrato, parametrosTMP.getDiasParaCancelarContrato()));
         }
     }
-    
+
     @FXML
     public void clonarContrato() {
         // TODO - Reempeño
+    }
+
+    @FXML
+    public void buscarContrato() {
+        String busqueda;
+        List<Contrato> contratosTMP;
+        if (buscarT.getText().trim().isEmpty()) {
+            Util.dialogo(Alert.AlertType.ERROR, "Introduce el valor a buscar antes de continuar");
+            return;
+        }
+        if (buscarC.getSelectionModel().getSelectedItem() == null) {
+            Util.dialogo(Alert.AlertType.ERROR, "Selecciona el tipo de busqueda que deseas realizar antes de continuar");
+            return;
+        }
+        switch (buscarC.getSelectionModel().getSelectedItem()) {
+            case "Folio":
+                try {
+                    int folioTMP = Integer.parseInt(buscarT.getText().trim());
+                    Contrato contratoTMP = contratoDAO.obtenerContrato(folioTMP);
+                    if (contratoTMP == null) {
+                        contratos.getItems().clear();
+                    } else {
+                        contratos.getItems().setAll(contratoTMP);
+                    }
+                } catch (NumberFormatException nfEx) {
+                    Util.dialogo(Alert.AlertType.ERROR, "El Folio no es un número entero valido");
+                }
+                break;
+            case "Cliente":
+                busqueda = buscarT.getText().trim();
+                contratosTMP = contratoDAO.buscarContratoPorNombre(busqueda);
+                if(contratosTMP == null || contratosTMP.isEmpty()) {
+                    contratos.getItems().clear();
+                } else {
+                    contratos.getItems().setAll(contratosTMP);
+                }
+                break;
+            case "Prenda":
+                busqueda = buscarT.getText().trim();
+                contratosTMP = contratoDAO.buscarContratoPorPrenda(busqueda);
+                if(contratosTMP == null || contratosTMP.isEmpty()) {
+                    contratos.getItems().clear();
+                } else {
+                    contratos.getItems().setAll(contratosTMP);
+                }
+                break;
+            default:
+                Util.dialogo(Alert.AlertType.ERROR, "Opción invalida");
+                actualizarContratos();
+                break;
+        }
     }
 
     private class Opciones extends TableCell<Prenda, Void> {

@@ -26,6 +26,8 @@ import java.util.List;
 public interface IContratoDAO {
     public List<Contrato> obtenerContratos();
     public Contrato obtenerContrato(Integer folio);
+    public List<Contrato> buscarContratoPorNombre(String busqueda);
+    public List<Contrato> buscarContratoPorPrenda(String busqueda);
     public int crearContrato(Contrato contrato);
     public int editarContrato(Contrato contrato);
 }

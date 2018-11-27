@@ -23,6 +23,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <select id="obtenerContrato" parameterType="int" resultType="empenofacil.model.Contrato">
         SELECT * FROM contrato WHERE folio = #{folio}
     </select>
+    <select id="buscarContratoPorNombre" parameterType="string" resultType="empenofacil.model.Contrato">
+        SELECT DISTINCT contrato.* FROM contrato INNER JOIN cliente ON contrato.idCliente = cliente.idCliente WHERE nombre LIKE #{busqueda}
+    </select>
+    <select id="buscarContratoPorPrenda" parameterType="string" resultType="empenofacil.model.Contrato">
+        SELECT DISTINCT contrato.* FROM bolsa INNER JOIN contrato ON bolsa.folio = contrato.folio INNER JOIN prenda ON bolsa.idPrenda = prenda.idPrenda WHERE descripcion LIKE #{busqueda}
+    </select>
     <insert id="crearContrato" parameterType="empenofacil.model.Contrato" useGeneratedKeys="true" keyProperty="folio">
         INSERT INTO contrato(idCliente, idEstadoContrato, idSucursal, idEmpleado, numBolsa, 
         fechaInicioContrato, fechaFinContrato, cotitular, totalAvaluo, totalPrestamo)

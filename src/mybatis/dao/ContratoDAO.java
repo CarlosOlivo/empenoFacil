@@ -89,4 +89,34 @@ public class ContratoDAO implements IContratoDAO {
         }
         return rows;
     }
+
+    @Override
+    public List<Contrato> buscarContratoPorNombre(String busqueda) {
+        List<Contrato> list = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
+            list = contratoDAO.buscarContratoPorNombre("%"+busqueda+"%");
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return list;
+    }
+
+    @Override
+    public List<Contrato> buscarContratoPorPrenda(String busqueda) {
+        List<Contrato> list = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
+            list = contratoDAO.buscarContratoPorPrenda("%"+busqueda+"%");
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return list;
+    }
 }
