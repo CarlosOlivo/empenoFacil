@@ -7,180 +7,67 @@
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<parameter name="folio" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT * FROM contrato INNER JOIN empleado ON contrato.idEmpleado = empleado.idEmpleado INNER JOIN sucursal ON contrato.idSucursal = sucursal.idSucursal INNER JOIN bolsa ON contrato.folio = bolsa.folio INNER JOIN prenda ON bolsa.idPrenda = prenda.idPrenda INNER JOIN categoria_prenda ON prenda.idCategoriaPrenda = categoria_prenda.idCategoriaPrenda INNER JOIN tipo_prenda ON prenda.idTipoPrenda = tipo_prenda.idTipoPrenda WHERE contrato.folio = $P{folio}]]>
+		<![CDATA[SELECT c.folio, p.idPrenda AS p_id, cl.nombre AS cl_n, cl.apellidoPaterno AS c_aP, cl.apellidoMaterno AS c_aM, p.descripcion AS p_d, p.prestamo AS p_p, t.categoriaPrenda AS p_c, c.fechaInicioContrato AS c_i, c.fechaFinContrato AS c_f, e.nombre AS e_n, e.apellidoPaterno AS e_aP, e.apellidoMaterno AS e_aM FROM bolsa b INNER JOIN contrato c ON b.folio = c.folio INNER JOIN empleado e ON c.idEmpleado = e.idEmpleado INNER JOIN cliente cl ON c.idCliente = cl.idCliente INNER JOIN prenda p ON b.idPrenda = p.idPrenda INNER JOIN categoria_prenda t ON p.idCategoriaPrenda = t.idCategoriaPrenda WHERE b.folio =  $P{folio}]]>
 	</queryString>
 	<field name="folio" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="folio"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
 	</field>
-	<field name="idCliente" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idCliente"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="idEstadoContrato" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idEstadoContrato"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="idSucursal" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idSucursal"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="idEmpleado" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idEmpleado"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="numBolsa" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="numBolsa"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="fechaInicioContrato" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.label" value="fechaInicioContrato"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="fechaFinContrato" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.label" value="fechaFinContrato"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="cotitular" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="cotitular"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="totalAvaluo" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="totalAvaluo"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="totalPrestamo" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="totalPrestamo"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
-	</field>
-	<field name="idRol" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idRol"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="idDomicilio" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idDomicilio"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="usuario" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="usuario"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="contrasenia" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="contrasenia"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="nombre" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="apellidoPaterno" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="apellidoPaterno"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="apellidoMaterno" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="apellidoMaterno"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="telefono" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="telefono"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="celular" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="celular"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="curp" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="curp"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="rfc" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="rfc"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="fechaNacimiento" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.label" value="fechaNacimiento"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="huellaEmpleado" class="java.lang.Object">
-		<property name="com.jaspersoft.studio.field.label" value="huellaEmpleado"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
-	</field>
-	<field name="email" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="email"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
-	</field>
-	<field name="idPrenda" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idPrenda"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="bolsa"/>
-	</field>
-	<field name="idCategoriaPrenda" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idCategoriaPrenda"/>
+	<field name="p_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="p_id"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="prenda"/>
 	</field>
-	<field name="idTipoPrenda" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idTipoPrenda"/>
+	<field name="cl_n" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cl_n"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="c_aP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="c_aP"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="c_aM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="c_aM"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cliente"/>
+	</field>
+	<field name="p_d" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="p_d"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="prenda"/>
 	</field>
-	<field name="tamanio" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="tamanio"/>
+	<field name="p_p" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="p_p"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="prenda"/>
 	</field>
-	<field name="peso" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="peso"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="prenda"/>
-	</field>
-	<field name="descripcion" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="prenda"/>
-	</field>
-	<field name="avaluo" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="avaluo"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="prenda"/>
-	</field>
-	<field name="prestamo" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="prestamo"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="prenda"/>
-	</field>
-	<field name="categoriaPrenda" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="categoriaPrenda"/>
+	<field name="p_c" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="p_c"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="categoria_prenda"/>
 	</field>
-	<field name="tipoPrenda" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="tipoPrenda"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="tipo_prenda"/>
+	<field name="c_i" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="c_i"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="c_f" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="c_f"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="contrato"/>
+	</field>
+	<field name="e_n" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="e_n"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
+	</field>
+	<field name="e_aP" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="e_aP"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
+	</field>
+	<field name="e_aM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="e_aM"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="empleado"/>
 	</field>
 	<detail>
 		<band height="104" splitType="Stretch">
-			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="0" width="50" height="20" uuid="ab86e497-385a-4668-b44e-9036ff590fad"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="100" y="0" width="30" height="20" uuid="6643c850-7554-4be6-94f6-d34d0f6a5ec7"/>
+				<reportElement x="100" y="-10" width="30" height="20" uuid="6643c850-7554-4be6-94f6-d34d0f6a5ec7"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[CTR.]]></text>
 			</staticText>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="0" y="0" width="80" height="10" forecolor="#FFFFFF" backcolor="#000000" uuid="7d4e1ccb-2cc9-4553-842f-5aedc6e41eed"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fechaInicioContrato}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="10" width="80" height="19" uuid="ff164734-57c4-4ec4-a89d-811985d90a3f"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{numBolsa}]]></textFieldExpression>
-			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement mode="Opaque" x="148" y="61" width="44" height="10" forecolor="#FFFFFF" backcolor="#000000" uuid="fed131a9-b7b5-4bc1-bfbc-0f9b6c3db483"/>
-				<textElement verticalAlignment="Middle">
-					<font size="6"/>
-					<paragraph lineSpacing="Fixed"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fechaFinContrato}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="110" y="61" width="40" height="10" forecolor="#FFFFFF" backcolor="#000000" uuid="4823e3ac-a6e8-4d95-b41b-7cf0ec767968"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -188,40 +75,109 @@
 				</textElement>
 				<text><![CDATA[VENCE]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="29" width="114" height="16" uuid="e8963e12-d636-4d11-a5a6-1156b6c15701"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{idCliente}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement key="" x="38" y="94" width="72" height="10" uuid="e3829e62-0152-4e9e-9a96-7c565c6ddb22"/>
-				<textElement verticalAlignment="Middle">
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{idCategoriaPrenda}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement key="" x="0" y="94" width="38" height="10" uuid="16788a3c-8d7c-4360-9f76-c1f3fa0bb33c"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<reportElement key="" x="-11" y="94" width="38" height="10" uuid="16788a3c-8d7c-4360-9f76-c1f3fa0bb33c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
 				<text><![CDATA[Categoria]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="45" width="180" height="16" uuid="8f375599-1915-47c6-ac03-7565a902cd47"/>
-				<textElement>
-					<font size="8"/>
+				<reportElement x="130" y="-10" width="50" height="20" uuid="12fb003f-7213-416c-9ead-bea4df05c37b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="-10" y="-10" width="70" height="12" forecolor="#FFFFFF" backcolor="#000000" uuid="dd77bd0f-c8e0-4ec6-a102-a311df144177"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{idPrenda}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{c_i}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="150" y="61" width="40" height="10" forecolor="#FFFFFF" backcolor="#000000" uuid="ab3070f6-c266-41df-a643-a538b2cceeea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c_f}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-10" y="26" width="150" height="14" uuid="9c580af9-4f91-43b5-96ca-33af22bc37b0"/>
+				<textFieldExpression><![CDATA[$F{cl_n} + " "+ $F{c_aP} +" "+ $F{c_aM}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="148" y="71" width="41" height="13" uuid="72c7af1c-44dc-4970-990e-605d70d72fbc"/>
+				<reportElement x="110" y="74" width="80" height="20" uuid="e4eaacf7-016a-4fe2-b165-31418fe16b6d"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="3of9" drawText="false" checksumRequired="false">
-					<jr:codeExpression><![CDATA[$F{idPrenda}]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA[$F{folio}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
+			<textField isBlankWhenNull="true">
+				<reportElement x="27" y="94" width="62" height="10" uuid="bda8cd7d-7e86-49f6-bdd6-1cfd74f8487b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p_c}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-10" y="10" width="24" height="16" uuid="7e66611f-8b15-4ce5-9f90-5af1ebf0d5a8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[B-]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="14" y="10" width="66" height="16" uuid="837bcdc2-48ac-4728-907e-a7d46a64ca69"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{folio}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-10" y="40" width="138" height="10" uuid="7c52d01a-8663-4687-b7d5-e9762c6c448c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p_d}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤#,##0.00#;¤-#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="-10" y="60" width="100" height="14" uuid="a72b7e62-b06b-42ef-b7e4-32461dd8f263"/>
+				<textFieldExpression><![CDATA[$F{p_p}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="17" y="75" width="82" height="14" uuid="0f271026-4fa0-44d9-a2f9-3c1ebdcec2cb"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{e_n} + " " + $F{e_aP} +" "+ $F{e_aM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-10" y="75" width="26" height="14" uuid="2d3738be-2c31-4850-98b3-10ff1007a20e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[ALTA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-10" y="0" width="100" height="14" uuid="76cdebf3-c914-4014-a2d8-258e11a00f94"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[EMPEÑOS FÁCIL S.A. DE C.V]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="140" y="20" width="30" height="20" uuid="d25ff610-3b51-4fa2-adb3-ddbc12c56bba"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="170" y="20" width="26" height="20" uuid="b1269954-7c06-49ed-8596-16bdffe3909c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" /" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

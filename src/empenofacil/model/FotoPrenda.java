@@ -20,15 +20,15 @@ package empenofacil.model;
  *
  * @author lunix
  */
-public class FotografiaPrenda {
+public class FotoPrenda {
     private Integer idFotoPrenda;
     private Integer idPrenda;
     private Object foto;
 
-    public FotografiaPrenda() {
+    public FotoPrenda() {
     }
 
-    public FotografiaPrenda(Integer idFotoPrenda, Integer idPrenda, Object foto) {
+    public FotoPrenda(Integer idFotoPrenda, Integer idPrenda, Object foto) {
         this.idFotoPrenda = idFotoPrenda;
         this.idPrenda = idPrenda;
         this.foto = foto;

@@ -33,9 +33,14 @@ import empenofacil.model.Contrato;
 import empenofacil.model.Parametros;
 import empenofacil.model.Prenda;
 import empenofacil.model.TipoPrenda;
+import empenofacil.reportes.Reportes;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -491,7 +496,7 @@ public class ContratosController implements Initializable {
             case "Cliente":
                 busqueda = buscarT.getText().trim();
                 contratosTMP = contratoDAO.buscarContratoPorNombre(busqueda);
-                if(contratosTMP == null || contratosTMP.isEmpty()) {
+                if (contratosTMP == null || contratosTMP.isEmpty()) {
                     contratos.getItems().clear();
                 } else {
                     contratos.getItems().setAll(contratosTMP);
@@ -500,7 +505,7 @@ public class ContratosController implements Initializable {
             case "Prenda":
                 busqueda = buscarT.getText().trim();
                 contratosTMP = contratoDAO.buscarContratoPorPrenda(busqueda);
-                if(contratosTMP == null || contratosTMP.isEmpty()) {
+                if (contratosTMP == null || contratosTMP.isEmpty()) {
                     contratos.getItems().clear();
                 } else {
                     contratos.getItems().setAll(contratosTMP);
@@ -513,10 +518,34 @@ public class ContratosController implements Initializable {
         }
     }
 
+    @FXML
+    public void generarContrato() {
+        Integer numFolio = contratos.getSelectionModel().getSelectedItem().getFolio();//obtien el indice del registro en la tabla
+        HashMap<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("folio", new Integer(numFolio));
+        String path = Reportes.generarPDFContratoJasper("Contrato", parametros);
+        openPDF(path);
+
+    }
+
+    public static void openPDF(String url) {
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File(url);
+                Desktop.getDesktop().open(myFile);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     private class Opciones extends TableCell<Prenda, Void> {
 
         private final Hyperlink eliminar = new Hyperlink("❌ Eliminar prenda");
-        private final HBox hb = new HBox(eliminar);
+        private final Hyperlink tomarFoto = new Hyperlink("Tomar foto");
+
+        private final HBox hb = new HBox(eliminar, tomarFoto);
+        
 
         public Opciones() {
             hb.setSpacing(5);
@@ -525,6 +554,10 @@ public class ContratosController implements Initializable {
             eliminar.setTooltip(new Tooltip("Eliminar prenda"));
             eliminar.setOnAction(event -> {
                 lista_prendas.remove(getIndex());
+            });
+            
+            tomarFoto.setOnAction((event) -> {
+                Util.capturarFotoPrenda(prenda);
             });
         }
 

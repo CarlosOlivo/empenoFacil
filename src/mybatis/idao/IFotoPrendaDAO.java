@@ -16,7 +16,7 @@
  */
 package mybatis.idao;
 
-import empenofacil.model.FotografiaPrenda;
+import empenofacil.model.FotoPrenda;
 
 /**
  *
@@ -24,7 +24,7 @@ import empenofacil.model.FotografiaPrenda;
  */
 public interface IFotoPrendaDAO {
     
-    public FotografiaPrenda obtenerFotoPrenda(Integer idFotoPrenda);
+    public FotoPrenda obtenerFotoPrenda(Integer idFotoPrenda);
     
-    public int tomarFotografia(FotografiaPrenda fotoPrenda);
+    public int tomarFotografia(FotoPrenda fotoPrenda);
 }

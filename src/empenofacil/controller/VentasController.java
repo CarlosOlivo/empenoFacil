@@ -16,25 +16,26 @@
  */
 package empenofacil.controller;
 
+import empenofacil.EmpenoFacil;
+import empenofacil.Util;
+import empenofacil.model.Articulo;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -43,44 +44,26 @@ import javafx.stage.Stage;
  */
 public class VentasController implements Initializable {
 
-    @FXML
+      @FXML
     private Button agregarab;
 
     @FXML
     private Button cncelarb;
 
     @FXML
-    private TextField ivaf;
-
-    @FXML
     private Label nombrel;
-
-    @FXML
-    private Label subtotall;
-
-    @FXML
-    private TextField totalf;
 
     @FXML
     private TextField direccionf;
 
     @FXML
-    private Button btnBusqueda1;
+    private TableColumn<Articulo, String> cdescripcion;
 
     @FXML
-    private Label ival;
+    private Label stid;
 
     @FXML
-    private TextField acomuladof;
-
-    @FXML
-    private CheckBox notacb;
-
-    @FXML
-    private Label totall;
-
-    @FXML
-    private TextField subtotalf;
+    private TableView<Articulo> artciculosT;
 
     @FXML
     private Label direccionl;
@@ -92,42 +75,83 @@ public class VentasController implements Initializable {
     private Label lbclave;
 
     @FXML
-    private TextField clavef;
-
-    @FXML
     private TextField busquedaTxt;
 
     @FXML
-    private TableColumn<?, ?> articulotabla;
+    private TableColumn<Articulo, Number> cpeso;
+
+    @FXML
+    private Label subtotall;
+
+    @FXML
+    private Button btnBusqueda1;
+
+    @FXML
+    private Label ival;
+
+    @FXML
+    private TableColumn<Articulo, Number> ctamanio;
+
+    @FXML
+    private Label totall;
+
+    @FXML
+    private TextField clavef;
+
+    @FXML
+    private TableColumn<Articulo, Number> cprecio;
 
     @FXML
     private TextField descuentof;
 
     @FXML
-    private Label lblAcumlado;
+    private Label tlbl;
 
     @FXML
     private TextField nombref;
 
     @FXML
+    private Label ivalbl;
+
+    @FXML
     private Label labelBusqueda;
 
+    @FXML
+    private TableColumn<Articulo, String> cNombre;
+
+    @FXML
+    void abrirSeccionArticulos(ActionEvent event) {
+
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        agregarab.setOnAction((ActionEvent event) -> {
-            abrirSeccionArticulos();
-        });
+        cNombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
+        cprecio.setCellValueFactory(data -> data.getValue().getPrecioProperty());
+        cpeso.setCellValueFactory(data -> data.getValue().getPesoProperty());
+        ctamanio.setCellValueFactory(data -> data.getValue().getTamanioProperty());
+        cdescripcion.setCellValueFactory(data -> data.getValue().getDescripcionProperty());
     }
 
+    @FXML
     public void abrirSeccionArticulos() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../empenofacil/view/SeleccionarArticulos.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            System.out.println("Exception" + e.getMessage());
+            FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/SeleccionarArticulos.fxml"));
+            Parent root = (Parent) loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Seleccione Articulo");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initStyle(StageStyle.UTILITY);
+            dialogStage.initOwner(EmpenoFacil.getStage());
+            Scene scene = new Scene(root);
+            dialogStage.setScene(scene);
+            dialogStage.showAndWait();
+        } catch (IOException ioEx) {
+            Util.excepcion(ioEx);
         }
+    }
+
+    @FXML
+    public void realizarVenta() {
+
     }
 }

@@ -16,17 +16,14 @@
  */
 package empenofacil.controller;
 
+import empenofacil.model.Articulo;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
-import javafx.scene.layout.HBox;
 
 /**
  * FXML Controller class
@@ -36,50 +33,33 @@ import javafx.scene.layout.HBox;
 public class SeleccionarArticulosController implements Initializable {
 
     @FXML
-    private Label prendasl;
+    private TableColumn<Articulo, String> cDescripcion;
+
+    @FXML
+    private TableColumn<Articulo, Number> cTamanio;
 
     @FXML
     private Button aceptarbn;
 
     @FXML
-    private Button buscarbn;
+    private TableColumn<Articulo, Number> cPrecio;
 
     @FXML
-    private TableColumn<?, ?> articulostable;
+    private TableColumn<Articulo, Number> cPeso;
 
     @FXML
-    private RadioButton seriebolsar;
-
-    @FXML
-    private DatePicker fincalendar;
-
-    @FXML
-    private RadioButton ororb;
-
-    @FXML
-    private Label finl;
+    private TableColumn<Articulo, String> cNombre;
 
     @FXML
     private Button cancelarbn;
 
-    @FXML
-    private Button limpiarbn;
-
-    @FXML
-    private RadioButton fechar;
-
-    @FXML
-    private HBox iniciol;
-
-    @FXML
-    private RadioButton aparatosrb;
-
-    @FXML
-    private DatePicker iniciocalendar;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        cNombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
+        cPrecio.setCellValueFactory(data -> data.getValue().getPrecioProperty());
+        cPeso.setCellValueFactory(data -> data.getValue().getPesoProperty());
+        cTamanio.setCellValueFactory(data -> data.getValue().getTamanioProperty());
+        cDescripcion.setCellValueFactory(data -> data.getValue().getDescripcionProperty());
     }
 
 }

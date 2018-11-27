@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Contrato" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Error" uuid="0e3c88cb-8827-468a-af97-27a0876ea260">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL_LOCAL"/>
@@ -63,6 +63,7 @@
 	<parameter name="folio" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
+	<parameter name="p_path" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT *
 FROM empenofacil.contrato
@@ -179,7 +180,7 @@ WHERE
 		<band height="752" splitType="Stretch">
 			<image vAlign="Bottom">
 				<reportElement x="0" y="0" width="571" height="751" uuid="6cbb7254-5023-4e87-a7de-d1f8f62228ee"/>
-				<imageExpression><![CDATA["D:/Documents/GIT/empenoFacil/jasper/contrato.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{p_path} +"/contrato.png"]]></imageExpression>
 			</image>
 		</band>
 	</background>
@@ -262,8 +263,7 @@ WHERE
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{costoDiario}*100
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{costoDiario}*100]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="451" y="113" width="65" height="11" uuid="f375bba1-2f44-4fdb-9813-9eafd14b424b"/>
@@ -349,7 +349,7 @@ WHERE
 		<band height="70" splitType="Stretch">
 			<componentElement>
 				<reportElement x="0" y="0" width="571" height="70" uuid="62d2047c-00f1-4568-bcc9-10ff5731a92c"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset1" uuid="a1fc5456-4a03-48b9-94c2-a1ebc03dff06">
 						<datasetParameter name="folio">
 							<datasetParameterExpression><![CDATA[$F{folio}]]></datasetParameterExpression>
@@ -404,7 +404,7 @@ WHERE
 		<band height="70">
 			<componentElement>
 				<reportElement x="0" y="0" width="571" height="70" uuid="239c19cb-60cb-4d9b-83f8-1f7f590ddad3"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset1" uuid="649531f4-1c86-4ef6-ae77-5443672060cc">
 						<datasetParameter name="folio">
 							<datasetParameterExpression><![CDATA[$F{folio}]]></datasetParameterExpression>

@@ -20,6 +20,7 @@ import empenofacil.controller.CapturarFotoController;
 import empenofacil.controller.MenuController;
 import empenofacil.model.Cliente;
 import empenofacil.model.Empleado;
+import empenofacil.model.Prenda;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -203,6 +204,25 @@ public class Util {
             dialogStage.setScene(scene);
             controller.setDialogStage(dialogStage);
             controller.setCliente(cliente);
+            dialogStage.showAndWait();
+        } catch (IOException ioEx) {
+            Util.excepcion(ioEx);
+        }
+    }
+     public static void capturarFotoPrenda(Prenda prenda) {
+        try {
+            FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/CapturarFoto.fxml"));
+            Parent root = (Parent) loader.load();
+            CapturarFotoController controller = (CapturarFotoController) loader.getController();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Capturar foto");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initStyle(StageStyle.UTILITY);
+            dialogStage.initOwner(EmpenoFacil.getStage());
+            Scene scene = new Scene(root);
+            dialogStage.setScene(scene);
+            controller.setDialogStage(dialogStage);
+            controller.setPrenda(prenda);
             dialogStage.showAndWait();
         } catch (IOException ioEx) {
             Util.excepcion(ioEx);

@@ -21,6 +21,8 @@ import com.github.sarxos.webcam.WebcamPanel;
 import empenofacil.Util;
 import empenofacil.model.Cliente;
 import empenofacil.model.FotoCliente;
+import empenofacil.model.FotoPrenda;
+import empenofacil.model.Prenda;
 import empenofacil.model.TipoFoto;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -44,8 +46,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import mybatis.dao.FotoClienteDAO;
+import mybatis.dao.FotoPrendaDAO;
 import mybatis.dao.TipoFotoDAO;
-
 
 public class CapturarFotoController implements Initializable {
 
@@ -57,9 +59,11 @@ public class CapturarFotoController implements Initializable {
     private BufferedImage img;
     private boolean ready;
     private Cliente cliente;
+    private Prenda prenda;
     private final TipoFotoDAO tipoFotoDAO;
     private final FotoClienteDAO fotoClienteDAO;
-    
+    private final FotoPrendaDAO fotoPrendaDAO;
+
     @FXML
     private ChoiceBox<String> seleccionaCamara;
     @FXML
@@ -83,10 +87,12 @@ public class CapturarFotoController implements Initializable {
         webCamPanel = new SwingNode();
         ready = false;
         cliente = new Cliente();
+        prenda = new Prenda();
         tipoFotoDAO = new TipoFotoDAO();
         fotoClienteDAO = new FotoClienteDAO();
+        fotoPrendaDAO = new FotoPrendaDAO();
     }
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cargarWebcams();
@@ -114,42 +120,87 @@ public class CapturarFotoController implements Initializable {
             seleccionaCamara.getSelectionModel().select(NAMECAM);
         }
     }
-    
-    private void cargarCanvasWebcam(){
-        if(NAMECAM != null){
-            if(webcam != null && webcam.isOpen()){
+
+    private void cargarCanvasWebcam() {
+        if (NAMECAM != null) {
+            if (webcam != null && webcam.isOpen()) {
                 webcam.close();
             }
             webcam = Webcam.getWebcamByName(NAMECAM);
-            webcam.setViewSize(new Dimension(640,480));
+            webcam.setViewSize(new Dimension(640, 480));
             panel = new WebcamPanel(webcam);
             webCamPanel.setContent(panel);
             panelFoto.getChildren().setAll(webCamPanel);
         }
     }
-    
+
     @FXML
     private void tomarFoto() {
         img = webcam.getImage();
         tomarFoto.setVisible(false);
         mostrarFoto();
     }
-    
+
     @FXML
     private void tomarFotoDeNuevo() {
         tomarFoto.setVisible(true);
         webCamPanel.setContent(panel);
     }
-    
-    private void mostrarFoto(){
-        if(img != null){
+
+    private void mostrarFoto() {
+        if (img != null) {
             JLabel foto = new JLabel(new ImageIcon(img));
             webCamPanel.setContent(foto);
         }
     }
-    
+
     @FXML
     private void guardarFoto() {
+        if (cliente != null) {
+            tomarFotoCliente();
+        } else {
+            tomarFotoPrenda();
+
+        }
+    }
+
+    @FXML
+    private void cerrar() {
+        dialogStage.close();
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+        panelOpciones.getChildren().remove(prendaV);
+        cargarTiposFotoCliente();
+    }
+    
+    public void setPrenda(Prenda prenda) {
+        this.prenda =prenda;
+        panelOpciones.getChildren().remove(clienteV);
+    }
+
+    private void cargarTiposFotoCliente() {
+        List<TipoFoto> tiposFoto = tipoFotoDAO.obtenerTiposFoto();
+        if (tiposFoto != null && !tiposFoto.isEmpty()) {
+            clienteC.getItems().setAll(tiposFoto);
+        } else {
+            Util.dialogo(Alert.AlertType.ERROR, "No hay tipos de fotos en el sistema");
+        }
+    }
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+        salir();
+    }
+
+    private void salir() {
+        dialogStage.setOnHiding((event) -> {
+            webcam.close();
+        });
+    }
+
+    private void tomarFotoCliente() {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(img, "jpg", baos);
@@ -157,22 +208,22 @@ public class CapturarFotoController implements Initializable {
             byte[] imgBytes = baos.toByteArray();
             baos.close();
             TipoFoto tipoFoto = clienteC.getValue();
-            if(tipoFoto == null) {
+            if (tipoFoto == null) {
                 Util.dialogo(Alert.AlertType.ERROR, "Selecciona un tipo de foto");
                 return;
             }
             FotoCliente fotoCliente = fotoClienteDAO.obtenerFotoCliente(cliente.getIdCliente(), tipoFoto.getIdTipoFoto());
-            if(fotoCliente == null) {
-                if(fotoClienteDAO.crearFotoCliente(new FotoCliente(null, tipoFoto.getIdTipoFoto(), cliente.getIdCliente(), imgBytes)) == 0) {
+            if (fotoCliente == null) {
+                if (fotoClienteDAO.crearFotoCliente(new FotoCliente(null, tipoFoto.getIdTipoFoto(), cliente.getIdCliente(), imgBytes)) == 0) {
                     Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al guardar la foto");
                 } else {
                     Util.dialogo(Alert.AlertType.INFORMATION, "Foto guardada correctamente");
                 }
             } else {
                 Optional<ButtonType> opcion = Util.confirmacion("Foto duplicada", "Ya existe una foto, ¿Deseas reemplazarla?");
-                if(opcion.isPresent() && opcion.get() == ButtonType.YES) {
+                if (opcion.isPresent() && opcion.get() == ButtonType.YES) {
                     fotoCliente.setFoto(imgBytes);
-                    if(fotoClienteDAO.editarFotoCliente(fotoCliente) == 0) {
+                    if (fotoClienteDAO.editarFotoCliente(fotoCliente) == 0) {
                         Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al reemplazar la foto");
                     } else {
                         Util.dialogo(Alert.AlertType.INFORMATION, "Foto reemplazaada correctamente");
@@ -187,35 +238,28 @@ public class CapturarFotoController implements Initializable {
             Util.excepcion(ex);
         }
     }
-    
-    @FXML
-    private void cerrar() {
-        dialogStage.close();
-    }
-    
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-        panelOpciones.getChildren().remove(prendaV);
-        cargarTiposFotoCliente();
-    }
-    
-    private void cargarTiposFotoCliente() {
-        List<TipoFoto> tiposFoto = tipoFotoDAO.obtenerTiposFoto();
-        if (tiposFoto != null && !tiposFoto.isEmpty()) {
-            clienteC.getItems().setAll(tiposFoto);
-        } else {
-            Util.dialogo(Alert.AlertType.ERROR, "No hay tipos de fotos en el sistema");
+
+    private void tomarFotoPrenda() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(img, "jpg", baos);
+            baos.flush();
+            byte[] imgBytes = baos.toByteArray();
+            baos.close();
+
+            FotoPrenda fotoPrenda = fotoPrendaDAO.obtenerFotoPrenda(prenda.getIdPrenda());
+            if (fotoPrenda == null) {
+                if (fotoPrendaDAO.tomarFotografia(fotoPrenda) == 0) {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al guardar la foto");
+                } else {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Foto guardada correctamente");
+                }
+            }
+            tomarFotoDeNuevo();
+        } catch (IOException ex) {
+            Util.excepcion(ex);
         }
     }
-    
-    public void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-        salir();
-    }
-    
-    private void salir() {
-        dialogStage.setOnHiding((event) -> {
-            webcam.close();
-        });
-    }
+
+ 
 }
