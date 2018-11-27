@@ -18,7 +18,7 @@ package mybatis.dao;
 
 import com.sun.javafx.util.Utils;
 import empenofacil.Util;
-import empenofacil.model.FotografiaPrenda;
+import empenofacil.model.FotoPrenda;
 import mybatis.MyBatisUtil;
 import mybatis.idao.IFotoPrendaDAO;
 import org.apache.ibatis.session.SqlSession;
@@ -30,8 +30,8 @@ import org.apache.ibatis.session.SqlSession;
 public class FotoPrendaDAO implements IFotoPrendaDAO{
 
     @Override
-    public FotografiaPrenda obtenerFotoPrenda(Integer idFotoPrenda) {
-        FotografiaPrenda fotoPrenda = null;
+    public FotoPrenda obtenerFotoPrenda(Integer idFotoPrenda) {
+        FotoPrenda fotoPrenda = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
             IFotoPrendaDAO prendaDAO = conn.getMapper(IFotoPrendaDAO.class);
@@ -45,7 +45,7 @@ public class FotoPrendaDAO implements IFotoPrendaDAO{
     }
 
     @Override
-    public int tomarFotografia(FotografiaPrenda fotoPrenda) {
+    public int tomarFotografia(FotoPrenda fotoPrenda) {
         int rows = 0;
         SqlSession conn = MyBatisUtil.getSession();
         try {

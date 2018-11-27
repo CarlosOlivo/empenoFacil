@@ -32,7 +32,7 @@ public class Reportes {
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private static String ds[] = {"localhost", "3306", "empenofacil", "admin_ef", "123456"};
 
-    public static String generarReporteJasper(String jasper, HashMap parametros) {
+    public static String generarPDFContratoJasper(String jasper, HashMap parametros) {
         String basepath = System.getProperty("user.dir") + "/jasper/";
         basepath = basepath.replaceAll("\\\\", "/");
         parametros.put("p_path", basepath);

@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="empenofacil.controller.VentasController">
    <children>
       <HBox>
          <children>
@@ -48,8 +48,6 @@
                         <TextField fx:id="direccionf" GridPane.columnIndex="5" />
                         <Label fx:id="nombrel" text="Nombre:" GridPane.columnIndex="2" />
                         <TextField fx:id="nombref" GridPane.columnIndex="3" />
-                        <TextField fx:id="acomuladof" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label fx:id="lblAcumlado" text="Acomulado:" GridPane.rowIndex="1" />
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -57,9 +55,8 @@
                   </GridPane>
                   <HBox alignment="CENTER_LEFT" spacing="20.0">
                      <children>
-                        <Button fx:id="agregarab" mnemonicParsing="false" text="Agregar Articulos" />
+                        <Button fx:id="agregarab" mnemonicParsing="false" onAction="#abrirSeccionArticulos" text="Agregar Articulos" />
                         <Button fx:id="cncelarb" mnemonicParsing="false" text="Cancelar" />
-                        <CheckBox fx:id="notacb" mnemonicParsing="false" text="Imprimir Nota" />
                         <HBox alignment="CENTER_LEFT" spacing="20.0" visible="false">
                            <children>
                               <Button mnemonicParsing="false" text="Agregar Articulos" />
@@ -86,14 +83,13 @@
          <children>
             <AnchorPane HBox.hgrow="ALWAYS">
                <children>
-                  <TableView layoutY="6.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="artciculosT" layoutY="6.0" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn fx:id="articulotabla" minWidth="-1.0" prefWidth="-1.0" text="BOLSA" />
-                      <TableColumn minWidth="-1.0" prefWidth="-1.0" text="CTR" />
-                        <TableColumn prefWidth="75.0" text="DESCRIPCION" />
-                        <TableColumn prefWidth="75.0" text="P. COMER" />
-                        <TableColumn prefWidth="75.0" text="TIPO DES." />
-                        <TableColumn prefWidth="75.0" text="DESCUENTO" />
+                      <TableColumn fx:id="cNombre" minWidth="-1.0" prefWidth="-1.0" text="NOMBRE" />
+                      <TableColumn fx:id="ctamanio" minWidth="-1.0" prefWidth="-1.0" text="TAMAÑO" />
+                        <TableColumn fx:id="cprecio" prefWidth="75.0" text="PRECIO" />
+                        <TableColumn fx:id="cpeso" prefWidth="75.0" text="PESO" />
+                        <TableColumn fx:id="cdescripcion" prefWidth="75.0" text="DESCRIPCION" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -111,7 +107,8 @@
             <GridPane hgap="20.0">
               <columnConstraints>
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
               </columnConstraints>
@@ -125,10 +122,11 @@
                   <Label fx:id="ival" text="IVA:" GridPane.rowIndex="1" />
                   <Label fx:id="totall" text="Total:" GridPane.rowIndex="2" />
                   <Label fx:id="descuentol" text="Descuento:" GridPane.columnIndex="2" />
-                  <TextField fx:id="subtotalf" GridPane.columnIndex="1" />
-                  <TextField fx:id="ivaf" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="totalf" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="descuentof" GridPane.columnIndex="3" />
+                  <Button mnemonicParsing="false" onAction="#realizarVenta" text="Realizar Venta" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <Label fx:id="stid" GridPane.columnIndex="1" />
+                  <Label fx:id="ivalbl" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="tlbl" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </children>

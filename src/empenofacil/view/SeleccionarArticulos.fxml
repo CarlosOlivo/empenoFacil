@@ -9,66 +9,17 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox spacing="20.0">
-         <children>
-            <RadioButton fx:id="fechar" contentDisplay="CENTER" mnemonicParsing="false" text="Fecha y Tipo" />
-            <RadioButton fx:id="seriebolsar" contentDisplay="CENTER" mnemonicParsing="false" text="Serie, modelo o bolsa">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </RadioButton>
-         </children>
-      </HBox>
-      <HBox fx:id="iniciol" alignment="CENTER_LEFT" spacing="20.0">
-         <children>
-            <Label alignment="CENTER_RIGHT" text="Inicio">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <padding>
-                  <Insets left="15.0" right="-15.0" />
-               </padding>
-            </Label>
-            <DatePicker fx:id="iniciocalendar" />
-            <Label fx:id="finl" alignment="CENTER_RIGHT" text="Fin">
-               <HBox.margin>
-                  <Insets left="10.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets left="15.0" right="-15.0" />
-               </padding>
-            </Label>
-            <DatePicker fx:id="fincalendar" />
-            <Label fx:id="prendasl" text="Prendas con:">
-               <padding>
-                  <Insets left="15.0" right="-15.0" />
-               </padding>
-            </Label>
-            <RadioButton fx:id="ororb" mnemonicParsing="false" text="Oro" />
-            <RadioButton fx:id="aparatosrb" mnemonicParsing="false" text="Aparatos" />
-         </children>
-      </HBox>
-      <HBox alignment="CENTER_RIGHT" spacing="20.0">
-         <children>
-            <Button fx:id="buscarbn" mnemonicParsing="false" text="Buscar" />
-            <Button fx:id="limpiarbn" mnemonicParsing="false" text="Limpiar" />
-         </children>
-      </HBox>
       <HBox VBox.vgrow="ALWAYS">
          <children>
             <AnchorPane HBox.hgrow="ALWAYS">
                <children>
                   <TableView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="Seleccionado" />
-                      <TableColumn prefWidth="75.0" text="Bolsa" />
-                        <TableColumn prefWidth="75.0" text="Contrato" />
-                        <TableColumn fx:id="articulostable" minWidth="-Infinity" prefWidth="350.0" text="Descripción" />
-                        <TableColumn prefWidth="75.0" text="Piezas" />
-                        <TableColumn prefWidth="75.0" text="Modelo" />
-                        <TableColumn prefWidth="75.0" text="Prestamo" />
-                        <TableColumn prefWidth="75.0" text="Interes" />
-                        <TableColumn prefWidth="75.0" text="Total" />
+                      <TableColumn fx:id="cNombre" prefWidth="163.0" text="Nombre" />
+                        <TableColumn fx:id="cTamanio" prefWidth="121.0" text="Tamaño" />
+                        <TableColumn fx:id="cPrecio" minWidth="-Infinity" prefWidth="88.0" text="Precio" />
+                        <TableColumn fx:id="cPeso" prefWidth="97.0" text="Peso" />
+                        <TableColumn fx:id="cDescripcion" prefWidth="315.0" text="Descripcion" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
