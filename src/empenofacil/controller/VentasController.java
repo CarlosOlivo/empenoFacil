@@ -119,10 +119,6 @@ public class VentasController implements Initializable {
     @FXML
     private TableColumn<Articulo, String> cNombre;
 
-    @FXML
-    void abrirSeccionArticulos(ActionEvent event) {
-
-    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cNombre.setCellValueFactory(data -> data.getValue().getNombreProperty());

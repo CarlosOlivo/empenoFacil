@@ -54,12 +54,12 @@ public class Reportes {
         String basepath = System.getProperty("user.dir") + "/jasper/";
         basepath = basepath.replaceAll("\\\\", "/");
         HashMap parameters = new HashMap();
-        parameters.put("p_folio", folio);
+        parameters.put("folio", folio);
         parameters.put("p_path", basepath);
         //-----------OUTPUT----------------//
         String outpath = basepath + "/salida/";
         String token = "" + new Date().getTime();
-        String jasper = "ReciboVenta";
+        String jasper = "Etiquetadecomercializacion";
         try {
             JasperPrint po = Reportes.getPrint(basepath, jasper, parameters);
             String file = String.format("%s%s_%s.pdf", createPath(outpath), jasper, token);
@@ -80,7 +80,7 @@ public class Reportes {
         //-----------OUTPUT----------------//
         String outpath = basepath + "/salida/";
         String token = "" + new Date().getTime();
-        String jasper = "ReciboVenta";
+        String jasper = "Etiquetadecomercializacion";
         try {
             JasperPrint po = Reportes.getPrint(basepath, jasper, parameters);
             String file = String.format("%s%s_%s.pdf", createPath(outpath), jasper, token);

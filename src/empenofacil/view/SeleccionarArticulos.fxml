@@ -13,8 +13,9 @@
          <children>
             <AnchorPane HBox.hgrow="ALWAYS">
                <children>
-                  <TableView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="artciuloTable" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
+                        <TableColumn fx:id="seleccionar" prefWidth="75.0" text="Seleccionar" />
                       <TableColumn fx:id="cNombre" prefWidth="163.0" text="Nombre" />
                         <TableColumn fx:id="cTamanio" prefWidth="121.0" text="Tamaño" />
                         <TableColumn fx:id="cPrecio" minWidth="-Infinity" prefWidth="88.0" text="Precio" />

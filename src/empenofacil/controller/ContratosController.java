@@ -527,6 +527,16 @@ public class ContratosController implements Initializable {
         openPDF(path);
 
     }
+    
+    @FXML
+    public void imprimirEtiquetas() {
+        Integer numFolio = contratos.getSelectionModel().getSelectedItem().getFolio();//obtien el indice del registro en la tabla
+        HashMap<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("folio", new Integer(numFolio));
+        String path = Reportes.generarEtiquetaVenta(String.valueOf(numFolio));
+        openPDF(path);
+
+    }
 
     public static void openPDF(String url) {
         if (Desktop.isDesktopSupported()) {

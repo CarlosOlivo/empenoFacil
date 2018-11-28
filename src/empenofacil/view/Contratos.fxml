@@ -53,6 +53,7 @@
                         <Button mnemonicParsing="false" onAction="#cancelarContrato" text="Cancelar empeño" />
                         <Button mnemonicParsing="false" onAction="#clonarContrato" text="Reempeño" />
                         <Button mnemonicParsing="false" onAction="#generarContrato" text="Generar Contrato" />
+                        <Button mnemonicParsing="false" onAction="#imprimirEtiquetas" text="Imprimir Etiquetas" />
                      </children>
                   </HBox>
                         <TableView fx:id="contratos" prefHeight="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">

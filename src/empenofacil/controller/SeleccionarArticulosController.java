@@ -22,8 +22,15 @@ import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.HBox;
+import mybatis.dao.ArticuloDAO;
 
 /**
  * FXML Controller class
@@ -31,6 +38,8 @@ import javafx.scene.control.TableColumn;
  * @author lunix
  */
 public class SeleccionarArticulosController implements Initializable {
+
+    private final ArticuloDAO articuloDAO;
 
     @FXML
     private TableColumn<Articulo, String> cDescripcion;
@@ -40,6 +49,12 @@ public class SeleccionarArticulosController implements Initializable {
 
     @FXML
     private Button aceptarbn;
+
+    @FXML
+    private TableColumn<Articulo, Void> seleccionar;
+
+    @FXML
+    private TableView<Articulo> artciuloTable;
 
     @FXML
     private TableColumn<Articulo, Number> cPrecio;
@@ -53,13 +68,40 @@ public class SeleccionarArticulosController implements Initializable {
     @FXML
     private Button cancelarbn;
 
+    public SeleccionarArticulosController() {
+        articuloDAO = new ArticuloDAO();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        artciuloTable.getItems().setAll(articuloDAO.obtenerArticulos());
         cNombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
         cPrecio.setCellValueFactory(data -> data.getValue().getPrecioProperty());
         cPeso.setCellValueFactory(data -> data.getValue().getPesoProperty());
         cTamanio.setCellValueFactory(data -> data.getValue().getTamanioProperty());
         cDescripcion.setCellValueFactory(data -> data.getValue().getDescripcionProperty());
+        seleccionar.setCellFactory(param -> new Opciones());
+
+    }
+
+    private class Opciones extends TableCell<Articulo, Void> {
+
+        private final CheckBox cb = new CheckBox();
+
+        private final HBox hb = new HBox(cb);
+
+        public Opciones() {
+            hb.setSpacing(5);
+            hb.setPadding(new Insets(-3.5d, 0d, 0d, 0d));
+            hb.setAlignment(Pos.TOP_LEFT);
+
+        }
+
+        @Override
+        protected void updateItem(Void item, boolean empty) {
+            super.updateItem(item, empty);
+            setGraphic(empty ? null : hb);
+        }
     }
 
 }

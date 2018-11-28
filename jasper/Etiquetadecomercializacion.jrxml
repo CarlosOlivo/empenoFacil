@@ -6,6 +6,7 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<parameter name="folio" class="java.lang.Integer"/>
+	<parameter name="p_path" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT c.folio, p.idPrenda AS p_id, cl.nombre AS cl_n, cl.apellidoPaterno AS c_aP, cl.apellidoMaterno AS c_aM, p.descripcion AS p_d, p.prestamo AS p_p, t.categoriaPrenda AS p_c, c.fechaInicioContrato AS c_i, c.fechaFinContrato AS c_f, e.nombre AS e_n, e.apellidoPaterno AS e_aP, e.apellidoMaterno AS e_aM FROM bolsa b INNER JOIN contrato c ON b.folio = c.folio INNER JOIN empleado e ON c.idEmpleado = e.idEmpleado INNER JOIN cliente cl ON c.idCliente = cl.idCliente INNER JOIN prenda p ON b.idPrenda = p.idPrenda INNER JOIN categoria_prenda t ON p.idCategoriaPrenda = t.idCategoriaPrenda WHERE b.folio =  $P{folio}]]>
 	</queryString>
