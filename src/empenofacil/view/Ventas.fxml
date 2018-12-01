@@ -113,20 +113,23 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
               </columnConstraints>
               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label fx:id="subtotall" text="SubTotal:" />
-                  <Label fx:id="ival" text="IVA:" GridPane.rowIndex="1" />
-                  <Label fx:id="totall" text="Total:" GridPane.rowIndex="2" />
-                  <Label fx:id="descuentol" text="Descuento:" GridPane.columnIndex="2" />
-                  <TextField fx:id="descuentof" GridPane.columnIndex="3" />
-                  <Button mnemonicParsing="false" onAction="#realizarVenta" text="Realizar Venta" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <Label fx:id="stid" GridPane.columnIndex="1" />
-                  <Label fx:id="ivalbl" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="tlbl" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="subtotall" text="SubTotal:" GridPane.rowIndex="1" />
+                  <Label fx:id="ival" text="IVA:" GridPane.rowIndex="2" />
+                  <Label fx:id="totall" text="Total:" GridPane.rowIndex="3" />
+                  <Label fx:id="descuentol" text="Descuento:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <TextField fx:id="descuentof" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#realizarVenta" text="Realizar Venta" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <Label fx:id="stid" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="ivalbl" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="tlbl" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <RadioButton fx:id="rbOferta" mnemonicParsing="false" text="Oferta" />
+                  <RadioButton fx:id="rdNormal" mnemonicParsing="false" text="Venta Normal" GridPane.columnIndex="1" />
                </children>
             </GridPane>
          </children>

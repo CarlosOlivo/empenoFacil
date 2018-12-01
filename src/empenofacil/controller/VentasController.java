@@ -22,7 +22,7 @@ import empenofacil.model.Articulo;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,9 +30,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -44,7 +46,9 @@ import javafx.stage.StageStyle;
  */
 public class VentasController implements Initializable {
 
-      @FXML
+	private final ToggleGroup radioGroup;
+
+    @FXML
     private Button agregarab;
 
     @FXML
@@ -119,8 +123,36 @@ public class VentasController implements Initializable {
     @FXML
     private TableColumn<Articulo, String> cNombre;
 
+    @FXML
+    private RadioButton rbOferta;
+
+    @FXML
+    private RadioButton rdNormal;
+
+    public VentasController() {
+    	rbOferta = new RadioButton();
+        rdNormal = new RadioButton();
+        radioGroup = new ToggleGroup();
+        rbOferta.setToggleGroup(radioGroup);
+        rdNormal.setToggleGroup(radioGroup);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    	radioGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                if (newValue = rbOferta) {
+                	deshabilitarDesuento(false);
+                	realizarVentaOferta();
+                }
+                if (newValue = rdNormal) {
+                	deshabilitarDesuento(true);
+                	realizarVentaNormal();
+                }
+            }
+        });
+        descuentof.setDisable(false);
+        descuentol.setDisable(false);
         cNombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
         cprecio.setCellValueFactory(data -> data.getValue().getPrecioProperty());
         cpeso.setCellValueFactory(data -> data.getValue().getPesoProperty());
@@ -146,8 +178,34 @@ public class VentasController implements Initializable {
         }
     }
 
+    public void calcularSubtoal() {
+        ObservableList<Articulo> listaArticulos = artciculosT.getItems();
+        if (listaArticulos.size() > 0) {
+            Double subtotal = 0d;
+            for (int i = 0; i < listaArticulos.size(); i++) {
+                subtotal += listaArticulos.get(i).getPrecio();
+                stid.setText(subtotal.toString());
+            }
+        } else {
+            stid.setText("0.00");
+        }
+    }
+
     @FXML
     public void realizarVenta() {
+
+    }
+    
+    public void deshabilitarDesuento(Boolean bandera) {
+        descuentof.setDisable(bandera);
+        descuentol.setDisable(bandera);
+    }
+
+    private void realizarVentaNormal() {
+
+    }
+
+    private void realizarVentaOferta() {
 
     }
 }
