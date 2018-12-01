@@ -46,7 +46,7 @@ import javafx.stage.StageStyle;
  */
 public class VentasController implements Initializable {
 
-	private final ToggleGroup radioGroup;
+    private final ToggleGroup radioGroup;
 
     @FXML
     private Button agregarab;
@@ -130,29 +130,32 @@ public class VentasController implements Initializable {
     private RadioButton rdNormal;
 
     public VentasController() {
-    	rbOferta = new RadioButton();
+        rbOferta = new RadioButton();
         rdNormal = new RadioButton();
         radioGroup = new ToggleGroup();
-        rbOferta.setToggleGroup(radioGroup);
-        rdNormal.setToggleGroup(radioGroup);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	radioGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+        rdNormal.setSelected(true);
+        rbOferta.setToggleGroup(radioGroup);
+        rdNormal.setToggleGroup(radioGroup);
+        radioGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                if (newValue = rbOferta) {
-                	deshabilitarDesuento(false);
-                	realizarVentaOferta();
+                if (newValue.equals(rbOferta)) {
+                    descuentof.setVisible(true);
+                    realizarVentaOferta();
                 }
-                if (newValue = rdNormal) {
-                	deshabilitarDesuento(true);
-                	realizarVentaNormal();
+                if (newValue.equals(rdNormal)) {
+                    descuentof.setVisible(false);
+                    realizarVentaNormal();
                 }
             }
         });
-        descuentof.setDisable(false);
-        descuentol.setDisable(false);
+        descuentol.visibleProperty().bind(descuentof.visibleProperty());
+        descuentol.managedProperty().bind(descuentol.visibleProperty());
+        descuentof.managedProperty().bind(descuentof.visibleProperty());
+        descuentof.setVisible(false);
         cNombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
         cprecio.setCellValueFactory(data -> data.getValue().getPrecioProperty());
         cpeso.setCellValueFactory(data -> data.getValue().getPesoProperty());
@@ -194,11 +197,6 @@ public class VentasController implements Initializable {
     @FXML
     public void realizarVenta() {
 
-    }
-    
-    public void deshabilitarDesuento(Boolean bandera) {
-        descuentof.setDisable(bandera);
-        descuentol.setDisable(bandera);
     }
 
     private void realizarVentaNormal() {
