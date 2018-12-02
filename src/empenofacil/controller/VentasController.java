@@ -18,9 +18,13 @@ package empenofacil.controller;
 
 import empenofacil.EmpenoFacil;
 import empenofacil.Util;
+import static empenofacil.controller.ContratosController.openPDF;
 import empenofacil.model.Articulo;
+import empenofacil.model.Venta;
+import empenofacil.reportes.Reportes;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -38,6 +42,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mybatis.dao.VentaDAO;
 
 /**
  * FXML Controller class
@@ -129,6 +134,9 @@ public class VentasController implements Initializable {
     @FXML
     private RadioButton rdNormal;
 
+    @FXML
+    private TableColumn<Articulo, Number> descuentocol;
+
     public VentasController() {
         rbOferta = new RadioButton();
         rdNormal = new RadioButton();
@@ -200,10 +208,21 @@ public class VentasController implements Initializable {
     }
 
     private void realizarVentaNormal() {
-
+        Venta nuevaVenta = new Venta();
+        imprimirTicketVenta(nuevaVenta);
     }
 
     private void realizarVentaOferta() {
+
+    }
+
+    private void imprimirTicketVenta(Venta venta) {
+        venta = new Venta();
+        Integer idVenta = venta.getIdVenta();
+        HashMap<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("folio", new Integer(idVenta));
+        String path = Reportes.generarEtiquetaVenta("TicketdeVenta", parametros);
+        openPDF(path);
 
     }
 }

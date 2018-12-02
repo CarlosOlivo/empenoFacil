@@ -90,6 +90,7 @@
                         <TableColumn fx:id="cprecio" prefWidth="75.0" text="PRECIO" />
                         <TableColumn fx:id="cpeso" prefWidth="75.0" text="PESO" />
                         <TableColumn fx:id="cdescripcion" prefWidth="75.0" text="DESCRIPCION" />
+                        <TableColumn fx:id="descuentocol" prefWidth="75.0" text="DESCUENTO" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
