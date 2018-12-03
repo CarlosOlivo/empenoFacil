@@ -30,26 +30,26 @@ public final class Venta {
     private Integer idEmpleado;
     private Integer idSucursal;
     private Date tiempoCreacion;
-    private final DoubleProperty precio;
+
     private final DoubleProperty descuento;
     private final DoubleProperty subtotal;
     private final DoubleProperty iva;
     private final DoubleProperty total;
 
     public Venta() {
-        precio = new SimpleDoubleProperty();
+
         descuento = new SimpleDoubleProperty();
         subtotal = new SimpleDoubleProperty();
         iva = new SimpleDoubleProperty();
         total = new SimpleDoubleProperty();
     }
 
-    public Venta(Integer idVenta, Integer idEmpleado, Integer idSucursal, Date tiempoCreacion, double precio, double descuento, double subtotal, double iva, double total) {
+    public Venta(Integer idVenta, Integer idEmpleado, Integer idSucursal, Date tiempoCreacion, double descuento, double subtotal, double iva, double total) {
         this.idVenta = idVenta;
         this.idEmpleado = idEmpleado;
         this.idSucursal = idSucursal;
         setTiempoCreacion(tiempoCreacion);
-        this.precio = new SimpleDoubleProperty(precio);
+
         this.descuento = new SimpleDoubleProperty(descuento);
         this.subtotal = new SimpleDoubleProperty(subtotal);
         this.iva = new SimpleDoubleProperty(iva);
@@ -90,14 +90,6 @@ public final class Venta {
         } else {
             this.tiempoCreacion = new Date();
         }
-    }
-
-    public Double getPrecio() {
-        return precio.get();
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio.set(precio);
     }
 
     public Double getDescuento() {

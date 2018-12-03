@@ -21,9 +21,11 @@ import empenofacil.Util;
 import static empenofacil.controller.ContratosController.openPDF;
 import empenofacil.model.Articulo;
 import empenofacil.model.Venta;
+import empenofacil.model.Venta_Detalle;
 import empenofacil.reportes.Reportes;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
@@ -32,6 +34,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -44,6 +47,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mybatis.dao.ArticuloDAO;
 import mybatis.dao.VentaDAO;
+import mybatis.dao.Venta_DetalleDAO;
 
 /**
  * FXML Controller class
@@ -137,11 +141,21 @@ public class VentasController implements Initializable {
 
     @FXML
     private TableColumn<Articulo, Number> descuentocol;
+    private Double subtotal;
+    private Double iva;
+    private Double total;
+    private Double descuento;
+    private final ArticuloDAO articuloDAO;
+    private final VentaDAO ventaDAO;
+    private final Venta_DetalleDAO venta_DetalleDAO;
 
     public VentasController() {
         rbOferta = new RadioButton();
         rdNormal = new RadioButton();
         radioGroup = new ToggleGroup();
+        ventaDAO = new VentaDAO();
+        venta_DetalleDAO = new Venta_DetalleDAO();
+        articuloDAO = new ArticuloDAO();
     }
 
     @Override
@@ -153,11 +167,9 @@ public class VentasController implements Initializable {
             if (newValue != null) {
                 if (newValue.equals(rbOferta)) {
                     descuentof.setVisible(true);
-                    realizarVentaOferta();
                 }
                 if (newValue.equals(rdNormal)) {
                     descuentof.setVisible(false);
-                    realizarVentaNormal();
                 }
             }
         });
@@ -188,6 +200,7 @@ public class VentasController implements Initializable {
             dialogStage.setScene(scene);
             dialogStage.showAndWait();
             artciculosT.getItems().addAll(controller.getArticulosNuevos());
+            calcularSubtoal();
         } catch (IOException ioEx) {
             Util.excepcion(ioEx);
         }
@@ -196,51 +209,109 @@ public class VentasController implements Initializable {
     public void calcularSubtoal() {
         ObservableList<Articulo> listaArticulos = artciculosT.getItems();
         if (listaArticulos.size() > 0) {
-            Double subtotal = 0d;
+            subtotal = 0d;
             for (int i = 0; i < listaArticulos.size(); i++) {
                 subtotal += listaArticulos.get(i).getPrecio();
-                stid.setText(subtotal.toString());
             }
+            stid.setText(String.format("%10.2f", subtotal));
+            iva = subtotal * MenuController.getParametrosPredeterminados().getIva();
+            ivalbl.setText(String.format("%10.2f", iva));
+            total = subtotal + iva;
+            tlbl.setText(String.format("%10.2f", total));
         } else {
             stid.setText("0.00");
         }
+
     }
 
     @FXML
     public void realizarVenta() {
-
+        if (rbOferta.isSelected()) {
+            realizarVentaOferta();
+        } else if (rdNormal.isSelected()) {
+            realizarVentaNormal();
+        }
     }
-    
+
     @FXML
     public void restablecer() {
         artciculosT.getItems().clear();
+        stid.setText("");
+        subtotal = 0d;
+        ivalbl.setText("");
+        iva = 0d;
+        tlbl.setText("");
+        total = 0d;
     }
-
+    
+    private boolean validarDEscuento() {
+        try {
+            Double.parseDouble(descuentof.getText());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     private void realizarVentaNormal() {
-        Venta nuevaVenta = new Venta();
-        imprimirTicketVenta(nuevaVenta);
+        if (artciculosT.getItems().isEmpty()) {
+            Util.dialogo(Alert.AlertType.ERROR, "Tabla vacia");
+        } else {
+            Venta venta = new Venta();
+            venta.setIdEmpleado(MenuController.getEmpleado().getIdDomicilio());
+            venta.setIdSucursal(1);
+            venta.setTiempoCreacion(new Date());
+            venta.setDescuento(0d);
+            venta.setSubtotal(subtotal);
+            venta.setIva(iva);
+            venta.setTotal(total);
+
+            if (ventaDAO.crearVenta(venta) != 0) {
+                for (Articulo articulo : artciculosT.getItems()) {
+                    venta_DetalleDAO.crearVentaDetalle(new Venta_Detalle(venta.getIdVenta(), articulo.getIdArticulo()));
+                    articulo.setIdEstadoArticulo(Articulo.ESTADO_ARTICULO.VENDIDO.ordinal());
+                    articuloDAO.editarArticulo(articulo);
+                }
+                Util.dialogo(Alert.AlertType.INFORMATION, "Venta realizado correctamente");
+                restablecer();
+ 
+                imprimirTicketVenta(venta.getIdVenta());
+            }
+        }
     }
 
     private void realizarVentaOferta() {
+        if (artciculosT.getItems().isEmpty()) {
+            Util.dialogo(Alert.AlertType.ERROR, "Tabla vacia");
+        } else {
+            if(descuentof.getText().trim().isEmpty() || !validarDEscuento()){
+                Util.dialogo(Alert.AlertType.ERROR, "Descuento no valido");
+            }
+            Venta venta = new Venta();
+            venta.setIdEmpleado(MenuController.getEmpleado().getIdDomicilio());
+            venta.setIdSucursal(1);
+            venta.setTiempoCreacion(new Date());
+            venta.setDescuento(Double.parseDouble(descuentof.getText()));
+            venta.setSubtotal(subtotal);
+            venta.setIva(iva);
+            venta.setTotal(total - venta.getDescuento());
 
+            if (ventaDAO.crearVenta(venta) != 0) {
+                for (Articulo articulo : artciculosT.getItems()) {
+                    venta_DetalleDAO.crearVentaDetalle(new Venta_Detalle(venta.getIdVenta(), articulo.getIdArticulo()));
+                    articulo.setIdEstadoArticulo(Articulo.ESTADO_ARTICULO.VENDIDO.ordinal());
+                    articuloDAO.editarArticulo(articulo);
+                }
+                Util.dialogo(Alert.AlertType.INFORMATION, "Venta realizado correctamente");
+                restablecer();
+                imprimirTicketVenta(venta.getIdVenta());
+            }
+        }
     }
 
-    private void imprimirTicketVenta(Venta venta) {
-        venta = new Venta();
-        Integer idVenta = venta.getIdVenta();
-        HashMap<String, Object> parametros = new HashMap<String, Object>();
-        parametros.put("folio", new Integer(idVenta));
+    private void imprimirTicketVenta(Integer idVenta) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("p_idVenta", idVenta);
         String path = Reportes.generarEtiquetaVenta("TicketdeVenta", parametros);
-        openPDF(path);
-
-    }
-    
-        private void imprimirTicketVentaDescuento(Venta venta) {
-        venta = new Venta();
-        Integer idVenta = venta.getIdVenta();
-        HashMap<String, Object> parametros = new HashMap<String, Object>();
-        parametros.put("folio", new Integer(idVenta));
-        String path = Reportes.generarEtiquetaVenta("TicketdeVentaDesceuento", parametros);
         openPDF(path);
 
     }

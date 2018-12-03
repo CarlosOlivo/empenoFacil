@@ -14,9 +14,17 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="p_idVenta" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[SELECT * FROM venta v INNER JOIN venta_detalle vd ON v.idVenta= vd.idventa INNER JOIN sucursal s ON v.idSucursal = s.idSucursal  WHERE v.idVenta  =  $P{p_idVenta}]]>
+		<![CDATA[SELECT * FROM venta_detalle d INNER JOIN venta v ON d.idVenta = v.idVenta INNER JOIN articulo a ON d.idArticulo = a.idArticulo INNER JOIN sucursal s ON v.idSucursal = s.idSucursal INNER JOIN domicilio dom ON s.idDomicilio = dom.idDomicilio WHERE v.idVenta =  $P{p_idVenta} ]]>
 	</queryString>
 	<field name="idVenta" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idVenta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
+	</field>
+	<field name="idArticulo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idArticulo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
+	</field>
+	<field name="COLUMN_3" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="idVenta"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
 	</field>
@@ -30,10 +38,6 @@
 	</field>
 	<field name="tiempoCreacion" class="java.sql.Timestamp">
 		<property name="com.jaspersoft.studio.field.label" value="tiempoCreacion"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
-	</field>
-	<field name="precio" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="precio"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
 	</field>
 	<field name="descuento" class="java.lang.Double">
@@ -52,27 +56,51 @@
 		<property name="com.jaspersoft.studio.field.label" value="total"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
 	</field>
-	<field name="COLUMN_10" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idVenta"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
+	<field name="COLUMN_11" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idArticulo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
 	</field>
-	<field name="idPrenda" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="idPrenda"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
+	<field name="idCategoriaPrenda" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idCategoriaPrenda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
 	</field>
-	<field name="concepto" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="concepto"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
+	<field name="idTipoPrenda" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idTipoPrenda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
 	</field>
-	<field name="tasaiva" class="java.lang.Double">
-		<property name="com.jaspersoft.studio.field.label" value="tasaiva"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="venta_detalle"/>
+	<field name="idEstadoArticulo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idEstadoArticulo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
+	</field>
+	<field name="tamanio" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="tamanio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
+	</field>
+	<field name="precio" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="precio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
+	</field>
+	<field name="peso" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="peso"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
+	</field>
+	<field name="COLUMN_20" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idSucursal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
 	</field>
 	<field name="idDomicilio" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="idDomicilio"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
 	</field>
-	<field name="nombre" class="java.lang.String">
+	<field name="COLUMN_22" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
 	</field>
@@ -87,6 +115,34 @@
 	<field name="email" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="email"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="sucursal"/>
+	</field>
+	<field name="COLUMN_26" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idDomicilio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="domicilio"/>
+	</field>
+	<field name="calle" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="calle"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="domicilio"/>
+	</field>
+	<field name="numero" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="numero"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="domicilio"/>
+	</field>
+	<field name="colonia" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="colonia"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="domicilio"/>
+	</field>
+	<field name="codigoPostal" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="codigoPostal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="domicilio"/>
+	</field>
+	<field name="localidad" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="localidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="domicilio"/>
+	</field>
+	<field name="idMunicipio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idMunicipio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="domicilio"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -122,18 +178,19 @@
 				<textFieldExpression><![CDATA[$F{idVenta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="80" y="60" width="80" height="20" uuid="1aea12d5-0fcc-41d3-bd7d-17d484a750f2"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
 				<reportElement x="-20" y="80" width="198" height="30" uuid="6e9ccf74-af5b-472d-903d-3afee1031a55"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{idDomicilio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{calle} + " " + $F{numero} + " " + $F{colonia} + " " + $F{localidad} + " " +  $F{codigoPostal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy HH:mm" isBlankWhenNull="true">
 				<reportElement x="79" y="110" width="80" height="16" uuid="61affdf4-8341-4f69-b013-5a39d690a9c3"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{tiempoCreacion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="60" width="60" height="20" uuid="5ea77247-3d77-4a1e-9acd-732b7180d3e5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -163,10 +220,10 @@
 				<reportElement x="-20" y="-1" width="140" height="30" uuid="a760a794-a0af-48da-96ab-d88eadc711a1">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="46e8ae48-cca0-4187-a523-15a3cd8f00e3"/>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombre} + " " + " " +$F{descripcion}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
-				<reportElement stretchType="ElementGroupHeight" x="120" y="0" width="58" height="30" uuid="6b076c79-0320-4581-871e-32682923d549">
+				<reportElement  x="120" y="0" width="58" height="30" uuid="6b076c79-0320-4581-871e-32682923d549">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="052d0dfb-c8bf-4a0e-9f0c-f19cb5cb7d3d"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
@@ -174,12 +231,12 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="89" splitType="Stretch">
+		<band height="102" splitType="Stretch">
 			<line>
 				<reportElement x="-11" y="0" width="181" height="1" uuid="3c2a90c6-7438-46d4-ac66-38e9e87cb3d3"/>
 			</line>
 			<staticText>
-				<reportElement x="-20" y="60" width="198" height="22" uuid="2f14d95c-791b-4ee4-9d99-0d372e7bac36"/>
+				<reportElement x="-20" y="80" width="198" height="22" uuid="2f14d95c-791b-4ee4-9d99-0d372e7bac36"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[----GRACIAS POR SU COMPRA----]]></text>
 			</staticText>
@@ -213,6 +270,16 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[Total:]]></text>
 			</staticText>
+			<textField pattern="¤#,##0.00;¤-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="100" y="60" width="58" height="20" uuid="0a5ee193-2798-4319-a101-299d2bab9d7d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{descuento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="60" width="60" height="20" uuid="647dbae2-49d4-4508-a60e-e58be91e5ff2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Descuento:"]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

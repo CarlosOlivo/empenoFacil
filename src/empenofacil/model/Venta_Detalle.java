@@ -26,29 +26,14 @@ import javafx.beans.property.StringProperty;
 public class Venta_Detalle {
 
     private Integer idVenta;
-    private Integer idPrenda;
-    private StringProperty concepto;
-    private double precio;
-    private double descuento;
-    private double tasaiva;
-    private double iva;
-    private double subtotal;
-    private double total;
+    private Integer idArticulo;
 
-    public Venta_Detalle() {
-        this.concepto = new SimpleStringProperty();
+    public Venta_Detalle(Integer idVenta, Integer idArticulo) {
+        this.idVenta = idVenta;
+        this.idArticulo = idArticulo;
     }
 
-    public Venta_Detalle(Integer idVenta, Integer idPrenda, String concepto, double precio, double descuento, double tasaiva, double iva, double subtotal, double total) {
-        this.idVenta = idVenta;
-        this.idPrenda = idPrenda;
-        this.concepto = new SimpleStringProperty(concepto);
-        this.precio = precio;
-        this.descuento = descuento;
-        this.tasaiva = tasaiva;
-        this.iva = iva;
-        this.subtotal = subtotal;
-        this.total = total;
+    public Venta_Detalle() {
     }
 
     public Integer getIdVenta() {
@@ -59,67 +44,11 @@ public class Venta_Detalle {
         this.idVenta = idVenta;
     }
 
-    public Integer getIdPrenda() {
-        return idPrenda;
+    public Integer getIdArticulo() {
+        return idArticulo;
     }
 
-    public void setIdPrenda(Integer idPrenda) {
-        this.idPrenda = idPrenda;
-    }
-
-    public String getConcepto() {
-        return concepto.get();
-    }
-
-    public void setConcepto(String concepto) {
-        this.concepto.set(concepto);
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public double getDescuento() {
-        return descuento;
-    }
-
-    public void setDescuento(double descuento) {
-        this.descuento = descuento;
-    }
-
-    public double getTasaiva() {
-        return tasaiva;
-    }
-
-    public void setTasaiva(double tasaiva) {
-        this.tasaiva = tasaiva;
-    }
-
-    public double getIva() {
-        return iva;
-    }
-
-    public void setIva(double iva) {
-        this.iva = iva;
-    }
-
-    public double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
+    public void setIdArticulo(Integer idArticulo) {
+        this.idArticulo = idArticulo;
     }
 }

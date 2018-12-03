@@ -27,12 +27,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         SELECT * FROM venta_detalle WHERE idVenta = #{idVenta}
     </select>
     <insert id="crearVentaDetalle" parameterType="empenofacil.model.Venta_Detalle" useGeneratedKeys="true" keyProperty="idVenta">
-        INSER INTO venta_detalle(idPrenda,concepto,precio,descuento,tasaiva,iva,subtotal,total)
-        VALUES(#{idPrenda},#{concepto},#{precio},#{descuento},#{tasaiva},#{iva},#{subtotal},#{total})
+        INSERT INTO venta_detalle(idVenta, idArticulo)
+        VALUES(#{idVenta}, #{idArticulo})
     </insert>
     <update id="editarVentaDetalle" parameterType="empenofacil.model.Venta_Detalle">
-        UPDATE venta_detalle SET idPrenda = #{idPrenda}, concepto = #{concepto},
-        precio = #{precio}, descuento = #{descuento}, tasaiva = #{tasaiva}, iva = #{iva},
-        subtotal = #{subtotal}, total = #{total} WHERE idVenta = ${idVenta}
+        UPDATE venta_detalle SET idArticulo = #{idArticulo} WHERE idVenta = #{idVenta} 
     </update>
 </mapper>
