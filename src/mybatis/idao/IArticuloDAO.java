@@ -29,4 +29,5 @@ public interface IArticuloDAO {
     public Articulo obtenerArticulo(Integer idArticulo);
     public int crearArticulo(Articulo articulo);
     public int editarArticulo(Articulo articulo);
+    public List<Articulo> obtenerArticulosDisponibles();
 }

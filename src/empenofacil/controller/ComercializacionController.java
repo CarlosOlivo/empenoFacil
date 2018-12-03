@@ -16,9 +16,21 @@
  */
 package empenofacil.controller;
 
+import empenofacil.Util;
+import empenofacil.model.Articulo;
+import empenofacil.model.Prenda;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import mybatis.dao.ArticuloDAO;
+import mybatis.dao.PrendaDAO;
 
 /**
  * FXML Controller class
@@ -27,12 +39,67 @@ import javafx.fxml.Initializable;
  */
 public class ComercializacionController implements Initializable {
 
+    @FXML
+    private TableView<Articulo> tablaComercializacion;
+
+    @FXML
+    private TableColumn<Articulo, Number> prestamoid;
+
+    @FXML
+    private TableColumn<Articulo, Number> avaluoid;
+
+    @FXML
+    private TableColumn<Articulo, String> descripcionid;
+
+    @FXML
+    private TableColumn<Articulo, String> nombreid;
+
+    @FXML
+    private TableColumn<Articulo, Number> comerid;
+
+    @FXML
+    private TextArea txtid;
+
+    @FXML
+    private Button guardarid;
+
+    private final ArticuloDAO articuloDAO;
+
+    public ComercializacionController() {
+        articuloDAO = new ArticuloDAO();
+
+    }
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
+        tablaComercializacion.getItems().setAll(articuloDAO.obtenerArticulos());
+        descripcionid.setCellValueFactory(data -> data.getValue().getDescripcionProperty());
+        nombreid.setCellValueFactory(data -> data.getValue().getNombreProperty());
+        comerid.setCellValueFactory(data -> data.getValue().getPrecioProperty());
+        tablaComercializacion.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                txtid.setText(newValue.getDescripcion());
+            }
+        });
+
+    }
     
+    @FXML
+    private void guardarDescripcion() {
+        if(txtid.getText().trim().isEmpty()){
+            Util.dialogo(Alert.AlertType.ERROR, "Escribe una descripción");
+        } else {
+            Articulo articulo = tablaComercializacion.getSelectionModel().getSelectedItem();
+            articulo.setDescripcion(txtid.getText());
+            if (articuloDAO.editarArticulo(articulo) != 0) {
+                Util.dialogo(Alert.AlertType.INFORMATION, "Descripción editada correctamente");
+            } else {
+                Util.dialogo(Alert.AlertType.ERROR, "Descripción no editAda");
+            }
+        }
+    }
+
 }

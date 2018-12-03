@@ -225,4 +225,14 @@ public class VentasController implements Initializable {
         openPDF(path);
 
     }
+    
+        private void imprimirTicketVentaDescuento(Venta venta) {
+        venta = new Venta();
+        Integer idVenta = venta.getIdVenta();
+        HashMap<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("folio", new Integer(idVenta));
+        String path = Reportes.generarEtiquetaVenta("TicketdeVentaDesceuento", parametros);
+        openPDF(path);
+
+    }
 }

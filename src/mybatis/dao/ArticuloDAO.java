@@ -103,4 +103,18 @@ public class ArticuloDAO implements IArticuloDAO {
         }
         return rows;
     }
+
+    @Override
+    public List<Articulo> obtenerArticulosDisponibles() {
+        List<Articulo> list = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IArticuloDAO articuloDAO = conn.getMapper(IArticuloDAO.class);
+            list = articuloDAO.obtenerArticulosDisponibles();
+        } catch (Exception e) {
+            Util.excepcion(e);
+        }
+        return list;
+    }
+
 }

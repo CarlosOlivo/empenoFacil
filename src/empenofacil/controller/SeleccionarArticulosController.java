@@ -74,34 +74,16 @@ public class SeleccionarArticulosController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        artciuloTable.getItems().setAll(articuloDAO.obtenerArticulos());
+        artciuloTable.getItems().setAll(articuloDAO.obtenerArticulosDisponibles());
         cNombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
         cPrecio.setCellValueFactory(data -> data.getValue().getPrecioProperty());
         cPeso.setCellValueFactory(data -> data.getValue().getPesoProperty());
         cTamanio.setCellValueFactory(data -> data.getValue().getTamanioProperty());
         cDescripcion.setCellValueFactory(data -> data.getValue().getDescripcionProperty());
-        seleccionar.setCellFactory(param -> new Opciones());
+
 
     }
 
-    private class Opciones extends TableCell<Articulo, Void> {
 
-        private final CheckBox cb = new CheckBox();
-
-        private final HBox hb = new HBox(cb);
-
-        public Opciones() {
-            hb.setSpacing(5);
-            hb.setPadding(new Insets(-3.5d, 0d, 0d, 0d));
-            hb.setAlignment(Pos.TOP_LEFT);
-
-        }
-
-        @Override
-        protected void updateItem(Void item, boolean empty) {
-            super.updateItem(item, empty);
-            setGraphic(empty ? null : hb);
-        }
-    }
 
 }
