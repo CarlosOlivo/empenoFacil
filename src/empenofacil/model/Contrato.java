@@ -64,7 +64,7 @@ public final class Contrato {
     }
     
     public enum ESTADO_CONTRATO {
-        INVALIDO, ACTIVO, CANCELADO
+        INVALIDO, ACTIVO, CANCELADO, PRORROGA, EXPIRADO, COMERCIALIZADO
     }
     
     public StringProperty folioPropertyFormato() {

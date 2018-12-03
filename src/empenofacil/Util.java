@@ -24,8 +24,7 @@ import empenofacil.model.Prenda;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 import javafx.fxml.FXMLLoader;
@@ -209,7 +208,13 @@ public class Util {
             Util.excepcion(ioEx);
         }
     }
-     public static void capturarFotoPrenda(Prenda prenda) {
+
+    /**
+     * Muestra un dialogo para capturar las fotos de la prenda
+     * 
+     * @param prenda Prenda
+     */
+    public static void capturarFotoPrenda(Prenda prenda) {
         try {
             FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/CapturarFoto.fxml"));
             Parent root = (Parent) loader.load();
@@ -259,7 +264,37 @@ public class Util {
      * @return Fecha con los dias agregados
      */
     public static Date agregarDiasFecha(Date fecha, int dias) {
-        LocalDateTime localDateTime = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        return Date.from(localDateTime.plusDays(dias).atZone(ZoneId.systemDefault()).toInstant());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+        calendar.add(Calendar.DATE, dias);
+        return calendar.getTime();
+    }
+    
+    /**
+     * Regresa una fecha sin tiempo
+     * 
+     * @param fecha Fecha a eliminar el tiempo
+     * @return Fecha con tiempo en 00:00:00:00
+     */
+    public static Date obtenerFechaSinTiempo(Date fecha) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+    
+    /**
+     * Comprueba si una fecha se encuentra dentro de un rango de fechas
+     * 
+     * @param fechaInicio Fecha inicio
+     * @param fechaFin Fecha fin
+     * @param fechaBusqueda Fecha busqueda
+     * @return Verdadero si pertenece al rango, Falso en caso contrario
+     */
+    public static boolean contieneFecha(Date fechaInicio, Date fechaFin, Date fechaBusqueda) {
+        return fechaInicio.compareTo(fechaBusqueda) * fechaBusqueda.compareTo(fechaFin) >= 0;
     }
 }

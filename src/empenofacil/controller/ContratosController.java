@@ -31,6 +31,7 @@ import empenofacil.model.CategoriaPrenda;
 import empenofacil.model.Cliente;
 import empenofacil.model.Contrato;
 import empenofacil.model.Parametros;
+import empenofacil.model.Periodo;
 import empenofacil.model.Prenda;
 import empenofacil.model.TipoPrenda;
 import empenofacil.reportes.Reportes;
@@ -39,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +71,7 @@ import mybatis.dao.CategoriaPrendaDAO;
 import mybatis.dao.ClienteDAO;
 import mybatis.dao.ContratoDAO;
 import mybatis.dao.ParametrosDAO;
+import mybatis.dao.PeriodoDAO;
 import mybatis.dao.PrendaDAO;
 import mybatis.dao.TipoPrendaDAO;
 
@@ -85,6 +88,7 @@ public class ContratosController implements Initializable {
     private final TipoPrendaDAO tipoPrendaDAO;
     private final CategoriaPrendaDAO categoriaPrendaDAO;
     private final ParametrosDAO parametrosDAO;
+    private final PeriodoDAO periodoDAO;
     private final PrendaDAO prendaDAO;
     private final Prenda prenda;
     private final ChoiceBox<CategoriaPrenda> categorias;
@@ -150,10 +154,10 @@ public class ContratosController implements Initializable {
         tipoPrendaDAO = new TipoPrendaDAO();
         categoriaPrendaDAO = new CategoriaPrendaDAO();
         parametrosDAO = new ParametrosDAO();
+        periodoDAO = new PeriodoDAO();
         prendaDAO = new PrendaDAO();
         prenda = new Prenda(null, null, null, "", 0d, 0d, "", 0d, 0d);
         tipos = new ChoiceBox<>();
-        buscarC = new ChoiceBox<>();
         categorias = new ChoiceBox<>();
         formulario = Form.of(
                 Section.of(
@@ -316,6 +320,7 @@ public class ContratosController implements Initializable {
                 Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al editar el contrato");
             } else {
                 Util.dialogo(Alert.AlertType.INFORMATION, "Contrato creado correctamente");
+                generarPeriodosDePago(contrato);
                 lista_prendas.clear();
                 cotitular.clear();
                 actualizarContratos();
@@ -517,12 +522,46 @@ public class ContratosController implements Initializable {
                 break;
         }
     }
+    
+    private void generarPeriodosDePago(Contrato contrato) {
+        Parametros parametros = new ParametrosDAO().obtenerParametros(contrato.getFolio());
+        int numPeriodos = parametros.getNumPeriodos();
+        int diasPorPeriodo = parametros.getDiasPorPeriodo();
+        List<Periodo> periodos = new ArrayList<>(numPeriodos);
+        Date fechaTMP = contrato.getFechaInicioContrato();
+        for(int numPeriodo = 0; numPeriodo < numPeriodos; numPeriodo++) {
+            Periodo periodo = new Periodo();
+            periodo.setFolio(contrato.getFolio());
+            periodo.setNumPeriodo(numPeriodo + 1);
+            periodo.setPrestamo(contrato.getTotalPrestamo());
+            periodo.setInteres(periodo.getPrestamo()*parametros.getInteresPorPeriodo()*periodo.getNumPeriodo());
+            periodo.setIva(periodo.getInteres()*parametros.getIva());
+            periodo.setRefrendo(periodo.getInteres()+periodo.getIva());
+            periodo.setFiniquito(periodo.getPrestamo()+periodo.getRefrendo());
+            periodo.setFechaInicioPeriodo(fechaTMP);
+            if(numPeriodo == 0) { 
+                fechaTMP = Util.agregarDiasFecha(fechaTMP, diasPorPeriodo);
+            } else {
+                fechaTMP = Util.agregarDiasFecha(fechaTMP, diasPorPeriodo - 1);
+            }
+            periodo.setFechaFinPeriodo(fechaTMP);
+            if(numPeriodo != numPeriodos - 1) {
+                fechaTMP = Util.agregarDiasFecha(fechaTMP, 1);
+            }
+            periodos.add(periodo);
+        }
+        periodos.forEach((periodo) -> {
+            if(periodoDAO.crearPeriodo(periodo) == 0) {
+                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al guardar el periodo de pago");
+            }
+        });
+    }
 
     @FXML
     public void generarContrato() {
         Integer numFolio = contratos.getSelectionModel().getSelectedItem().getFolio();//obtien el indice del registro en la tabla
-        HashMap<String, Object> parametros = new HashMap<String, Object>();
-        parametros.put("folio", new Integer(numFolio));
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("folio", numFolio);
         String path = Reportes.generarPDFContratoJasper("Contrato", parametros);
         openPDF(path);
 
@@ -531,8 +570,8 @@ public class ContratosController implements Initializable {
     @FXML
     public void imprimirEtiquetas() {
         Integer numFolio = contratos.getSelectionModel().getSelectedItem().getFolio();//obtien el indice del registro en la tabla
-        HashMap<String, Object> parametros = new HashMap<String, Object>();
-        parametros.put("folio", new Integer(numFolio));
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put("folio", numFolio);
         String path = Reportes.generarEtiquetaVenta("Etiquetadecomercializacion", parametros);
         openPDF(path);
     }
@@ -543,7 +582,7 @@ public class ContratosController implements Initializable {
                 File myFile = new File(url);
                 Desktop.getDesktop().open(myFile);
             } catch (IOException ex) {
-                ex.printStackTrace();
+                Util.excepcion(ex);
             }
         }
     }

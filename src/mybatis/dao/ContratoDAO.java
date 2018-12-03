@@ -18,11 +18,13 @@ package mybatis.dao;
 
 import empenofacil.Util;
 import empenofacil.model.Contrato;
+import empenofacil.model.Parametros;
+import empenofacil.model.Periodo;
+import java.util.Date;
 import java.util.List;
 import mybatis.MyBatisUtil;
 import mybatis.idao.IContratoDAO;
 import org.apache.ibatis.session.SqlSession;
-
 
 public class ContratoDAO implements IContratoDAO {
 
@@ -32,7 +34,7 @@ public class ContratoDAO implements IContratoDAO {
         SqlSession conn = MyBatisUtil.getSession();
         try {
             IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
-            list = contratoDAO.obtenerContratos();
+            list = procesarContratos(contratoDAO.obtenerContratos());
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {
@@ -41,13 +43,20 @@ public class ContratoDAO implements IContratoDAO {
         return list;
     }
 
+    private List<Contrato> procesarContratos(List<Contrato> contratos) {
+        contratos.forEach((contrato) -> {
+            procesarContrato(contrato);
+        });
+        return contratos;
+    }
+
     @Override
     public Contrato obtenerContrato(Integer folio) {
         Contrato contrato = null;
         SqlSession conn = MyBatisUtil.getSession();
         try {
             IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
-            contrato = contratoDAO.obtenerContrato(folio);
+            contrato = procesarContrato(contratoDAO.obtenerContrato(folio));
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {
@@ -72,7 +81,7 @@ public class ContratoDAO implements IContratoDAO {
         }
         return rows;
     }
-    
+
     @Override
     public int editarContrato(Contrato contrato) {
         int rows = 0;
@@ -96,7 +105,7 @@ public class ContratoDAO implements IContratoDAO {
         SqlSession conn = MyBatisUtil.getSession();
         try {
             IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
-            list = contratoDAO.buscarContratoPorNombre("%"+busqueda+"%");
+            list = procesarContratos(contratoDAO.buscarContratoPorNombre("%" + busqueda + "%"));
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {
@@ -111,12 +120,75 @@ public class ContratoDAO implements IContratoDAO {
         SqlSession conn = MyBatisUtil.getSession();
         try {
             IContratoDAO contratoDAO = conn.getMapper(IContratoDAO.class);
-            list = contratoDAO.buscarContratoPorPrenda("%"+busqueda+"%");
+            list = procesarContratos(contratoDAO.buscarContratoPorPrenda("%" + busqueda + "%"));
         } catch (Exception e) {
             Util.excepcion(e);
         } finally {
             conn.close();
         }
         return list;
+    }
+    
+    private Contrato procesarContrato(Contrato contrato) {
+        if (contrato != null) {
+            switch (Contrato.ESTADO_CONTRATO.values()[contrato.getIdEstadoContrato()]) {
+                case ACTIVO:
+                    contrato = verificarContratoActivo(contrato);
+                    break;
+                case CANCELADO:
+                    break;
+                case PRORROGA:
+                    contrato = verificarContratoProrroga(contrato);
+                    break;
+                case EXPIRADO:
+                    break;
+                case COMERCIALIZADO:
+                    break;
+                default:
+                    System.err.println("Contrato invalido");
+                    break;
+            }
+        }
+        return contrato;
+    }
+
+    private Contrato verificarContratoActivo(Contrato contrato) {
+        List<Periodo> periodos = new PeriodoDAO().obtenerPeriodos(contrato.getFolio());
+        periodos.forEach((periodo) -> {
+            System.out.println(Util.contieneFecha(periodo.getFechaInicioPeriodo(), periodo.getFechaFinPeriodo(), new Date(118, 10, 21)));
+        });
+        Date fechaHoy = Util.obtenerFechaSinTiempo(new Date());
+        if (contrato != null && fechaHoy.after(contrato.getFechaFinContrato())) {
+            contrato.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.PRORROGA.ordinal());
+            System.err.println(String.format("Contrato #%d: ACTIVO -> PRORROGA", contrato.getFolio()));
+            if (editarContrato(contrato) != 0) {
+                contrato = procesarContrato(contrato);
+            } else {
+                System.err.println(String.format("Ocurrio un error al actualizar el estado del contrato #%d", contrato.getFolio()));
+                contrato.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.ACTIVO.ordinal());
+                System.err.println(String.format("Contrato #%d: ACTIVO <- PRORROGA", contrato.getFolio()));
+            }
+        }
+        return contrato;
+    }
+
+    private Contrato verificarContratoProrroga(Contrato contrato) {
+        if (contrato != null) {
+            Parametros parametros = new ParametrosDAO().obtenerParametros(contrato.getFolio());
+            Date fechaHoy = Util.obtenerFechaSinTiempo(new Date());
+            Date fechaProrroga = Util.agregarDiasFecha(contrato.getFechaFinContrato(), parametros.getDiasEnTotalExtension());
+            if (fechaHoy.after(fechaProrroga)) {
+                contrato.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.EXPIRADO.ordinal());
+                System.err.println(String.format("Contrato #%d: PRORROGA -> EXPIRADO", contrato.getFolio()));
+                if (editarContrato(contrato) != 0) {
+                    contrato = procesarContrato(contrato);
+                } else {
+                    System.err.println(String.format("Ocurrio un error al actualizar el estado del contrato #%d", contrato.getFolio()));
+                    contrato.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.PRORROGA.ordinal());
+                    System.err.println(String.format("Contrato #%d: PRORROGA <- EXPIRADO", contrato.getFolio()));
+                }
+            }
+        }
+        return contrato;
     }
 }
