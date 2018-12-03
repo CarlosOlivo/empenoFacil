@@ -17,9 +17,12 @@
 package mybatis.dao;
 
 import empenofacil.Util;
+import empenofacil.model.Articulo;
 import empenofacil.model.Contrato;
 import empenofacil.model.Parametros;
 import empenofacil.model.Periodo;
+import empenofacil.model.Prenda;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import mybatis.MyBatisUtil;
@@ -128,7 +131,7 @@ public class ContratoDAO implements IContratoDAO {
         }
         return list;
     }
-    
+
     private Contrato procesarContrato(Contrato contrato) {
         if (contrato != null) {
             switch (Contrato.ESTADO_CONTRATO.values()[contrato.getIdEstadoContrato()]) {
@@ -141,6 +144,7 @@ public class ContratoDAO implements IContratoDAO {
                     contrato = verificarContratoProrroga(contrato);
                     break;
                 case EXPIRADO:
+                    contrato = comercializarContrato(contrato);
                     break;
                 case COMERCIALIZADO:
                     break;
@@ -186,6 +190,47 @@ public class ContratoDAO implements IContratoDAO {
                     System.err.println(String.format("Ocurrio un error al actualizar el estado del contrato #%d", contrato.getFolio()));
                     contrato.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.PRORROGA.ordinal());
                     System.err.println(String.format("Contrato #%d: PRORROGA <- EXPIRADO", contrato.getFolio()));
+                }
+            }
+        }
+        return contrato;
+    }
+
+    private Contrato comercializarContrato(Contrato contrato) {
+        if (contrato != null) {
+            boolean error = false;
+            Parametros parametros = new ParametrosDAO().obtenerParametros(contrato.getFolio());
+            List<Prenda> prendasContrato = new PrendaDAO().obtenerPrendasContrato(contrato.getFolio());
+            List<Articulo> articulos = new ArrayList<>();
+            prendasContrato.forEach((prenda) -> {
+                Articulo articulo = new Articulo();
+                articulo.setIdCategoriaPrenda(prenda.getIdCategoriaPrenda());
+                articulo.setIdTipoPrenda(prenda.getIdTipoPrenda());
+                articulo.setIdEstadoArticulo(Articulo.ESTADO_ARTICULO.DISPONIBLE.ordinal());
+                articulo.setNombre(prenda.getNombre());
+                articulo.setTamanio(prenda.getTamanio());
+                articulo.setPeso(prenda.getPeso());
+                articulo.setDescripcion(prenda.getDescripcion());
+                articulo.setPrecio(prenda.getPrestamo() * (1 + parametros.getComercializacion()));
+                articulos.add(articulo);
+            });
+            for (Articulo articulo : articulos) {
+                if (new ArticuloDAO().crearArticulo(articulo) != 0) {
+                    System.err.println(String.format("NUEVO ARTICULO #%d", articulo.getIdArticulo()));
+                } else {
+                    error = true;
+                    System.err.println(String.format("Ocurrio un error al comercializar el articulo #%d", articulo.getIdArticulo()));
+                }
+            }
+            if (!error) {
+                contrato.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.COMERCIALIZADO.ordinal());
+                System.err.println(String.format("Contrato #%d: EXPIRADO -> COMERCIALIZADO", contrato.getFolio()));
+                if (editarContrato(contrato) != 0) {
+                    contrato = procesarContrato(contrato);
+                } else {
+                    System.err.println(String.format("Ocurrio un error al actualizar el estado del contrato #%d", contrato.getFolio()));
+                    contrato.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.EXPIRADO.ordinal());
+                    System.err.println(String.format("Contrato #%d: EXPIRADO <- COMERCIALIZADO", contrato.getFolio()));
                 }
             }
         }

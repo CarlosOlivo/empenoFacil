@@ -18,14 +18,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="mybatis.idao.IArticuloDAO">
     <select id="obtenerArticulos" resultType="empenofacil.model.Articulo">
-        SELECT * FROM articulo;
+        SELECT * FROM articulo
     </select>
     <select id="obtenerArticulo" parameterType="int" resultType="empenofacil.model.Articulo">
         SELECT * FROM articulo WHERE idArticulo = #{idArticulo}
     </select>
-    <insert id="crearPrenda" parameterType="epenofacil.model.Articulo" useGeneratedKeys="true" keyProperty="idArticulo">
+    <insert id="crearArticulo" parameterType="empenofacil.model.Articulo" useGeneratedKeys="true" keyProperty="idArticulo">
         INSERT INTO articulo(idCategoriaPrenda,idTipoPrenda,idEstadoArticulo,nombre,tamanio,precio,peso,descripcion)
-        VALUES(#{idCategoria},#{idTipoPrenda},#{idEstadoArticulo},#{nombre},#{tamanio},#{precio},#{peso},#{descripcion}) 
+        VALUES(#{idCategoriaPrenda},#{idTipoPrenda},#{idEstadoArticulo},#{nombre},#{tamanio},#{precio},#{peso},#{descripcion}) 
     </insert>
     <update id="editarArticulo" parameterType="empenofacil.model.Articulo">
         UPDATE articulo SET idCategoriaPrenda = #{idCategoriaPrenda}, idTipoPrenda = #{idTipoPrenda},

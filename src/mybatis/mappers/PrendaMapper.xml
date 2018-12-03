@@ -20,6 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <select id="obtenerPrendas" resultType="empenofacil.model.Prenda">
         SELECT * FROM prenda
     </select>
+    <select id="obtenerPrendasContrato" parameterType="int" resultType="empenofacil.model.Prenda">
+        SELECT p.* FROM bolsa b INNER JOIN contrato c ON b.folio = c.folio INNER JOIN prenda p ON b.idPrenda = p.idPrenda WHERE c.folio = #{folio}
+    </select>
     <select id="obtenerPrenda" parameterType="int" resultType="empenofacil.model.Prenda"> 
         SELECT * FROM prenda WHERE idPrenda = #{idPrenda}
     </select>

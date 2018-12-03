@@ -31,20 +31,25 @@ public class Articulo {
     private Integer idCategoriaPrenda;
     private Integer idTipoPrenda;
     private Integer idEstadoArticulo;
-    private StringProperty nombre;
-    private DoubleProperty tamanio;
-    private DoubleProperty precio;
-    private DoubleProperty peso;
-    private StringProperty descripcion;
+    private final StringProperty nombre;
+    private final DoubleProperty tamanio;
+    private final DoubleProperty precio;
+    private final DoubleProperty peso;
+    private final StringProperty descripcion;
 
     public Articulo() {
         nombre = new SimpleStringProperty();
         descripcion = new SimpleStringProperty();
         tamanio = new SimpleDoubleProperty();
         precio = new SimpleDoubleProperty();
+        peso = new SimpleDoubleProperty();
+    }
+    
+    public enum ESTADO_ARTICULO {
+        INVALIDO, DISPONIBLE, VENDIDO   
     }
 
-    public Articulo(Integer idArticulo, Integer idCategoriaPrenda, Integer idTipoPrenda, Integer idEstadoArticulo, String nombre, double tamanio, double precio, double peso, String descripcion) {
+    public Articulo(Integer idArticulo, Integer idCategoriaPrenda, Integer idTipoPrenda, Integer idEstadoArticulo, String nombre, Double tamanio, Double precio, Double peso, String descripcion) {
         this.idArticulo = idArticulo;
         this.idCategoriaPrenda = idCategoriaPrenda;
         this.idTipoPrenda = idTipoPrenda;
@@ -134,6 +139,7 @@ public class Articulo {
     public void setPeso(Double peso) {
         this.peso.set(peso);
     }
+    
     public String getDescripcion() {
         return descripcion.get();
     }

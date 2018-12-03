@@ -31,6 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </environment>
     </environments>
     <mappers>
+        <mapper resource="mybatis/mappers/ArticuloMapper.xml"/>
         <mapper resource="mybatis/mappers/BolsaMapper.xml"/>
         <mapper resource="mybatis/mappers/CategoriaPrendaMapper.xml"/>
         <mapper resource="mybatis/mappers/ClienteMapper.xml"/>

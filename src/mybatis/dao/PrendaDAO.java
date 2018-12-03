@@ -59,6 +59,21 @@ public class PrendaDAO implements IPrendaDAO {
         }
         return list;
     }
+    
+    @Override
+    public List<Prenda> obtenerPrendasContrato(Integer folio) {
+        List<Prenda> list = null;
+        SqlSession conn = MyBatisUtil.getSession();
+        try {
+            IPrendaDAO prendaDAO = conn.getMapper(IPrendaDAO.class);
+            list = prendaDAO.obtenerPrendasContrato(folio);
+        } catch (Exception e) {
+            Util.excepcion(e);
+        } finally {
+            conn.close();
+        }
+        return list;
+    }
 
     @Override
     public Prenda obtenerPrenda(Integer idPrenda) {

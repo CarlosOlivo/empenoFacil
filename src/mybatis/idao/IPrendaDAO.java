@@ -26,6 +26,7 @@ import java.util.List;
 public interface IPrendaDAO {
     public List<Prenda> buscarPrenda(String busqueda);
     public List<Prenda> obtenerPrendas();
+    public List<Prenda> obtenerPrendasContrato(Integer folio);
     public Prenda obtenerPrenda(Integer idPrenda);
     public int crearPrenda(Prenda prenda);
     public int editarPrenda(Prenda prenda);
