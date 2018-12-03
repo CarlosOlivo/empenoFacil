@@ -42,6 +42,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mybatis.dao.ArticuloDAO;
 import mybatis.dao.VentaDAO;
 
 /**
@@ -176,6 +177,8 @@ public class VentasController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(EmpenoFacil.class.getResource("view/SeleccionarArticulos.fxml"));
             Parent root = (Parent) loader.load();
+            SeleccionarArticulosController controller = loader.getController();
+            controller.setArticulos(artciculosT.getItems());
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Seleccione Articulo");
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -184,6 +187,7 @@ public class VentasController implements Initializable {
             Scene scene = new Scene(root);
             dialogStage.setScene(scene);
             dialogStage.showAndWait();
+            artciculosT.getItems().addAll(controller.getArticulosNuevos());
         } catch (IOException ioEx) {
             Util.excepcion(ioEx);
         }
@@ -205,6 +209,11 @@ public class VentasController implements Initializable {
     @FXML
     public void realizarVenta() {
 
+    }
+    
+    @FXML
+    public void restablecer() {
+        artciculosT.getItems().clear();
     }
 
     private void realizarVentaNormal() {

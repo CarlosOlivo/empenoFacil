@@ -16,21 +16,23 @@
  */
 package empenofacil.controller;
 
+import empenofacil.Util;
 import empenofacil.model.Articulo;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableCell;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import mybatis.dao.ArticuloDAO;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * FXML Controller class
@@ -40,6 +42,8 @@ import mybatis.dao.ArticuloDAO;
 public class SeleccionarArticulosController implements Initializable {
 
     private final ArticuloDAO articuloDAO;
+    private List<Articulo> articulos;
+    private List<Articulo> articulosNuevos;
 
     @FXML
     private TableColumn<Articulo, String> cDescripcion;
@@ -70,20 +74,49 @@ public class SeleccionarArticulosController implements Initializable {
 
     public SeleccionarArticulosController() {
         articuloDAO = new ArticuloDAO();
+        articulosNuevos = new ArrayList<>();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        artciuloTable.getItems().setAll(articuloDAO.obtenerArticulosDisponibles());
         cNombre.setCellValueFactory(data -> data.getValue().getNombreProperty());
         cPrecio.setCellValueFactory(data -> data.getValue().getPrecioProperty());
         cPeso.setCellValueFactory(data -> data.getValue().getPesoProperty());
         cTamanio.setCellValueFactory(data -> data.getValue().getTamanioProperty());
         cDescripcion.setCellValueFactory(data -> data.getValue().getDescripcionProperty());
-
-
+        aceptarbn.setOnAction((event) -> {
+            if(artciuloTable.getSelectionModel().getSelectedItems() == null) {
+                Util.dialogo(Alert.AlertType.ERROR, "Selecciona un articulo");
+                return;
+            }
+            for(Articulo articuloTMP : artciuloTable.getSelectionModel().getSelectedItems()) {
+                articulosNuevos.add(articuloTMP);
+            }
+            ((Stage)aceptarbn.getScene().getWindow()).close();
+        });
+        cancelarbn.setOnAction((event) -> {
+            ((Stage)cancelarbn.getScene().getWindow()).close();
+        });
+        artciuloTable.getSelectionModel().clearSelection();
+        artciuloTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
+    private List<Articulo> getArticulos() {
+        return articulos;
+    }
 
+    public void setArticulos(List<Articulo> articulos) {
+        this.articulos = articulos;
+        List<Articulo> articulosTMP = articuloDAO.obtenerArticulosDisponibles();
+        articulosTMP.removeIf(articulo -> articulos.contains(articulo));
+        artciuloTable.getItems().setAll(articulosTMP);
+    }
 
+    public List<Articulo> getArticulosNuevos() {
+        return articulosNuevos;
+    }
+
+    private void setArticulosNuevos(List<Articulo> articulosNuevos) {
+        this.articulosNuevos = articulosNuevos;
+    }
 }

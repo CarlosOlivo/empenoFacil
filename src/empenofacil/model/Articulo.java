@@ -16,6 +16,7 @@
  */
 package empenofacil.model;
 
+import java.util.Objects;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -150,5 +151,25 @@ public class Articulo {
 
     public void setDescripcion(String descripcion) {
         this.descripcion.set(descripcion);
+    }
+    
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Articulo other = (Articulo) obj;
+        return Objects.equals(this.idArticulo, other.idArticulo);
     }
 }

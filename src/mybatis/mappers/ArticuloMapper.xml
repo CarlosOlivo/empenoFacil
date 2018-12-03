@@ -33,6 +33,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         peso = #{peso}, descripcion = #{descripcion} WHERE idArticulo = ${idArticulo} 
     </update>
     <select id="obtenerArticulosDisponibles" resultType="empenofacil.model.Articulo">
-        SELECT *FROM articulo WHERE idEstadoArtitculo = 1
+        SELECT *FROM articulo WHERE idEstadoArticulo = 1
     </select>
 </mapper>
