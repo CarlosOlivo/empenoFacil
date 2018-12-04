@@ -64,7 +64,7 @@ public final class Contrato {
     }
     
     public enum ESTADO_CONTRATO {
-        INVALIDO, ACTIVO, CANCELADO, PRORROGA, EXPIRADO, COMERCIALIZADO
+        INVALIDO, ACTIVO, CANCELADO, PRORROGA, EXPIRADO, COMERCIALIZADO, FINIQUITADO, REFRENDADO
     }
     
     public StringProperty folioPropertyFormato() {
@@ -164,7 +164,7 @@ public final class Contrato {
     }
     
     public StringProperty totalAvaluoPropertyFormato() {
-        return new SimpleStringProperty(String.format("$%.2f", getTotalAvaluo()));
+        return new SimpleStringProperty(String.format("$%,.2f", getTotalAvaluo()));
     }
 
     public Double getTotalAvaluo() {
@@ -176,7 +176,7 @@ public final class Contrato {
     }
     
     public StringProperty totalPrestamoPropertyFormato() {
-        return new SimpleStringProperty(String.format("$%.2f", getTotalPrestamo()));
+        return new SimpleStringProperty(String.format("$%,.2f", getTotalPrestamo()));
     }
 
     public Double getTotalPrestamo() {

@@ -30,6 +30,7 @@ import empenofacil.model.Bolsa;
 import empenofacil.model.CategoriaPrenda;
 import empenofacil.model.Cliente;
 import empenofacil.model.Contrato;
+import empenofacil.model.Pago;
 import empenofacil.model.Parametros;
 import empenofacil.model.Periodo;
 import empenofacil.model.Prenda;
@@ -70,6 +71,7 @@ import mybatis.dao.BolsaDAO;
 import mybatis.dao.CategoriaPrendaDAO;
 import mybatis.dao.ClienteDAO;
 import mybatis.dao.ContratoDAO;
+import mybatis.dao.PagoDAO;
 import mybatis.dao.ParametrosDAO;
 import mybatis.dao.PeriodoDAO;
 import mybatis.dao.PrendaDAO;
@@ -88,6 +90,7 @@ public class ContratosController implements Initializable {
     private final TipoPrendaDAO tipoPrendaDAO;
     private final CategoriaPrendaDAO categoriaPrendaDAO;
     private final ParametrosDAO parametrosDAO;
+    private final PagoDAO pagoDAO;
     private final PeriodoDAO periodoDAO;
     private final PrendaDAO prendaDAO;
     private final Prenda prenda;
@@ -154,6 +157,7 @@ public class ContratosController implements Initializable {
         tipoPrendaDAO = new TipoPrendaDAO();
         categoriaPrendaDAO = new CategoriaPrendaDAO();
         parametrosDAO = new ParametrosDAO();
+        pagoDAO = new PagoDAO();
         periodoDAO = new PeriodoDAO();
         prendaDAO = new PrendaDAO();
         prenda = new Prenda(null, null, null, "", 0d, 0d, "", 0d, 0d);
@@ -287,7 +291,7 @@ public class ContratosController implements Initializable {
                     1, // idSucursal
                     MenuController.getEmpleado().getIdEmpleado(), // idEmpleado
                     0, // numBolsa
-                    new Date(), // FechaInicioContrato
+                    Util.obtenerFechaSinTiempo(new Date()), // FechaInicioContrato
                     Util.agregarDiasFecha(new Date(), MenuController.getParametrosPredeterminados().getDiasEnTotal()), // FechaFinContrato
                     cotitular.getText().trim(), //cotitular
                     totalAvaluo, //totalAvaluo
@@ -429,7 +433,7 @@ public class ContratosController implements Initializable {
     }
 
     @FXML
-    public void actualizarContratos() {
+    private void actualizarContratos() {
         buscarC.getSelectionModel().clearSelection();
         buscarT.clear();
         contratos.getItems().clear();
@@ -466,14 +470,108 @@ public class ContratosController implements Initializable {
             Util.dialogo(Alert.AlertType.ERROR, String.format("No se puede cancelar un contrato después de %d día(s), el límite es de < %d día(s)", diasDesdeContrato, parametrosTMP.getDiasParaCancelarContrato()));
         }
     }
-
+    
+    private Periodo obtenerPeriodo(Contrato contrato) {
+        if(contrato != null) {
+            List<Periodo> periodos = periodoDAO.obtenerPeriodos(contrato.getFolio());
+            if(contrato.getIdEstadoContrato() == Contrato.ESTADO_CONTRATO.ACTIVO.ordinal()) {
+                for(Periodo periodo : periodos) {
+                    if(Util.contieneFecha(periodo.getFechaInicioPeriodo(), periodo.getFechaFinPeriodo(), Util.obtenerFechaSinTiempo(new Date()))) {
+                        return periodo;
+                    }
+                }
+            }
+            if(contrato.getIdEstadoContrato() == Contrato.ESTADO_CONTRATO.PRORROGA.ordinal() && !periodos.isEmpty()) {
+                return periodos.get(periodos.size() - 1);
+            }
+        }
+        return null;
+    }
+    
     @FXML
-    public void clonarContrato() {
-        // TODO - Reempeño
+    private void finiquito() {
+        Contrato contratoTMP = contratos.getSelectionModel().getSelectedItem();
+        Periodo periodoTMP = obtenerPeriodo(contratoTMP);
+        if(periodoTMP == null) {
+            Util.dialogo(Alert.AlertType.ERROR, "No hay opciones de pago para este empeño");
+            return;
+        }
+        Optional<ButtonType> confirmacion = Util.confirmacion("Finiquito", String.format("¿Desea finiquitar el empeño #%d por un total de $%,.2f?", contratoTMP.getFolio(), periodoTMP.getFiniquito()));
+        if (confirmacion.isPresent() && confirmacion.get() == ButtonType.YES) {
+            Pago pago = new Pago();
+            pago.setFolio(periodoTMP.getFolio());
+            pago.setNumPeriodo(periodoTMP.getNumPeriodo());
+            pago.setIdSucursal(1);
+            pago.setIdEmpleado(MenuController.getEmpleado().getIdEmpleado());
+            pago.setIdTipoPago(Pago.TIPO_PAGO.FINIQUITO.ordinal());
+            pago.setFechaHora(new Date());
+            if(pagoDAO.crearPago(pago) != 0) {
+                contratoTMP.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.FINIQUITADO.ordinal());
+                if(contratoDAO.editarContrato(contratoTMP) != 0) {
+                    Util.dialogo(Alert.AlertType.INFORMATION, "Empeño finiquitado correctamente");
+                    generarPDF("PagoFiniquito", "p_idPago", pago.getIdPago());
+                    actualizarContratos();
+                } else {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al actualizar el estado del contrato");
+                }
+            } else {
+                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al registrar el pago");
+            }
+        }
     }
 
     @FXML
-    public void buscarContrato() {
+    private void refrendo() {
+        Contrato contratoTMP = contratos.getSelectionModel().getSelectedItem();
+        Periodo periodoTMP = obtenerPeriodo(contratoTMP);
+        if(periodoTMP == null) {
+            Util.dialogo(Alert.AlertType.ERROR, "No hay opciones de pago para este empeño");
+            return;
+        }
+        Optional<ButtonType> confirmacion = Util.confirmacion("Refrendo", String.format("¿Desea refrendar el empeño #%d por un total de $%,.2f?", contratoTMP.getFolio(), periodoTMP.getRefrendo()));
+        if (confirmacion.isPresent() && confirmacion.get() == ButtonType.YES) {
+            Pago pago = new Pago();
+            pago.setFolio(periodoTMP.getFolio());
+            pago.setNumPeriodo(periodoTMP.getNumPeriodo());
+            pago.setIdSucursal(1);
+            pago.setIdEmpleado(MenuController.getEmpleado().getIdEmpleado());
+            pago.setIdTipoPago(Pago.TIPO_PAGO.REFRENDO.ordinal());
+            pago.setFechaHora(new Date());
+            if(pagoDAO.crearPago(pago) != 0) {
+                contratoTMP.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.REFRENDADO.ordinal());
+                if(contratoDAO.editarContrato(contratoTMP) != 0) {
+                    Contrato contrato = new Contrato(
+                            null, // folio
+                            contratoTMP.getIdCliente(), // idCliente
+                            Contrato.ESTADO_CONTRATO.ACTIVO.ordinal(), // idEstadoContrato
+                            contratoTMP.getIdSucursal(), MenuController.getEmpleado().getIdEmpleado(), // idEmpleado
+                            contratoTMP.getNumBolsa(), // numBolsa
+                            Util.obtenerFechaSinTiempo(new Date()), // FechaInicioContrato
+                            Util.agregarDiasFecha(new Date(), MenuController.getParametrosPredeterminados().getDiasEnTotal()), // FechaFinContrato
+                            contratoTMP.getCotitular(), //cotitular
+                            contratoTMP.getTotalAvaluo(), //totalAvaluo
+                            contratoTMP.getTotalPrestamo() //totalPrestamo
+                    );
+                    if(contratoDAO.crearContrato(contrato) != 0) {
+                        parametrosDAO.crearParametros(contrato.getFolio());
+                        generarPeriodosDePago(contrato);
+                        Util.dialogo(Alert.AlertType.INFORMATION, "Empeño refrendado correctamente");
+                        generarPDF("PagoRefrendo", "p_idPago", pago.getIdPago());
+                        actualizarContratos();
+                    } else {
+                        Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al crear el reempeño");
+                    }
+                } else {
+                    Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al actualizar el estado del contrato");
+                }
+            } else {
+                Util.dialogo(Alert.AlertType.ERROR, "Ocurrio un error al registrar el pago");
+            }
+        }
+    }
+
+    @FXML
+    private void buscarContrato() {
         String busqueda;
         List<Contrato> contratosTMP;
         if (buscarT.getText().trim().isEmpty()) {
@@ -556,19 +654,25 @@ public class ContratosController implements Initializable {
             }
         });
     }
+    
+    private void generarPDF(String nombre, String variable, Object valor) {
+        HashMap<String, Object> parametros = new HashMap<>();
+        parametros.put(variable, valor);
+        String path = Reportes.generarPDFContratoJasper(nombre, parametros);
+        openPDF(path);
+    }
 
     @FXML
-    public void generarContrato() {
+    private void generarContrato() {
         Integer numFolio = contratos.getSelectionModel().getSelectedItem().getFolio();//obtien el indice del registro en la tabla
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("folio", numFolio);
         String path = Reportes.generarPDFContratoJasper("Contrato", parametros);
         openPDF(path);
-
     }
     
     @FXML
-    public void imprimirEtiquetas() {
+    private void imprimirEtiquetas() {
         Integer numFolio = contratos.getSelectionModel().getSelectedItem().getFolio();//obtien el indice del registro en la tabla
         HashMap<String, Object> parametros = new HashMap<>();
         parametros.put("folio", numFolio);

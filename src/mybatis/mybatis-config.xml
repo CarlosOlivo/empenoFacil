@@ -43,6 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <mapper resource="mybatis/mappers/MunicipioMapper.xml"/>
         <mapper resource="mybatis/mappers/OcupacionMapper.xml"/>
         <mapper resource="mybatis/mappers/ParametrosMapper.xml"/>
+        <mapper resource="mybatis/mappers/PagoMapper.xml"/>
         <mapper resource="mybatis/mappers/PeriodoMapper.xml"/>
         <mapper resource="mybatis/mappers/PrendaMapper.xml"/>
         <mapper resource="mybatis/mappers/RolMapper.xml"/>

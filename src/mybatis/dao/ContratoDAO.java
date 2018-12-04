@@ -20,7 +20,6 @@ import empenofacil.Util;
 import empenofacil.model.Articulo;
 import empenofacil.model.Contrato;
 import empenofacil.model.Parametros;
-import empenofacil.model.Periodo;
 import empenofacil.model.Prenda;
 import java.util.ArrayList;
 import java.util.Date;
@@ -148,6 +147,10 @@ public class ContratoDAO implements IContratoDAO {
                     break;
                 case COMERCIALIZADO:
                     break;
+                case FINIQUITADO:
+                    break;
+                case REFRENDADO:
+                    break;
                 default:
                     System.err.println("Contrato invalido");
                     break;
@@ -157,10 +160,6 @@ public class ContratoDAO implements IContratoDAO {
     }
 
     private Contrato verificarContratoActivo(Contrato contrato) {
-        List<Periodo> periodos = new PeriodoDAO().obtenerPeriodos(contrato.getFolio());
-        periodos.forEach((periodo) -> {
-            System.out.println(Util.contieneFecha(periodo.getFechaInicioPeriodo(), periodo.getFechaFinPeriodo(), new Date(118, 10, 21)));
-        });
         Date fechaHoy = Util.obtenerFechaSinTiempo(new Date());
         if (contrato != null && fechaHoy.after(contrato.getFechaFinContrato())) {
             contrato.setIdEstadoContrato(Contrato.ESTADO_CONTRATO.PRORROGA.ordinal());
